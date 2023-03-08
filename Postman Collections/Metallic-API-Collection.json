@@ -2458,11 +2458,11 @@
 												{
 													"listen": "test",
 													"script": {
+														"id": "c69918e4-d2b5-4f94-8bc8-6886d172ed50",
 														"exec": [
 															"var jsonData = JSON.parse(responseBody);"
 														],
-														"type": "text/javascript",
-														"id": "c69918e4-d2b5-4f94-8bc8-6886d172ed50"
+														"type": "text/javascript"
 													}
 												}
 											],
@@ -2481,7 +2481,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"planName\": \"{{planName}}\",\r\n    \"backupDestinations\": [\r\n        {\r\n            \"backupDestinationName\": \"{{storagePoolName}}_{{planName}}\",\r\n            \"storagePool\": {\r\n                \"id\": {{storagePoolId}},\r\n                \"name\": \"{{storagePoolName}}\"\r\n            },\r\n            \"retentionPeriodDays\": {{retentionPeriodDays}}\r\n        }\r\n    ],\r\n    \"rpo\": {\r\n        \"backupFrequency\": {\r\n            \"schedules\": [\r\n                {\r\n                    \"backupType\": \"{{backupType}}\",\r\n                    \"scheduleOperation\": \"{{scheduleOperation}}\",\r\n                    \"schedulePattern\": {\r\n                        \"scheduleFrequencyType\": \"{{scheduleFrequencyType}}\",\r\n                        \"frequency\": {{frequency}},\r\n                        \"startTime\": {{startTime}},\r\n                        \"weeklyDays\": [\r\n                            \"{{Day1}}\",\r\n                            \"{{Day2}}\"\r\n                        ]\r\n                    },\r\n                    \"forDatabasesOnly\": false\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}",
+													"raw": "{\r\n    \"planName\": \"{{planName}}\",\r\n    \"backupDestinations\": [\r\n        {\r\n            \"backupDestinationName\": \"{{storagePoolName}}_{{planName}}\",\r\n            \"storagePool\": {\r\n                \"id\": {{storagePoolId}},\r\n                \"name\": \"{{storagePoolName}}\"\r\n            },\r\n            \"retentionPeriodDays\": {{retentionPeriodDays}}\r\n        },\r\n        {\r\n            \"backupDestinationName\": \"{{storagePoolName}}_{{planName}}_Secondary\",\r\n            \"storagePool\": {\r\n                \"id\": {{storagePoolId}},\r\n                \"name\": \"{{storagePoolName}}\"\r\n            },\r\n            \"retentionPeriodDays\": {{retentionPeriodDays}}\r\n        }\r\n    ],\r\n    \"rpo\": {\r\n        \"backupFrequency\": {\r\n            \"schedules\": [\r\n                {\r\n                    \"backupType\": \"{{backupType}}\",\r\n                    \"scheduleOperation\": \"{{scheduleOperation}}\",\r\n                    \"schedulePattern\": {\r\n                        \"scheduleFrequencyType\": \"{{scheduleFrequencyType}}\",\r\n                        \"frequency\": {{frequency}},\r\n                        \"startTime\": {{startTime}},\r\n                        \"weeklyDays\": [\r\n                            \"{{Day1}}\",\r\n                            \"{{Day2}}\"\r\n                        ]\r\n                    },\r\n                    \"forDatabasesOnly\": false\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -7525,7 +7525,7 @@
 	],
 	"variable": [
 		{
-			"id": "9f56005e-c319-494c-8f16-10deb36490ae",
+			"id": "2bcc1027-1bc4-4756-9ee2-74baa8fb49b7",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
