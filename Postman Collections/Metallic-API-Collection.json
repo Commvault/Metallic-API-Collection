@@ -2614,7 +2614,7 @@
 														"header": [],
 														"body": {
 															"mode": "raw",
-															"raw": "{\r\n    \"planName\": \"TestM4\",\r\n    \"backupDestinations\": [\r\n        {\r\n            \"backupDestinationName\": \"cvmetallic-azuredb1-server-eastus_TestM4\",\r\n            \"storagePool\": {\r\n                \"id\": 1901,\r\n                \"name\": \"cvmetallic-azuredb1-server-eastus\"\r\n            },\r\n            \"retentionPeriodDays\": 40\r\n        }\r\n    ],\r\n    \"rpo\": {\r\n        \"backupFrequency\": {\r\n            \"schedules\": [\r\n                {\r\n                    \"backupType\": \"INCREMENTAL\",\r\n                    \"scheduleOperation\": \"ADD\",\r\n                    \"schedulePattern\": {\r\n                        \"scheduleFrequencyType\": \"WEEKLY\",\r\n                        \"frequency\": 2,\r\n                        \"startTime\": 75600,\r\n                        \"weeklyDays\": [\r\n                            \"SUNDAY\"\r\n                        ]\r\n                    },\r\n                    \"forDatabasesOnly\": false\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"snapshotOptions\": {}\r\n}",
+															"raw": "{\r\n    \"planName\": \"TestM4\",\r\n    \"backupDestinations\": [\r\n        {\r\n            \"backupDestinationName\": \"cvmetallic-azuredb1-server-eastus_TestM4\",\r\n            \"storagePool\": {\r\n                \"id\": 1901,\r\n                \"name\": \"cvmetallic-azuredb1-server-eastus\"\r\n            },\r\n            \"retentionPeriodDays\": 40\r\n        },\r\n        {\r\n            \"backupDestinationName\": \"Secondary\",\r\n            \"storagePool\": {\r\n                \"id\": 7215,\r\n                \"name\": \"Azure-BYOS1\"\r\n            },\r\n            \"retentionPeriodDays\": 30,\r\n            \"overrideRetentionSettings\": true\r\n        }\r\n    ],\r\n    \"rpo\": {\r\n        \"backupFrequency\": {\r\n            \"schedules\": [\r\n                {\r\n                    \"backupType\": \"INCREMENTAL\",\r\n                    \"scheduleOperation\": \"ADD\",\r\n                    \"schedulePattern\": {\r\n                        \"scheduleFrequencyType\": \"WEEKLY\",\r\n                        \"frequency\": 2,\r\n                        \"startTime\": 75600,\r\n                        \"weeklyDays\": [\r\n                            \"SUNDAY\"\r\n                        ]\r\n                    },\r\n                    \"forDatabasesOnly\": false\r\n                }\r\n            ]\r\n        }\r\n    },\r\n    \"snapshotOptions\": {}\r\n}",
 															"options": {
 																"raw": {
 																	"language": "json"
@@ -7525,7 +7525,7 @@
 	],
 	"variable": [
 		{
-			"id": "7ba205ad-c793-488b-9021-a0d65defa865",
+			"id": "9f56005e-c319-494c-8f16-10deb36490ae",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
