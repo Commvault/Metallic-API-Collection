@@ -436,7 +436,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"externalId\": \"{{external_id}}\",\r\n    \"resellerId\": \"{{reseller_id}}\",\r\n    \"account\": {\r\n        \"externalId\": \"{{account_external_id}}\",\r\n        \"name\": \"{{account_name}}\",\r\n        \"website\": \"{{account_website}}\",\r\n        \"provisionCountry\": \"{{provision_country}}\",\r\n        \"contacts\": [\r\n            {\r\n                \"type\": \"admin\",\r\n                \"email\": \"{{account_admin_email}}\",\r\n                \"firstName\": \"{{account_admin_first_name}}\",\r\n                \"lastName\": \"{{account_admin_last_name}}\",\r\n                \"phone\": \"{{account_admin_phine_number}}\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"{{address_line1}}\",\r\n                    \"addressLine2\": \"{{address_line2}}\",\r\n                    \"city\": \"{{city}}\",\r\n                    \"state\": \"{{state}}\",\r\n                    \"country\": \"{{country}}\",\r\n                    \"postalCode\": \"{{post_code}}\"\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"service\": {\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"{{sku_id}}\"\r\n            },\r\n            {\r\n                \"sku\": \"{{sku_id}}\"\r\n            }\r\n        ]\r\n    }\r\n}",
+									"raw": "{\r\n    \"externalId\": \"{{external_id}}\",\r\n    \"mspId\": \"{{msp_id}}\",\r\n    \"partnerId\": \"{{partner_id}}\",\r\n    \"account\": {\r\n        \"externalId\": \"{{account_external_id}}\",\r\n        \"name\": \"{{account_name}}\",\r\n        \"website\": \"{{account_website}}\",\r\n        \"provisionCountry\": \"{{provision_country}}\",\r\n        \"contacts\": [\r\n            {\r\n                \"type\": \"admin\",\r\n                \"email\": \"{{account_admin_email}}\",\r\n                \"firstName\": \"{{account_admin_first_name}}\",\r\n                \"lastName\": \"{{account_admin_last_name}}\",\r\n                \"phone\": \"{{account_admin_phine_number}}\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"{{address_line1}}\",\r\n                    \"addressLine2\": \"{{address_line2}}\",\r\n                    \"city\": \"{{city}}\",\r\n                    \"state\": \"{{state}}\",\r\n                    \"country\": \"{{country}}\",\r\n                    \"postalCode\": \"{{post_code}}\"\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"service\": {\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"{{sku_id}}\"\r\n            },\r\n            {\r\n                \"sku\": \"{{sku_id}}\"\r\n            }\r\n        ]\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -444,18 +444,43 @@
 									}
 								},
 								"url": "{{ServerURL}}/api/v1/partner/fulfillments",
-								"description": "This API can be used to submit a fulfillment request for customers. Customer is represented by account in Metallic. Three types of fulfillment requests are supported:\n\n| **Fulfillment Type** | **Description** |\n| --- | --- |\n| New customer | This is to purchase services for a new customer to metallic. Detailed customer information is required. |\n| Adding service | This is to add more services to an existing customer in metallic. Customer metallic account Id is required. |\n| Cancelling service | This is to cancel services for an existing customer in metallic. Customer metallic account Id is required. |\n\n###### Notes\n\n> Once the fulfillment request is submitted, partner will get a unique fulfillment Metallic ID in response. Fulfillment request will be processed asynchronously. Partner can use `Get Fulfillment by Id` to check fulfillment status and details later.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| externalId | Partner fulfillment  <br>reference in partner system. | String / UUID | False | Needs to be unique in metallic. Refer to Notes below this table. |\n| resellerId | Reseller metallic id | UUID | Conditional Mandatory | Required when customer is introduced by a reseller. Refer to Notes below this table. |\n| mspId | Msp metallic id | UUID | Conditional Mandatory | Required when customer is introduced by an msp. Refer to Notes below this table. |\n| account | Customer account  <br>info | New Account Object / Existing  <br>Account Object | True | See - New Account Object /  <br>Existing Account Object. |\n| service | Service details | Service Object | True | See - Service Object. |\n\n###### Notes\n\n> `externalId:` is the identifier for fulfillment in Partner system. It is not required for all three fulfillment types, but if provided in \"Cancelling service\" fulfillment, it should be the same externalId as in the original \"New customer\" fulfillment or \"Adding service\" fulfillment. For example, if an externalId 123 is provided in a \"Cancelling service fulfillment\", then we will check if there is any \"New customer\" fulfillment or \"Adding service\" fulfillment that has externalId 123. If not, we will not proceed this \"Cancelling service\" fulfillment.\n\n> `service:` Database usage is metered by capacity unless the application is hosted on virtual machines in which case it is metered as a VM instance. By selecting the Database Backup Service, VM & Kubernetes Service is automatically selected. File & Object usage is metered by capacity unless the application is hosted on Virtual Machines in which case it is metered as a VM instance. By selecting the File & Object Backup Service, VM & Kubernetes Service is automatically selected.\n\n> `resellerId` and `mspId`: When both mspId and resellerId is provided in the request then the provisioning is for partner case where customer is being added for a reseller under msp.\n\n##### New Account Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| externalId | Customer Id in Partner system | String / UUID | True | Needs to be unique in partner system. |\n| name | Customer name | String | True | Needs to be unique in metallic. |\n| website | Customer website | String | False |  |\n| provisionCountry | The country that customer account needs to be provisioned | String | True | It needs to be ISO standard code or name. |\n| contacts | Customer contacts | Contact Objects Array | True | See - Contact Object |\n| type | Account type | Sting Enumeration Allowed Values: POC / Internal / Production | False |  |\n\n##### Existing Account Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| id | Account metallic id | UUID | True |  |\n\n##### Service Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| action | Fulfillment action for existing customer | String Enumeration Allowed Values: add / cancel | Conditional Mandatory | Required for existing account fulfillment. This field should not be provided in 'New  <br>Customer' fulfillment. |\n| skus | Metallic service skus | Sku Objects Array | True | Metallic will provide a list of available skus for a partner. See - Sku Object |\n\n##### Sku Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| sku | Service Sku | String | True | Metallic will provide list of available skus for a partner. |\n| term | Service duration | String | False | If not provided defaults to - 'oneMonth' |\n| billingCycle | Service billing cycle | String | False | If not provided defaults to - 'monthly' |\n| autoRenew | Service renew option at the end of term | Boolean | False | If not provided defaults to - true |\n\n##### Contact Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Contact type | String Enum Allowed Values: admin | True | Currently, only one contact per account is accepted and contact type must be 'admin'. |\n| email | Contact email | String | True | Needs to be unique in metallic. |\n| firstName | Contact firstname | String | True |  |\n| lastName | Contact lastname | String | True |  |\n| address | Contact address | Address Object | False | See - Address Object |\n| phone | Contact phone number | String | False |  |\n\n##### Address Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Address line 1 | String | False |  |\n| addressLine2 | Address line 2 | String | False |  |\n| city | Address city | String | False |  |\n| state | Address state | String | Conditional Mandatory | This field is required when the country is United States, otherwise is optional.  <br>If provided, it must be ISO standard code or name. |\n| country | Address country | String | Conditional Mandatory | This field is required when the state field is provided. If provided, it needs to be ISO standard code or name. |\n| postalCode | Address postal code | String | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Fulfillment metallic id | UUID |  |\n| status | Fulfillment status | String Enumeration - Fulfillment Status Enumeration | Refer to Fulfillment Status Enumeration. Value \"in_progress\" is returned in this case. |\n| requestData | Fulfillment request body | Fulfillment - Request Body | See - Request Body |"
+								"description": "This API can be used to submit a fulfillment request for customers. Customer is represented by account in Metallic. Three types of fulfillment requests are supported:\n\n| **Fulfillment Type** | **Description** |\n| --- | --- |\n| New customer | This is to purchase services for a new customer to metallic. Detailed customer information is required. |\n| Adding service | This is to add more services to an existing customer in metallic. Customer metallic account Id is required. |\n| Cancelling service | This is to cancel services for an existing customer in metallic. Customer metallic account Id is required. |\n\n###### Notes\n\n> Once the fulfillment request is submitted, partner will get a unique fulfillment Metallic ID in response. Fulfillment request will be processed asynchronously. Partner can use `Get Fulfillment by Id` to check fulfillment status and details later. \n  \n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| externalId | Partner fulfillment  <br>reference in partner system. | String / UUID | False | Needs to be unique in metallic. Refer to Notes below this table. |\n| mspId | MSP metallic id | UUID | Conditional Mandatory | Required when customer is introduced by an MSP. Refer to Notes below this table. |\n| partnerId | MSP's partner metallic id | UUID | False | Required when customer is introduced by a reseller. Refer to Notes below this table. |\n| account | Customer account  <br>info | New Account Object / Existing  <br>Account Object | True | See - New Account Object /  <br>Existing Account Object. |\n| service | Service details | Service Object | True | See - Service Object. |\n\n###### Notes\n\n> externalId: externalId is the identifier for fulfillment in Partner system. It is not required for all three fulfillment types, but if provided in \"Cancelling service\" fulfillment, it should be the same externalId as in the original \"New customer\" fulfillment or \"Adding service\" fulfillment. For example, if an externalId 123 is provided in a \"Cancelling service fulfillment\", then we will check if there is any \"New customer\" fulfillment or \"Adding service\" fulfillment that has externalId 123. If not, we will not proceed this \"Cancelling service\" fulfillment. \n  \n> service: Database usage is metered by capacity unless the application is hosted on virtual machines in which case it is metered as a VM instance. By selecting the Database Backup Service, VM & Kubernetes Service is automatically selected. File & Object usage is metered by capacity unless the application is hosted on Virtual Machines in which case it is metered as a VM instance. By selecting the File & Object Backup Service, VM & Kubernetes Service is automatically selected. Metallic Backup for Microsoft 365 Standard or Enterprise will incur Metallic Storage usage. By selecting Metallic Backup for Microsoft 365 Service, Metallic Storage for SaaS Apps is automatically selected to support the metering of application user capacity usage.  \nmspId and partnerId: When both mspId and partnerId is provided in the request then the provisioning is for partner case where customer is being added for a reseller under MSP. \n  \n\n##### New Account Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| externalId | Customer Id in Partner system | String / UUID | True | Needs to be unique in partner system. |\n| name | Customer name | String | True | Needs to be unique in metallic. |\n| website | Customer website | String | False |  |\n| provisionCountry | The country that customer account needs to be provisioned | String | True | It needs to be ISO standard code or name. |\n| contacts | Customer contacts | Contact Objects Array | True | See - Contact Object |\n| type | Account type | Sting Enumeration Allowed Values: POC / Internal / Production | False |  |\n\n##### Existing Account Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| id | Account metallic id | UUID | True |  |\n\n##### Service Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| action | Fulfillment action for existing customer | String Enumeration Allowed Values: add / cancel | Conditional Mandatory | Required for existing account fulfillment. This field should not be provided in 'New  <br>Customer' fulfillment. |\n| skus | Metallic service skus | Sku Objects Array | True | Metallic will provide a list of available skus for a partner. See - Sku Object |\n\n##### Sku Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| sku | Service Sku | String | True | Metallic will provide list of available skus for a partner. |\n\n##### Contact Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Contact type | String Enum Allowed Values: admin | True | Currently, only one contact per account is accepted and contact type must be 'admin'. |\n| email | Contact email | String | True | Needs to be unique in metallic. |\n| firstName | Contact firstname | String | True |  |\n| lastName | Contact lastname | String | True |  |\n| address | Contact address | Address Object | False | See - Address Object |\n| phone | Contact phone number | String | False |  |\n\n##### Address Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Address line 1 | String | False |  |\n| addressLine2 | Address line 2 | String | False |  |\n| city | Address city | String | False |  |\n| state | Address state | String | Conditional Mandatory | This field is required when the country is United States, otherwise is optional.  <br>If provided, it must be ISO standard code or name. |\n| country | Address country | String | Conditional Mandatory | This field is required when the state field is provided. If provided, it needs to be ISO standard code or name. |\n| postalCode | Address postal code | String | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Fulfillment metallic id | UUID |  |\n| status | Fulfillment status | String Enumeration - Fulfillment Status Enumeration | Refer to Fulfillment Status Enumeration. Value \"in_progress\" is returned in this case. |\n| requestData | Fulfillment request body | Fulfillment - Request Body | See - Request Body |"
 							},
 							"response": [
 								{
-									"id": "eda212cd-7799-42a1-bc4a-ceaf08193957",
+									"id": "d6f83b49-1b72-40ec-a398-28e2d1f7216d",
 									"name": "Submit Fulfilment - Success - New Customer",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"externalId\": \"f43t3423g3\",\r\n    \"resellerId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"externalId\": \"ck6knzailz0\",\r\n        \"name\": \"Example Customer\",\r\n        \"website\": \"www.examplecustomer.com\",\r\n        \"provisionCountry\": \"United States\",\r\n        \"contacts\": [{\r\n                \"type\": \"admin\",\r\n                \"email\": \"tom@examplecustomer.com\",\r\n                \"firstName\": \"Tom\",\r\n                \"lastName\": \"Li\",\r\n                \"phone\": \"+1 202 202 3030\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"1 Ave\",\r\n                    \"addressLine2\": \"Suite 204\",\r\n                    \"city\": \"Sunnyvale\",\r\n                    \"state\": \"California\",\r\n                    \"country\": \"United States\",\r\n                    \"postalCode\": \"94086\"\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"service\": {\r\n        \"skus\": [{\r\n                \"sku\": \"MTL-SF-USRO-NC\"\r\n            }, {\r\n                \"sku\": \"MTL-FOB-FTO-NC\"\r\n            }\r\n        ]\r\n    }\r\n}",
+											"raw": "{\r\n    \"externalId\": \"f43t3423g3\",\r\n    \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"externalId\": \"ck6knzailz0\",\r\n        \"name\": \"Example Customer\",\r\n        \"website\": \"www.examplecustomer.com\",\r\n        \"provisionCountry\": \"United States\",\r\n        \"contacts\": [{\r\n                \"type\": \"admin\",\r\n                \"email\": \"tom@examplecustomer.com\",\r\n                \"firstName\": \"Tom\",\r\n                \"lastName\": \"Li\",\r\n                \"phone\": \"+1 202 202 3030\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"1 Ave\",\r\n                    \"addressLine2\": \"Suite 204\",\r\n                    \"city\": \"Sunnyvale\",\r\n                    \"state\": \"California\",\r\n                    \"country\": \"United States\",\r\n                    \"postalCode\": \"94086\"\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"service\": {\r\n        \"skus\": [{\r\n                \"sku\": \"MTSP-SF-USR\"\r\n            }, {\r\n                \"sku\": \"MTSP-D365-USR\"\r\n            }\r\n        ]\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://api.metallic.io/api/v1/partner/fulfillments"
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"f43t3423g3\",\r\n            \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"externalId\": \"ck6knzailz0\",\r\n                \"name\": \"Example Customer\",\r\n                \"website\": \"www.examplecustomer.com\",\r\n                \"provisionCountry\": \"United States\",\r\n                \"contacts\": [\r\n                    {\r\n                        \"type\": \"admin\",\r\n                        \"email\": \"tom@examplecustomer.com\",\r\n                        \"firstName\": \"Tom\",\r\n                        \"lastName\": \"Li\",\r\n                        \"phone\": \"+1 202 202 3030\",\r\n                        \"address\": {\r\n                            \"addressLine1\": \"1 Ave\",\r\n                            \"addressLine2\": \"Suite 204\",\r\n                            \"city\": \"Sunnyvale\",\r\n                            \"state\": \"California\",\r\n                            \"country\": \"United States\",\r\n                            \"postalCode\": \"94086\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"service\": {\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-SF-USR\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-D365-USR\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+								},
+								{
+									"id": "79583ff2-33f1-4301-8d43-7aba76d270b6",
+									"name": "Submit Fulfilment - Success - New Customer with Database",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"externalId\": \"f43t3423g3\",\r\n    \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"externalId\": \"ck6knzailz0\",\r\n        \"name\": \"Example Customer\",\r\n        \"website\": \"www.examplecustomer.com\",\r\n        \"provisionCountry\": \"United States\",\r\n        \"contacts\": [\r\n            {\r\n                \"type\": \"admin\",\r\n                \"email\": \"tom@examplecustomer.com\",\r\n                \"firstName\": \"Tom\",\r\n                \"lastName\": \"Li\",\r\n                \"phone\": \"+1 202 202 3030\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"1 Ave\",\r\n                    \"addressLine2\": \"Suite 204\",\r\n                    \"city\": \"Sunnyvale\",\r\n                    \"state\": \"California\",\r\n                    \"country\": \"United States\",\r\n                    \"postalCode\": \"94086\"\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"service\": {\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTSP-FOB-FT\"\r\n            }\r\n        ]\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -467,20 +492,45 @@
 									"status": "Created",
 									"code": 201,
 									"_postman_previewlanguage": "json",
-									"header": [],
+									"header": null,
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"f43t3423g3\",\r\n            \"resellerId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"externalId\": \"ck6knzailz0\",\r\n                \"name\": \"Example Customer\",\r\n                \"website\": \"www.examplecustomer.com\",\r\n                \"provisionCountry\": \"United States\",\r\n                \"contacts\": [\r\n                    {\r\n                        \"type\": \"admin\",\r\n                        \"email\": \"tom@examplecustomer.com\",\r\n                        \"firstName\": \"Tom\",\r\n                        \"lastName\": \"Li\",\r\n                        \"phone\": \"+1 202 202 3030\",\r\n                        \"address\": {\r\n                            \"addressLine1\": \"1 Ave\",\r\n                            \"addressLine2\": \"Suite 204\",\r\n                            \"city\": \"Sunnyvale\",\r\n                            \"state\": \"California\",\r\n                            \"country\": \"United States\",\r\n                            \"postalCode\": \"94086\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"service\": {\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTL-SF-USRO-NC\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTL-FOB-FTO-NC\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"f43t3423g3\",\r\n            \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"externalId\": \"ck6knzailz0\",\r\n                \"name\": \"Example Customer\",\r\n                \"website\": \"www.examplecustomer.com\",\r\n                \"provisionCountry\": \"United States\",\r\n                \"contacts\": [\r\n                    {\r\n                        \"type\": \"admin\",\r\n                        \"email\": \"tom@examplecustomer.com\",\r\n                        \"firstName\": \"Tom\",\r\n                        \"lastName\": \"Li\",\r\n                        \"phone\": \"+1 202 202 3030\",\r\n                        \"address\": {\r\n                            \"addressLine1\": \"1 Ave\",\r\n                            \"addressLine2\": \"Suite 204\",\r\n                            \"city\": \"Sunnyvale\",\r\n                            \"state\": \"California\",\r\n                            \"country\": \"United States\",\r\n                            \"postalCode\": \"94086\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"service\": {\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-FOB-FT\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-VMKB-A-VM\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-VMKB-E-VM\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-MCS-H-TB\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-MCS-C-TB\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-RRO-H-TB\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-RRO-C-TB\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
 								},
 								{
-									"id": "bc7de623-e7de-4cbf-981e-62bb5fe804ef",
+									"id": "270205a0-57ea-462c-9cf4-507d0350e9dd",
+									"name": "Submit Fulfilment - Success - New Customer with M365 Enterprise",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"externalId\": \"f43t3423g3\",\r\n    \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"externalId\": \"ck6knzailz0\",\r\n        \"name\": \"Example Customer\",\r\n        \"website\": \"www.examplecustomer.com\",\r\n        \"provisionCountry\": \"United States\",\r\n        \"contacts\": [\r\n            {\r\n                \"type\": \"admin\",\r\n                \"email\": \"tom@examplecustomer.com\",\r\n                \"firstName\": \"Tom\",\r\n                \"lastName\": \"Li\",\r\n                \"phone\": \"+1 202 202 3030\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"1 Ave\",\r\n                    \"addressLine2\": \"Suite 204\",\r\n                    \"city\": \"Sunnyvale\",\r\n                    \"state\": \"California\",\r\n                    \"country\": \"United States\",\r\n                    \"postalCode\": \"94086\"\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"service\": {\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTSP-M365E-USR\"\r\n            }\r\n        ]\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/fulfillments"
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"f43t3423g3\",\r\n            \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"externalId\": \"ck6knzailz0\",\r\n                \"name\": \"Example Customer\",\r\n                \"website\": \"www.examplecustomer.com\",\r\n                \"provisionCountry\": \"United States\",\r\n                \"contacts\": [\r\n                    {\r\n                        \"type\": \"admin\",\r\n                        \"email\": \"tom@examplecustomer.com\",\r\n                        \"firstName\": \"Tom\",\r\n                        \"lastName\": \"Li\",\r\n                        \"phone\": \"+1 202 202 3030\",\r\n                        \"address\": {\r\n                            \"addressLine1\": \"1 Ave\",\r\n                            \"addressLine2\": \"Suite 204\",\r\n                            \"city\": \"Sunnyvale\",\r\n                            \"state\": \"California\",\r\n                            \"country\": \"United States\",\r\n                            \"postalCode\": \"94086\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"service\": {\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-M365E-USR\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-STREXP-TB\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+								},
+								{
+									"id": "f5f3a495-d9b8-4de3-9795-66016f69b8c9",
 									"name": "Submit Fulfilment - Success - Add Service",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"externalId\": \"qbhvae2i2c\",\r\n    \"resellerId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n    },\r\n    \"service\": {\r\n        \"action\": \"add\",\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTL-O365-USRO-NC\"\r\n            },\r\n            {\r\n                \"sku\": \"MTL-EP-USRO-NC\"\r\n            }\r\n        ]\r\n    }\r\n}",
+											"raw": "{\r\n    \"externalId\": \"qbhvae2i2c\",\r\n    \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n    },\r\n    \"service\": {\r\n        \"action\": \"add\",\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTSP-SF-USR\"\r\n            },\r\n            {\r\n                \"sku\": \"MTSP-EP-USR\"\r\n            }\r\n        ]\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -492,20 +542,45 @@
 									"status": "Created",
 									"code": 201,
 									"_postman_previewlanguage": "json",
-									"header": [],
+									"header": null,
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"qbhvae2i2c\",\r\n            \"resellerId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"id\": \"401cfffe-f7a4-41c3-89c0-3361ebf35ee7\"\r\n            },\r\n            \"service\": {\r\n                \"action\": \"add\",\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTL-O365-USRO-NC\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTL-EP-USRO-NC\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"qbhvae2i2c\",\r\n            \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n            },\r\n            \"service\": {\r\n                \"action\": \"add\",\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-SF-USR\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-EP-USR\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
 								},
 								{
-									"id": "e80a3d77-b9b0-49bd-9f89-3b822fa8a79c",
+									"id": "e894a589-d7e6-439c-9906-1b07e3df9543",
+									"name": "Submit Fulfilment - Success - Add M365 Service",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"externalId\": \"qbhvae2i2c\",\r\n    \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n    \"account\": {\r\n        \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n    },\r\n    \"service\": {\r\n        \"action\": \"add\",\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTSP-M365E-USR\"\r\n            }\r\n        ]\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/fulfillments"
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"9e2f9c13-304d-4020-a26f-1eb2ec44cd2a\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"qbhvae2i2c\",\r\n            \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n            },\r\n            \"service\": {\r\n                \"action\": \"add\",\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-M365E-USR\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-STREXP-TB\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+								},
+								{
+									"id": "578349dd-bfae-4778-97b3-7f9857c6dd3e",
 									"name": "Submit Fulfilment - Success - Cancel Service",
 									"originalRequest": {
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"externalId\": \"agwgo0df2o\",\r\n    \"resellerId\": \"c7b24010-4408-4d30-940a-d0506cc3d88a\",\r\n    \"account\": {\r\n        \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n    },\r\n    \"service\": {\r\n        \"action\": \"cancel\",\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTL-O365-USRO-NC\"\r\n            },\r\n            {\r\n                \"sku\": \"MTL-EP-USRO-NC\"\r\n            }\r\n        ]\r\n    }\r\n}",
+											"raw": "{\r\n    \"externalId\": \"agwgo0df2o\",\r\n    \"mspId\": \"c7b24010-4408-4d30-940a-d0506cc3d88a\",\r\n    \"account\": {\r\n        \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n    },\r\n    \"service\": {\r\n        \"action\": \"cancel\",\r\n        \"skus\": [\r\n            {\r\n                \"sku\": \"MTSP-SF-USR\"\r\n            },\r\n            {\r\n                \"sku\": \"MTSP-EP-USR\"\r\n            }\r\n        ]\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -517,10 +592,10 @@
 									"status": "Created",
 									"code": 201,
 									"_postman_previewlanguage": "json",
-									"header": [],
+									"header": null,
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n    \"data\": {\r\n        \"id\": \"929c6d8d-6520-4b6c-aad2-48080296f34d\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"agwgo0df2o\",\r\n            \"resellerId\": \"c7b24010-4408-4d30-940a-d0506cc3d88a\",\r\n            \"account\": {\r\n                \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n            },\r\n            \"service\": {\r\n                \"action\": \"cancel\",\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTL-O365-USRO-NC\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTL-EP-USRO-NC\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"929c6d8d-6520-4b6c-aad2-48080296f34d\",\r\n        \"status\": \"in_progress\",\r\n        \"requestData\": {\r\n            \"externalId\": \"agwgo0df2o\",\r\n            \"mspId\": \"c7b24010-4408-4d30-940a-d0506cc3d88a\",\r\n            \"account\": {\r\n                \"id\": \"e392fbac-0505-4465-9dfb-640647aec318\"\r\n            },\r\n            \"service\": {\r\n                \"action\": \"cancel\",\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-SF-USR\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-EP-USR\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
 								},
 								{
 									"id": "0263eee9-26ba-4879-ab8d-20dad2d47458",
@@ -572,11 +647,11 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n    \"data\": {\r\n        \"id\": \"85ca70d8-fa75-40f1-b0c8-cb26a2dcda10\",\r\n        \"status\": \"complete\",\r\n        \"accountId\": \"29118811-96a9-492c-b096-7d8f5ff698b3\",\r\n        \"insertTs\": \"2021-05-05T21:16:48\",\r\n        \"updateTs\": \"2021-05-05T21:17:48\",\r\n        \"requestData\": {\r\n            \"externalId\": \"f43t3423g3\",\r\n            \"resellerId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"externalId\": \"ck6knzailz0\",\r\n                \"name\": \"Example Customer\",\r\n                \"website\": \"www.examplecustomer.com\",\r\n                \"provisionCountry\": \"United States\",\r\n                \"contacts\": [\r\n                    {\r\n                        \"type\": \"admin\",\r\n                        \"email\": \"tom@examplecustomer.com\",\r\n                        \"firstName\": \"Tom\",\r\n                        \"lastName\": \"Li\",\r\n                        \"phone\": \"+1 202 202 3030\",\r\n                        \"address\": {\r\n                            \"addressLine1\": \"1 Ave\",\r\n                            \"addressLine2\": \"Suite 204\",\r\n                            \"city\": \"Sunnyvale\",\r\n                            \"state\": \"California\",\r\n                            \"country\": \"United States\",\r\n                            \"postalCode\": \"94086\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"service\": {\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTL-SF-USRO-NC\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTL-FOB-FTO-NC\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
+									"body": "{\r\n    \"data\": {\r\n        \"id\": \"85ca70d8-fa75-40f1-b0c8-cb26a2dcda10\",\r\n        \"status\": \"complete\",\r\n        \"accountId\": \"29118811-96a9-492c-b096-7d8f5ff698b3\",\r\n        \"insertTs\": \"2021-05-05T21:16:48\",\r\n        \"updateTs\": \"2021-05-05T21:17:48\",\r\n        \"requestData\": {\r\n            \"externalId\": \"f43t3423g3\",\r\n            \"mspId\": \"fbdcafcc-d507-4e04-a7db-31bbb58a6699\",\r\n            \"account\": {\r\n                \"externalId\": \"ck6knzailz0\",\r\n                \"name\": \"Example Customer\",\r\n                \"website\": \"www.examplecustomer.com\",\r\n                \"provisionCountry\": \"United States\",\r\n                \"contacts\": [\r\n                    {\r\n                        \"type\": \"admin\",\r\n                        \"email\": \"tom@examplecustomer.com\",\r\n                        \"firstName\": \"Tom\",\r\n                        \"lastName\": \"Li\",\r\n                        \"phone\": \"+1 202 202 3030\",\r\n                        \"address\": {\r\n                            \"addressLine1\": \"1 Ave\",\r\n                            \"addressLine2\": \"Suite 204\",\r\n                            \"city\": \"Sunnyvale\",\r\n                            \"state\": \"California\",\r\n                            \"country\": \"United States\",\r\n                            \"postalCode\": \"94086\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"service\": {\r\n                \"skus\": [\r\n                    {\r\n                        \"sku\": \"MTSP-SF-USR\"\r\n                    },\r\n                    {\r\n                        \"sku\": \"MTSP-D365-USR\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}"
 								},
 								{
 									"id": "6c3ab0b6-4cee-43ec-aa55-87cadf3c70b8",
@@ -685,11 +760,11 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\n    \"data\": [\n        {\n            \"id\": \"587d4d28-066c-406e-b975-5d04e4e47373\",\n            \"insertTs\": \"2021-11-08T06:50:04\",\n            \"updateTs\": \"2021-11-08T06:50:40\",\n            \"status\": \"complete\",\n            \"accountId\": \"2a920aeb-0ec0-463c-b623-de8c23a48813\",\n            \"externalAccountId\": \"SWO-ACC-1\",\n            \"type\": \"msp_cancel_service\",\n            \"userId\": \"swo-app\"\n        },\n        {\n            \"id\": \"08d706b1-9962-44f9-9a6e-a35cb87ac4d1\",\n            \"insertTs\": \"2021-11-08T06:48:02\",\n            \"updateTs\": \"2021-11-08T06:48:15\",\n            \"status\": \"complete\",\n            \"accountId\": \"2a920aeb-0ec0-463c-b623-de8c23a48813\",\n            \"externalAccountId\": \"SWO-ACC-1\",\n            \"type\": \"msp_add_service\",\n            \"userId\": \"admin@swo.com\"\n        }\n    ],\n    \"metadata\": {\n        \"sort\": \"desc:insertTs\",\n        \"filter\": \"filter=status:complete\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 25,\n            \"totalRecords\": 2\n        }\n    }\n}"
+									"body": "{\n    \"data\": [\n        {\n            \"id\": \"587d4d28-066c-406e-b975-5d04e4e47373\",\n            \"insertTs\": \"2021-11-08T06:50:04\",\n            \"updateTs\": \"2021-11-08T06:50:40\",\n            \"status\": \"complete\",\n            \"accountId\": \"2a920aeb-0ec0-463c-b623-de8c23a48813\",\n            \"externalAccountId\": \"EXAMPLE-ACC-1\",\n            \"type\": \"msp_cancel_service\",\n            \"userId\": \"example-app\"\n        },\n        {\n            \"id\": \"08d706b1-9962-44f9-9a6e-a35cb87ac4d1\",\n            \"insertTs\": \"2021-11-08T06:48:02\",\n            \"updateTs\": \"2021-11-08T06:48:15\",\n            \"status\": \"complete\",\n            \"accountId\": \"2a920aeb-0ec0-463c-b623-de8c23a48813\",\n            \"externalAccountId\": \"EXAMPLE-ACC-1\",\n            \"type\": \"msp_add_service\",\n            \"userId\": \"admin@example.com\"\n        }\n    ],\n    \"metadata\": {\n        \"sort\": \"desc:insertTs\",\n        \"filter\": \"filter=status:complete\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 25,\n            \"totalRecords\": 2\n        }\n    }\n}"
 								}
 							]
 						}
@@ -745,11 +820,11 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\n    \"data\": {\n        \"id\": \"7194af6f-1285-4295-94aa-ceed7ea2d792\",\n        \"status\": \"active\",\n        \"insertTs\": \"2021-06-07T21:16:48\",\n        \"updateTs\": \"2021-06-07T21:16:48\",\n        \"externalId\": \"XSP1234\",\n        \"name\": \"Acme ltd\",\n        \"website\": \"www.acme.com\",\n        \"provisionCountry\": \"United States\",\n        \"contacts\": [\n            {\n                \"type\": \"admin\",\n                \"email\": \"tada@acme.com\",\n                \"firstName\": \"Tada\",\n                \"lastName\": \"Wu\",\n                \"phone\": \"+1 302 000 2020\",\n                \"address\": {\n                    \"addressLine1\": \"1 Ave\",\n                    \"addressLine2\": \"Suite 204\",\n                    \"city\": \"Sunnyvale\",\n                    \"state\": \"California\",\n                    \"country\": \"United States\",\n                    \"postalCode\": \"94086\"\n                }\n            }\n        ],\n        \"services\": [\n            {\n                \"sku\": \"MTL-O365-USRO-NC\"\n            },\n            {\n                \"sku\": \"MTL-EP-USRO-NC\"\n            }\n        ],\n        \"type\": \"Production\"\n    }\n}"
+									"body": "{\n    \"data\": {\n        \"id\": \"7194af6f-1285-4295-94aa-ceed7ea2d792\",\n        \"status\": \"active\",\n        \"insertTs\": \"2021-06-07T21:16:48\",\n        \"updateTs\": \"2021-06-07T21:16:48\",\n        \"externalId\": \"XSP1234\",\n        \"name\": \"Acme ltd\",\n        \"website\": \"www.acme.com\",\n        \"provisionCountry\": \"United States\",\n        \"contacts\": [\n            {\n                \"type\": \"admin\",\n                \"email\": \"tada@acme.com\",\n                \"firstName\": \"Tada\",\n                \"lastName\": \"Wu\",\n                \"phone\": \"+1 302 000 2020\",\n                \"address\": {\n                    \"addressLine1\": \"1 Ave\",\n                    \"addressLine2\": \"Suite 204\",\n                    \"city\": \"Sunnyvale\",\n                    \"state\": \"California\",\n                    \"country\": \"United States\",\n                    \"postalCode\": \"94086\"\n                }\n            }\n        ],\n        \"services\": [\n            {\n                \"sku\": \"MTSP-SF-USR\"\n            },\n            {\n                \"sku\": \"MTSP-EP-USR\"\n            }\n        ],\n        \"type\": \"Production\"\n    }\n}"
 								}
 							]
 						},
@@ -985,12 +1060,18 @@
 					"name": "Usage",
 					"item": [
 						{
-							"name": "Get Usage",
-							"id": "74136e9f-73e9-4607-987e-aa72bdcfb59b",
+							"name": "Get Usage V1",
+							"id": "8905fbfb-22ba-4069-8aab-14361e2bab63",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{authToken}}"
+									}
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
@@ -1037,11 +1118,11 @@
 										}
 									]
 								},
-								"description": "This API can be used to obtain usage data with various search parameters. All dates in usage API refer to UTC time zone. Usage data on each usage date shows the peak usage up to that usage date in current calendar month. Partner can either directly call API with no parameters to get usage data for yesterday (which is current calendar month peak usage up to yesterday) or specify date parameters to get historical peak usage data. Usage collection runs at 4am UTC every day for yesterday's usage data. Partner is suggested to call usage api for yesterday's data after 6am UTC.\n\n##### **Billing Unit Explained**\n\n| **Billing Unit** | **Description** | **Example Given** | **Example Calculation** |\n| --- | --- | --- | --- |\n| \"billingUnit\" is \"1 user\" | In this case we charge based on number of users that use our service. \"consumedQuantity\" is the peak count of users up to the usageDate in current calendar month. \"chargeableQuantity\" will be the same as \"consumedQuantity\", and unitPrice is what we charge per user. | consumedQuantity = 100  <br>chargeableQuantity = 100  <br>billingUnit = 1 user  <br>unitPrice = 3 | billingQuantity = Ceiling of (chargeableQuantity / billingUnit) = Ceiling (100 users / 1 user) = 100  <br>totalCost = billingQuantity \\* unitPrice = 100 \\* 3 = 300 |\n| \"billingUnit\" is \"1 tb\" | In this case we charge based on number of terabytes that are used. \"consumedQuantity\" is the peak count of terabytes up to the usageDate in current calendar month. \"chargeableQuantity\" will be the same as \"consumedQuantity\", and unitPrice is what we charge per terabyte. | consumedQuantity = 100  <br>chargeableQuantity = 100  <br>billingUnit = 10 tb  <br>unitPrice = 50 | billingQuantity = Ceiling of (chargeableQuantity / billingUnit) = Ceiling (100 tb / 10 tb) = 10  <br>totalCost = billingQuantity \\* unitPrice = 10 \\* 50 = 500 |\n| \"billingUnit\" is \"10 vm\" | In this case we charge based on number of VM bundles that are used. Each bundle contains 10 VM. \"consumedQuantity\" is the peak count of VM bundles up to the usageDate in current calendar month. \"chargeableQuantity\" could be different from \"consumedQuantity\". if customer has other services that run on VM, and unitPrice is what we charge per VM bundle. | consumedQuantity = 100  <br>chargeableQuantity = 85  <br>billingUnit = 10 vm  <br>unitPrice = 5 | billingQuantity = Ceiling of (chargeableQuantity / billingUnit) = Ceiling (85 vm / 10 vm) = 9  <br>totalCost = billingQuantity \\* unitPrice = 9 \\* 5 = 45 |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage details | Usage Objects Array | See - Usage Object |\n| metadata | List usage metadata | Metadata Object | See - Metadata Object |\n\n##### Usage Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| usageDate | Date of this usage object | Date (YYYY-MM-DD) | Usage Data on usageDate means peak usage up to usageDate in  <br>current calendar month. |\n| accountId | Account metallic id | UUID |  |\n| externalAccountId | Account id in partner system | String / UUID |  |\n| fulfillmentId | Fulfillment metallic id | UUID |  |\n| externalFulfillmentId | Fulfillment id in partner system | String / UUID |  |\n| skuId | Service sku in metallic | String |  |\n| consumedQuantity | Usage quantity | Double | It shows peak usage quantity that was consumed up to usageDate  <br>in current calendar month. |\n| chargeableQuantity | Chargeable quantity | Double | Quantity that would be used for billing. |\n| billingUnit | Unit of measure (1 user,  <br>10 vm, etc. | String | See - Billing Units Explained |\n| billingQuantity | Quantity for billing | Double | Ceiling of (chargeableQuantity / billingUnit) |\n| unitPrice | Price for a single  <br>billingUnit | Double |  |\n| totalCost | Total cost | Double | billingQuantity \\* unitPrice |\n| currency | Billing currency | String |  |\n\n##### Metadata Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| filter | Filter string that contains search parameters | String |  |\n| sort | Sort string that contains sorting criteria | String |  |\n| pagination | Pagination Info | Pagination Object | See - Pagination Object |\n\n##### Pagination Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| pageNumber | Page number | Integer | 0 to x |\n| pageSize | Page size | Integer |  |\n| totalRecords | Total number of records | Integer |  |"
+								"description": "This API can be used to obtain usage data with various search parameters. All dates in usage API refer to UTC time zone. Usage data on each usage date shows the peak usage up to that usage date in the current calendar month. Partner can either directly call API with no parameters to get usage data for yesterday (which is the current calendar month peak usage up to yesterday) or specify date parameters to get historical peak usage data. Usage collection runs at 4 am UTC every day for yesterday's usage data. Partner is suggested to call usage api for yesterday's data after 6 am UTC.\n\nDatabase usage is metered by capacity unless the application is hosted on virtual machines in which case it is metered as a VM instance.\n\nFile & Object usage is metered by capacity unless the application is hosted on Virtual Machines in which case it is metered as a VM instance.\n\nMetallic Backup for Microsoft 365 service will incur storage usage. Each user with Metallic Backup for Microsoft 365 Standard (Not including no storage option) will have 5 GB storage capacity included, and each user with Metallic Backup for Microsoft 365 Standard (Not including no storage option) will have 50 GB storage capacity included. We will charge for any storage usage that goes over the included quantity.  \nExample 1: Customer had 100 Standard users, 100 Enterprise users, and 5000 GB storage reported in usage.  \nStorage included quantity: 100 \\* 5 + 100 \\* 50 = 5500 GB  \nSince 5000 GB < 5500 GB, no storage usage will be charged.  \nExample 2: Customer had 100 Standard users, 100 Enterprise users, and 6000 GB storage reported in usage.  \nStorage included quantity: 100 \\* 5 + 100 \\* 50 = 5500 GB  \nSince 6000 GB > 5500 GB, 500 GB storage usage will be charged.  \n**In usage API response, storage quantity will be shown in TB.**\n\n \n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage details | Usage Objects Array | See - Usage Object |\n| metadata | List usage metadata | Metadata Object | See - Metadata Object |\n\n##### Usage Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| usageDate | Date of this usage object | Date (YYYY-MM-DD) | Usage Data on usageDate means peak usage up to usageDate in  <br>current calendar month. |\n| accountId | Account metallic id | UUID |  |\n| externalAccountId | Account id in partner system | String / UUID |  |\n| fulfillmentId | Fulfillment metallic id | UUID |  |\n| externalFulfillmentId | Fulfillment id in partner system | String / UUID |  |\n| skuId | Service sku in metallic | String |  |\n| consumedQuantity | Usage quantity | Double | It shows the peak usage quantity that was consumed up to usageDate  <br>in the current calendar month. |\n| chargeableQuantity | Chargeable quantity | Double | Quantity that would be considered for billing. |\n| billingUnit | Unit of measure (1 user,  <br>10 vm, etc. | String | Actual billingQuantity will be measured in billingUnit with ceiling round-up. For example, if usage is 12 VMs and billingUnit is 10vm, then we bill for 2 billingUnit. |\n| billingQuantity | Quantity for billing | Double | Quantity to bill customer.  <br>For non-commit service, it would be any quantity over the included storage quantity for Metallic storage service, and Ceiling of (chargeableQuantity / billingUnit) for the others;  <br>For commit service, it would be any quantity over the included plus upfront quantity for Metallic storage service; and any quantity over upfront quantity for the others. |\n| unitPrice | Price for a single  <br>billingUnit | Double |  |\n| totalCost | Total cost | Double | billingQuantity \\* unitPrice |\n| currency | Billing currency | String |  |\n| partnerId | MSP's reseller Metallic ID | String |  |\n| externalPartnerId | MSP's reseller reference ID | String |  |\n\n##### Metadata Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| filter | Filter string that contains search parameters | String |  |\n| sort | Sort string that contains sorting criteria | String |  |\n| pagination | Pagination Info | Pagination Object | See - Pagination Object |\n\n##### Pagination Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| pageNumber | Page number | Integer | 0 to x |\n| pageSize | Page size | Integer |  |\n| totalRecords | Total number of records | Integer |  |"
 							},
 							"response": [
 								{
-									"id": "bafe77b5-5eb9-4849-9be1-e934ec2a5638",
+									"id": "ce03e538-5335-4be4-bc8d-e8cb963085bb",
 									"name": "Get Usage - Success - Single Account",
 									"originalRequest": {
 										"method": "GET",
@@ -1069,13 +1150,149 @@
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"header": [],
+									"header": null,
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"c97aca56-88f8-43af-8c24-0fb6ef0552b5\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTL-VMKB-VM10O-NC\",\r\n            \"consumedQuantity\": 77,\r\n            \"chargeableQuantity\": 77,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"billingQuantity\": 8,\r\n            \"unitPrice\": 4,\r\n            \"totalCost\": 32,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 8.00,\r\n            \"chargeableQuantity\": 8.00,\r\n            \"billingQuantity\": 1.00,\r\n            \"unitPrice\": 32.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"totalCost\": 32.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
 								},
 								{
-									"id": "a957e4a8-417c-43eb-96c9-75350eaeeba1",
+									"id": "4d96c69e-6977-4bb0-adea-5e207a3ed32d",
+									"name": "Get Usage - Success - Single Account with Metallic 365, no capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 10.00,\r\n            \"chargeableQuantity\": 10.00, \r\n            \"billingQuantity\": 10.00,\r\n            \"unitPrice\": 4.00,  \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 40.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 0.30,\r\n            \"chargeableQuantity\": 0.30, \r\n            \"billingQuantity\": 0.00,\r\n            \"unitPrice\": 3.00,  \r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 0.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "88218d27-1e9d-4222-a4d5-2a971a7757a4",
+									"name": "Get Usage - Success - Single Account with Metallic 365 with capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 10.00,\r\n            \"chargeableQuantity\": 10.00,\r\n            \"billingQuantity\": 10.00,\r\n            \"unitPrice\": 4.00,  \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 40.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 0.89,\r\n            \"chargeableQuantity\": 0.89,\r\n            \"billingQuantity\": 0.40,\r\n            \"unitPrice\": 3.00,\r\n            \"overageUnitPrice\": 3.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 1.20,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "8f9ac8c2-a5d3-400c-ada9-c9605fb0a2f1",
+									"name": "Get Usage - Success - Single Account with term Metallic 365, no capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 10.00,\r\n            \"chargeableQuantity\": 10.00,\r\n            \"billingQuantity\": 0.00,\r\n            \"unitPrice\": 3.00, \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 0.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 0.98,\r\n            \"chargeableQuantity\": 0.98,\r\n            \"billingQuantity\": 0.00,\r\n            \"unitPrice\": 3.00,\r\n            \"overageUnitPrice\": 3.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 0.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "7552b613-dce9-4ba1-97a0-61e5adafe4b5",
+									"name": "Get Usage - Success - Single Account with term Metallic 365 with capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 30.00,\r\n            \"chargeableQuantity\": 30.00,\r\n            \"billingQuantity\": 30.00,\r\n            \"unitPrice\": 3.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 90.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 2.47,\r\n            \"chargeableQuantity\": 2.47,\r\n            \"billingQuantity\": 1.00,\r\n            \"unitPrice\": 3.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 4.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "21dd4c70-0d00-45b6-9734-145cf450745b",
 									"name": "Get Usage - Success - Single Acoount for Date Range",
 									"originalRequest": {
 										"method": "GET",
@@ -1113,10 +1330,288 @@
 									"status": "OK",
 									"code": 200,
 									"_postman_previewlanguage": "json",
-									"header": [],
+									"header": null,
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTL-O365-USRO-NC\",\r\n            \"consumedQuantity\": 100,\r\n            \"chargeableQuantity\": 100,\r\n            \"billingUnit\": \"1 user\",\r\n            \"billingQuantity\": 100,\r\n            \"unitPrice\": 4,\r\n            \"totalCost\": 400,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTL-VMKB-VM10O-NC\",\r\n            \"consumedQuantity\": 100,\r\n            \"chargeableQuantity\": 85,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"billingQuantity\": 10,\r\n            \"unitPrice\": 3,\r\n            \"totalCost\": 27,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTL-O365-USRO-NC\",\r\n            \"consumedQuantity\": 110,\r\n            \"chargeableQuantity\": 110,\r\n            \"billingUnit\": \"1 user\",\r\n            \"billingQuantity\": 110,\r\n            \"unitPrice\": 4,\r\n            \"totalCost\": 440,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTL-VMKB-VM10O-NC\",\r\n            \"consumedQuantity\": 120,\r\n            \"chargeableQuantity\": 100,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"billingQuantity\": 10,\r\n            \"unitPrice\": 3,\r\n            \"totalCost\": 30,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-SF-USR\",\r\n            \"consumedQuantity\": 100.00,\r\n            \"chargeableQuantity\": 100.00,\r\n            \"billingQuantity\": 100.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"unitPrice\": 4.00,\r\n            \"totalCost\": 400.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 9.00,\r\n            \"chargeableQuantity\": 9.00,\r\n            \"billingQuantity\": 1.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"unitPrice\": 3.00,\r\n            \"totalCost\": 3.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-SF-USR\",\r\n            \"consumedQuantity\": 110.00,\r\n            \"chargeableQuantity\": 110.00,\r\n            \"billingQuantity\": 110.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"unitPrice\": 4.00,\r\n            \"totalCost\": 440.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 2.00,\r\n            \"chargeableQuantity\": 2.00,\r\n            \"billingQuantity\": 2.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"unitPrice\": 3.00,\r\n            \"totalCost\": 6.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Usage V2",
+							"id": "1b1bc827-f92a-4e8b-8b11-2ba6a4b7984f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{authToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ServerURL}}/api/v2/partner/usage?startDate=2022-09-15&endDate=2022-09-25&accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df&fulfillmentId=234477b5-7d7d-46a8-9eb7-ac67d8d87f58&pageNumber=0&pageSize=25",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"partner",
+										"usage"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2022-09-15",
+											"description": "Optional - The date from which usage is returned. startDate is inclusive UTC time zone Format \"YYYY-MM-DD\". If not provided, defaults to yesterday"
+										},
+										{
+											"key": "endDate",
+											"value": "2022-09-25",
+											"description": "Optional - The date to which usage is returned. endDate is exclusive UTC time zone Format \"YYYY-MM-DD\". If not provided, defaults to today"
+										},
+										{
+											"key": "accountId",
+											"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"description": "Optional - Metallic account id."
+										},
+										{
+											"key": "fulfillmentId",
+											"value": "234477b5-7d7d-46a8-9eb7-ac67d8d87f58",
+											"description": "Optional - Metallic fulfillment id."
+										},
+										{
+											"key": "pageNumber",
+											"value": "0",
+											"description": "Optional - Page number >= 0. default 0"
+										},
+										{
+											"key": "pageSize",
+											"value": "25",
+											"description": "Optional - Page size, default 100"
+										}
+									]
+								},
+								"description": "This API can be used to obtain usage data with various search parameters. All dates in usage API refer to UTC time zone. Usage data on each usage date shows the peak usage up to that usage date in current calendar month. Partner can either directly call API with no parameters to get usage data for yesterday (which is current calendar month peak usage up to yesterday) or specify date parameters to get historical peak usage data. Usage collection runs at 4am UTC every day for yesterday's usage data. Partner is suggested to call usage api for yesterday's data after 6am UTC.\n\nDatabase usage is metered by capacity unless the application is hosted on virtual machines in which case it is metered as a VM instance.\n\nFile & Object usage is metered by capacity unless the application is hosted on Virtual Machines in which case it is metered as a VM instance.\n\nMetallic Backup for Microsoft 365 service will incur storage usage. Each user with Metallic Backup for Microsoft 365 Standard (Not including no storage option) will have 5 GB storage capactiy included, each user with Metallic Backup for Microsoft 365 Standard (Not including no storage option) will have 50 GB storage capactiy included. We will charge for any storage usage that goes over the included quantity.  \nExample 1: Customer had 100 Standard users, 100 Enterprise users, 5000 GB storage reported in usage.  \nStorage included quantity: 100 \\* 5 + 100 \\* 50 = 5500 GB  \nSince 5000 GB < 5500 GB, no storage usage will be charged.  \nExample 2: Customer had 100 Standard users, 100 Enterprise users, 6000 GB storage reported in usage.  \nStorage included quantity: 100 \\* 5 + 100 \\* 50 = 5500 GB  \nSince 6000 GB > 5500 GB, 500 GB storage usage will be charged.  \n**In usage API response, storage quantity will be shown in TB.**\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage details | Usage Objects Array | See - Usage Object |\n| metadata | List usage metadata | Metadata Object | See - Metadata Object |\n\n##### Usage Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| usageDate | Date of this usage object | Date (YYYY-MM-DD) | Usage Data on usageDate means peak usage up to usageDate in  <br>current calendar month. |\n| accountId | Account metallic id | UUID |  |\n| externalAccountId | Account id in partner system | String / UUID |  |\n| fulfillmentId | Fulfillment metallic id | UUID |  |\n| externalFulfillmentId | Fulfillment id in partner system | String / UUID |  |\n| skuId | Service sku in metallic | String |  |\n| consumedQuantity | Usage quantity | Double | Peak usage quantity aginst billingUnit that was consumed up to usageDate  <br>in current calendar month |\n| entitledQuantity | Quantity committed upfront | Double | For non-commit service, this field is the included quantity from M365 for Metallic Storage service and 0 for the others.  <br>  <br>For commit service, this field is the committed quantity plus included quantity from M365 for Metallic Storage service and committed quantity for the others. |\n| overageQuantity | Any quantity consumed more than entitled quantity | Double | For non-commit service, this field is Max(0, consumedQuantity minus entitledQuantity) for Metallic Storage service and 0 for the others.  <br>  <br>For commit service, this field is Max(0, consumedQuantity minus entitledQuantity). |\n| billableQuantity | Quantity to be charged for | Double | For non-commit service, this field is the same as overageQuantity for Metallic Storage service and consumedQuantity for the others.  <br>  <br>For commit service, this field is the same as overageQuantity. |\n| billingUnit | Unit of measure (1 user,  <br>10 vm, etc.) | String | All quantity fields are measured in billingUnit. |\n| unitPrice | Price for a single  <br>billingUnit | Double |  |\n| overageUnitPrice | Overage price for a single billingUnit when upfront service goes over entitled quantity | Double |  |\n| totalCost | Total cost | Double | billableQuantity \\* unitPrice |\n| currency | Billing currency | String |  |\n| paymentOption | Payment option | String | Currently supported values are \"pay_as_you_go\" and \"upfront\" |\n| partnerId | MSP's reseller Metallic ID | String |  |\n| externalPartnerId | MSP's reseller reference ID | String |  |\n\n##### Metadata Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| filter | Filter string that contains search parameters | String |  |\n| sort | Sort string that contains sorting criteria | String |  |\n| pagination | Pagination Info | Pagination Object | See - Pagination Object |\n\n##### Pagination Object\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| pageNumber | Page number | Integer | 0 to x |\n| pageSize | Page size | Integer |  |\n| totalRecords | Total number of records | Integer |  |"
+							},
+							"response": [
+								{
+									"id": "849b9a34-f69a-4efd-b99a-c3f05b2d34f3",
+									"name": "Get Usage - Success - Single Account",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v2/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 8.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 8.00,\r\n            \"unitPrice\": 4.00,  \r\n            \"billingUnit\": \"10 vm\",\r\n            \"totalCost\": 32.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "20e0ea44-2036-43fb-a4eb-7337c7e87745",
+									"name": "Get Usage - Success - Single Account with Metallic 365, no capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v2/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 10.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 10.00,\r\n            \"unitPrice\": 4.00,  \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 40.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 0.30,\r\n            \"entitledQuantity\": 0.49,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 0.00,\r\n            \"unitPrice\": 3.00,\r\n            \"overageUnitPrice\": 3.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 0.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "f544dc54-c41c-4c55-b666-7f5c45754bc2",
+									"name": "Get Usage - Success - Single Account with Metallic 365 with capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v2/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 10.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 10.00,\r\n            \"unitPrice\": 4.00,  \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 40.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 0.89,\r\n            \"entitledQuantity\": 0.49,\r\n            \"overageQuantity\": 0.40, \r\n            \"billableQuantity\": 0.40,\r\n            \"unitPrice\": 3.00,\r\n            \"overageUnitPrice\": 3.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 1.20,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "7e42f5ae-fa4d-4fcd-a834-f3a92e5f6cd0",
+									"name": "Get Usage - Success - Single Account with term Metallic 365, no capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v2/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 10.00,\r\n            \"entitledQuantity\": 20.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 0.00,\r\n            \"unitPrice\": 3.00, \r\n            \"overageUnitPrice\": 5.00, \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 0.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 0.50,\r\n            \"entitledQuantity\": 0.98,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 0.00,\r\n            \"unitPrice\": 3.00,\r\n            \"overageUnitPrice\": 3.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 0.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "2cbd6003-ffd2-4622-ac0c-343455f73cc0",
+									"name": "Get Usage - Success - Single Account with term Metallic 365 with capacity overage",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v2/partner/usage?accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-M365E-USR\",\r\n            \"consumedQuantity\": 30.00,\r\n            \"entitledQuantity\": 20.00,\r\n            \"overageQuantity\": 10.00, \r\n            \"billableQuantity\": 10.00,\r\n            \"unitPrice\": 3.00, \r\n            \"overageUnitPrice\": 5.00, \r\n            \"billingUnit\": \"1 user\",\r\n            \"totalCost\": 50.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-02-07\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"c640d069-9b20-41e7-bac7-b3a2af3a8729\",\r\n            \"externalFulfillmentId\": \"xyzw\",\r\n            \"skuId\": \"MTSP-STREXP-TB\",\r\n            \"consumedQuantity\": 2.47,\r\n            \"entitledQuantity\": 1.47,\r\n            \"overageQuantity\": 1.00, \r\n            \"billableQuantity\": 1.00,\r\n            \"unitPrice\": 3.00,\r\n            \"overageUnitPrice\": 4.00,\r\n            \"billingUnit\": \"tb\",\r\n            \"totalCost\": 4.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
+								},
+								{
+									"id": "a19059a2-1be5-4acd-ac3d-f8b25153340c",
+									"name": "Get Usage - Success - Single Acoount for Date Range",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v2/partner/usage?startDate=2021-07-23&endDate=2021-07-25&accountId=cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"partner",
+												"usage"
+											],
+											"query": [
+												{
+													"key": "startDate",
+													"value": "2021-07-23",
+													"description": "Optional - The date from which usage is returned. startDate is inclusive UTC time zone Format \"YYYY-MM-DD\". If not provided, defaults to yesterday"
+												},
+												{
+													"key": "endDate",
+													"value": "2021-07-25",
+													"description": "Optional - The date to which usage is returned. endDate is exclusive UTC time zone Format \"YYYY-MM-DD\". If not provided, defaults to today"
+												},
+												{
+													"key": "accountId",
+													"value": "cdb8a2a3-582b-449e-84fa-3c4f6a1745df",
+													"description": "Optional - Metallic account id."
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-SF-USR\",\r\n            \"consumedQuantity\": 100.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 100.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"unitPrice\": 4.00,\r\n            \"totalCost\": 400.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 1.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 1.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"unitPrice\": 3.00,\r\n            \"totalCost\": 3.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-SF-USR\",\r\n            \"consumedQuantity\": 110.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 110.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"unitPrice\": 4.00,\r\n            \"totalCost\": 440.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 2.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 2.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"unitPrice\": 3.00,\r\n            \"totalCost\": 6.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
 								}
 							]
 						}
@@ -7525,7 +8020,7 @@
 	],
 	"variable": [
 		{
-			"id": "83f956b6-4d16-4429-b1ac-688163f03946",
+			"id": "83a6f271-3464-405c-aa76-b2f113b19c12",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
