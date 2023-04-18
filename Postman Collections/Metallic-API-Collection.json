@@ -199,155 +199,6 @@
 			"name": "Partner APIs",
 			"item": [
 				{
-					"name": "Resellers",
-					"item": [
-						{
-							"name": "Create Reseller",
-							"id": "57d74185-a420-46f7-86e6-96a903e87ace",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"{{reseller_name}}\",\r\n  \"website\": \"{{reseller_website}}\",\r\n  \"contacts\": [\r\n    {\r\n      \"email\": \"{{reseller_admin_email}}\",\r\n      \"firstName\": \"{{reseller_admin_firstname}}\",\r\n      \"lastName\": \"{{reseller_admin_lastname}}\",\r\n      \"phone\": \"{{reseller_admin_phone}}\",\r\n      \"address\": {\r\n        \"addressLine1\": \"{{addless_line_1}}\",\r\n        \"city\": \"{{city}}\",\r\n        \"state\": \"{{state}}\",\r\n        \"country\": \"{{coutry}}\",\r\n        \"postalCode\": \"{{postal_code}}\"\r\n      },\r\n      \"type\": \"primary\"\r\n    }\r\n  ],\r\n  \"externalId\": \"{{guid}}\",\r\n  \"workloadAccess\": false\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{ServerURL}}/api/v1/partner/organizations/resellers",
-								"description": "This API can be used to provision a new reseller in Metallic. Reseller provisioning is synchronous.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| externalId | Reseller ID in Partner system | String / UUID | True | Needs to be unique in metallic. |\n| name | Reseller name | String | True | Needs to be unique in metallic. |\n| website | Reseller website | String | False |  |\n| contacts | Reseller contacts | Contact Objects Array | True | See - Contact Object |\n| workloadAccess | Access to manage accounts | Boolean | False |  |\n\n##### Contact Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Contact type | String Enum Allowed Values: \"primary\" | True | Only 'primary' is supported currently. |\n| email | Contact email | String | True | Needs to be unique in metallic. |\n| firstName | Contact firstname | String | True |  |\n| lastName | Contact lastname | String | True |  |\n| address | Contact address | Address Object | True | See - Address Object |\n| phone | Contact phone number | String | False |  |\n\n##### Address Object\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Address line 1 | String | True |  |\n| addressLine2 | Address line 2 | String | False |  |\n| city | Address city | String | True |  |\n| state | Address state | String | Conditional Mandatory | This field is required when country is United States, otherwise is optional.  <br>If provided, it must be ISO standard code or name. |\n| country | Address country | String | True | It must be ISO standard code or name. |\n| postalCode | Address postal code | String | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Reseller metallic id | UUID |  |\n| type | Type indicating it is reseller | String Enum allowed values: \"reseller\" |  |\n| status | Reseller status | String Enum allowed values: \"active\" |  |\n| insertTs | Reseller created time | Timestamp |  |\n| updateTs | Reseller last updated time | Timestamp |  |\n| externalId | Reseller ID in Partner system | String / UUID | Same as input. |\n| name | Reseller name | String | Same as input. |\n| website | Reseller website | String | Same as input. |\n| contacts | Reseller contacts | Contact Objects array | Same as input. Refer to Contact Object on request. |\n| workloadAccess | Access to manage accounts | Boolean | Same as input. |"
-							},
-							"response": [
-								{
-									"id": "9a82aa46-2382-45c4-b8e3-20d3efd604b2",
-									"name": "Create Reseller - Success",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"name\": \"testreseller\",\r\n    \"website\": \"www.testreseller.com\",\r\n    \"contacts\": [\r\n        {\r\n            \"email\": \"admin@testreseller.com\",\r\n            \"firstName\": \"Brooks\",\r\n            \"lastName\": \"Price\",\r\n            \"phone\": \"201-200-5904\",\r\n            \"address\": {\r\n                \"addressLine1\": \"1 Commvault\",\r\n                \"city\": \"Tinton Fall\",\r\n                \"state\": \"New York\",\r\n                \"country\": \"United States\",\r\n                \"postalCode\": \"508001\"\r\n            },\r\n            \"type\": \"primary\"\r\n        }\r\n    ],\r\n    \"externalId\": \"e5b27e56-d95d-4dc6-85dd-0b55d878f56c\",\r\n    \"workloadAccess\": false\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{ServerURL}}/api/v1/partner/organizations/resellers"
-									},
-									"status": "Created",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\r\n    \"data\": {\r\n        \"id\": \"e4295015-6535-4989-9457-1ba12040a7ef\",\r\n        \"insertTs\": \"2022-09-20T08:42:52\",\r\n        \"updateTs\": \"2022-09-20T08:42:52\",\r\n        \"name\": \"testreseller\",\r\n        \"type\": \"reseller\",\r\n        \"status\": \"active\",\r\n        \"contacts\": [\r\n            {\r\n                \"email\": \"admin@testreseller.com\",\r\n                \"firstName\": \"Brooks\",\r\n                \"lastName\": \"Price\",\r\n                \"phone\": \"201-200-5904\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"1 Commvault\",\r\n                    \"city\": \"Tinton Fall\",\r\n                    \"state\": \"New York\",\r\n                    \"country\": \"United States\",\r\n                    \"postalCode\": \"508001\"\r\n                },\r\n                \"type\": \"primary\"\r\n            }\r\n        ],\r\n        \"website\": \"www.testreseller.com\",\r\n        \"externalId\": \"c36c7995-cddb-459b-b145-f6385e92b844\",\r\n        \"workloadAccess\": false\r\n    }\r\n}"
-								},
-								{
-									"id": "5ef3afd7-f41e-4549-9ad4-a7525e87c042",
-									"name": "Create Reseller - Error - Bad Request",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"name\": \"testreseller\",\r\n    \"website\": \"www.testreseller.com\",\r\n    \"contacts\": [\r\n        {\r\n            \"email\": \"admin@testreseller.com\",\r\n            \"firstName\": \"Brooks\",\r\n            \"lastName\": \"Price\",\r\n            \"phone\": \"201-200-5904\",\r\n            \"address\": {\r\n                \"addressLine1\": \"1 Commvault\",\r\n                \"city\": \"Tinton Fall\",\r\n                \"state\": \"New York\",\r\n                \"country\": \"United States\",\r\n                \"postalCode\": \"508001\"\r\n            },\r\n            \"type\": \"primary\"\r\n        }\r\n    ]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{ServerURL}}/api/v1/partner/organizations/resellers"
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\r\n    \"error\": {\r\n        \"code\": 1002,\r\n        \"message\": \"Request validation failed!\",\r\n        \"errors\": [\r\n            {\r\n                \"field\": \"name\",\r\n                \"message\": \"name already exists.\"\r\n            },\r\n            {\r\n                \"field\": \"email\",\r\n                \"message\": \"email already exists in Metallic.\"\r\n            },\r\n            {\r\n                \"field\": \"externalId\",\r\n                \"message\": \"externalId is required and should be unique in Partner system.\"\r\n            }\r\n        ]\r\n    }\r\n}"
-								}
-							]
-						},
-						{
-							"name": "Get Reseller by Id",
-							"id": "b87616f9-db26-45c5-953b-346b0bf02e71",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{ServerURL}}/api/v1/partner/organizations/resellers/{resellerId}",
-								"description": "Get reseller using metallic reseller id.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| resellerId | Reseller metallic id | UUID |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Reseller metallic id | UUID |  |\n| type | Type indicating it is reseller | String Enum allowed values: \"reseller\" |  |\n| status | Reseller status | String Enum allowed values: \"active\" |  |\n| insertTs | Reseller created time | Timestamp |  |\n| updateTs | Reseller last updated time | Timestamp |  |\n| externalId | Reseller ID in Partner system | String / UUID |  |\n| name | Reseller name | String |  |\n| website | Reseller website | String |  |\n| contacts | Reseller contacts | Contact Objects array | Refer to Contact Object on create reseller request. |\n| workloadAccess | Access to manage accounts | Boolean |  |"
-							},
-							"response": [
-								{
-									"id": "518f45bc-3aab-4eda-88c2-47030d8f1945",
-									"name": "Get Reseller by Id - Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": "{{ServerURL}}/api/v1/partner/organizations/resellers/e4295015-6535-4989-9457-1ba12040a7ef"
-									},
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\r\n    \"data\": {\r\n        \"id\": \"E4295015-6535-4989-9457-1BA12040A7EF\",\r\n        \"insertTs\": \"2022-09-20T08:42:52\",\r\n        \"updateTs\": \"2022-09-20T08:42:56\",\r\n        \"name\": \"testreseller\",\r\n        \"type\": \"reseller\",\r\n        \"status\": \"active\",\r\n        \"contacts\": [\r\n            {\r\n                \"email\": \"admin@testreseller.com\",\r\n                \"firstName\": \"Brooks\",\r\n                \"lastName\": \"Price\",\r\n                \"phone\": \"201-200-5904\",\r\n                \"address\": {\r\n                    \"addressLine1\": \"1 Commvault\",\r\n                    \"city\": \"Tinton Fall\",\r\n                    \"state\": \"New York\",\r\n                    \"country\": \"United States\",\r\n                    \"postalCode\": \"508001\"\r\n                },\r\n                \"type\": \"primary\"\r\n            }\r\n        ],\r\n        \"website\": \"www.testreseller.com\",\r\n        \"externalId\": \"c36c7995-cddb-459b-b145-f6385e92b844\",\r\n        \"workloadAccess\": false\r\n    }\r\n}"
-								},
-								{
-									"id": "2f98b27a-530f-4a41-b06c-3999d86d8731",
-									"name": "Get Reseller by Id - Error - Not Found",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": "{{ServerURL}}/api/v1/partner/organizations/resellers/d4295015-6535-4989-9457-1ba12040a7ed"
-									},
-									"status": "Not Found",
-									"code": 404,
-									"_postman_previewlanguage": "json",
-									"header": [],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\r\n    \"error\": {\r\n        \"code\": 1006,\r\n        \"message\": \"Record not found\"\r\n    }\r\n}\r\n"
-								}
-							]
-						}
-					],
-					"id": "4331ab52-0cfb-4a2e-b5c1-9e22b0f91d15",
-					"description": "Reseller APIs are used by Distributors to manage Resellers.",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								],
-								"id": "bc31dbe3-f2c6-4586-a3c3-083e6a1ffa9b"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									""
-								],
-								"id": "fcf10842-4f82-4ec3-9b68-a3d6ed981517"
-							}
-						}
-					]
-				},
-				{
 					"name": "Rate Card",
 					"item": [
 						{
@@ -1640,6 +1491,313 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "Partners",
+					"item": [
+						{
+							"name": "Create Partner",
+							"id": "6f290a7a-6db1-4303-9b8b-173f1ab4ab5e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{partner_name}}\",\n    \"externalId\": \"{{partner_external_id}}\",\n    \"website\": \"{{partner_website}}\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"{{partner_contact_email}}\",\n            \"firstName\": \"{{partner_contact_first_name}}\",\n            \"lastName\": \"{{partner_contact_last_name}}\",\n            \"address\": {\n                \"addressLine1\": \"{{address_line1}}\",\n                \"addressLine2\": \"{{address_line2}}\",\n                \"city\": \"{{city}}\",\n                \"state\": \"{{state}}\",\n                \"country\": \"{{country}}\",\n                \"postalCode\": \"{{post_code}}\"\n            }\n        }\n    ],\n    \"workloadAccess\": {{true || false}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/partner/partners",
+								"description": "#### Description\n\nThis is used by MSP to introduce their reseller partners. MSP will provide basic info of their reseller partners. MSP can enable reseller partner's access to command center to manage account workload if needed. Partner provisioning is asynchronous.\n\n#### Request body\n\n##### Schema\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID | True | It needs to be unique within same MSP. |\n| name | Partner name | String | True | It needs to be unique within same MSP. |\n| website | Partner website | String | False |  |\n| contacts | Partner contacts | Contact Objects | True | See Objects - Contact Object. |\n| workloadAccess | Access to manage accounts | Boolean | True |  |\n\n##### Objects\n\n###### Contact Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| type | Contact type | \"primary\" | True | We currently support \"primary\" type only. |\n| email | Contact email | String | True | It needs to be a valid email and unique in Metallic. |\n| firstName | Contact first name | String | True |  |\n| lastName | Contact last name | String | True |  |\n| address | Contact address | Address Object | True | See Address Object. |\n| phone | Contact phone number | String | False |  |\n\n###### Address Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Street address | String | True |  |\n| addressLine2 | Street address continued | String | False |  |\n| city | City | String | True |  |\n| state | State | String | Depends | This field is required when country is United States, otherwise is optional. If provided, it must be ISO standard code or name. |\n| country | Country | String | True | It must be ISO standard code or name. |\n| postalCode | Postal Code | String | True |  |\n\n#### Response\n\n##### Schema\n\n201 Created\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| id | Partner Metallic ID | UUID |  |\n| status | Partner status | \"provisioning\" |  |\n| insertTs | Partner created time | Timestamp |  |\n| updateTs | Partner last updated time | Timestamp |  |\n| externalId | Partner ID in MSP system | String / UUID | It's the same as request input. |\n| name | Partner name | String | It's the same as request input. |\n| website | Partner website | String | It's the same as request input. |\n| contacts | Partner contacts | Contact Objects | It's the same as request input. |\n| workloadAccess | Ability to manage accounts workload | Boolean | It's the same as request input. |\n\n400 Validation failed\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| code | Validation error code | Integer |  |\n| message | Validation error message | String |  |\n| errors | Validation details | Validation Details Objects | See Objects - Validation Details Object |\n\n##### Objects\n\n###### Validation Details Object\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| field | Field name | String | It gives which field failed validation. |\n| message | Error details | String | It gives the exact error message. |"
+							},
+							"response": [
+								{
+									"id": "2e53b6c8-4618-45b8-8222-c2fbf6468d1d",
+									"name": "Create partner without workload access",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Partner 1\",\n    \"externalId\": \"msp1-partner-1\",\n    \"website\": \"partner1.com\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"admin@partner1.com\",\n            \"firstName\": \"Admin\",\n            \"lastName\": \"User\",\n            \"address\": {\n                \"addressLine1\": \"1 Rd\",\n                \"city\": \"Santa Clara\",\n                \"state\": \"California\",\n                \"country\": \"United States\",\n                \"postalCode\": \"94051\"\n            }\n        }\n    ],\n    \"workloadAccess\": false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/partners"
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"provisioning\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								},
+								{
+									"id": "daca6373-908d-4d8d-b712-b06069d6345d",
+									"name": "Create partner with workload access",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Partner 1\",\n    \"externalId\": \"msp1-partner-1\",\n    \"website\": \"partner1.com\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"admin@partner1.com\",\n            \"firstName\": \"Admin\",\n            \"lastName\": \"User\",\n            \"address\": {\n                \"addressLine1\": \"1 Rd\",\n                \"city\": \"Santa Clara\",\n                \"state\": \"California\",\n                \"country\": \"United States\",\n                \"postalCode\": \"94051\"\n            }\n        }\n    ],\n    \"workloadAccess\": true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/partners"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"provisioning\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": true\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Edit Partner",
+							"id": "ce2828b8-e2c9-42f3-b84a-caba166e275b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{partner_name}}\",\n    \"externalId\": \"{{partner_external_id}}\",\n    \"website\": \"{{partner_website}}\",\n    \"contacts\": {\n        \"email\": \"{{partner_contact_email}}\",\n        \"firstName\": \"{{partner_contact_first_name}}\",\n        \"lastName\": \"{{partner_contact_last_name}}\",\n        \"address\": {\n            \"addressLine1\": \"{{address_line1}}\",\n            \"addressLine2\": \"{{address_line2}}\",\n            \"city\": \"{{city}}\",\n            \"state\": \"{{state}}\",\n            \"country\": \"{{country}}\",\n            \"postalCode\": \"{{post_code}}\"\n        }\n    },\n    \"workloadAccess\": {{true || false}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/partner/partners",
+								"description": "#### Description\n\nThis is used by MSP to update their reseller partners. Partner update is asynchronous.\n\n#### Request\n\n##### Schema\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID | False |  |\n| name | Partner name | String | False |  |\n| website | Partner website | String | False | If removing this field, please explicitly provide it as null. |\n| contact | Partner contact | Contact Object | False |  |\n| workloadAccess | Ability to manage accounts workload | Boolean | False |  |\n\n##### Contact Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| firstName | Contact first name | String | False |  |\n| lastName | Contact last name | String | False |  |\n| email | Contact email | String | False |  |\n| address | Contact address | Address Object | False | If removing this field, please explicitly provide it as null. |\n\n##### Address Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Street address | String | False | If removing this field, please explicitly provide it as null. |\n| city | City | String | False | If removing this field, please explicitly provide it as null. |\n| state | State | String | False | If removing this field, please explicitly provide it as null. |\n| country | Country | String | False | If removing this field, please explicitly provide it as null. |\n| postalCode | Postal Code | String | False | If removing this field, please explicitly provide it as null. |\n\n#### Response\n\n##### Schema\n\n###### 200 Success\n\nReturn Partner details with updated values and status \"updating\".\n\n###### 400 Validation failed\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| code | Validation error code | Integer |  |\n| message | Validation error message | String |  |\n| errors | Validation details | Validation Details Objects | See Objects - Validation Details Object |\n\n##### Objects\n\n###### Validation Details Object\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| field | Field name | String | It gives which field failed validation. |\n| message | Error details | String | It gives the exact error message. |"
+							},
+							"response": [
+								{
+									"id": "9f580774-d985-4666-bb26-c629dbac98b0",
+									"name": "Update partner name/externalId/website/workloadAccess/contact",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Partner 1-1\",\n    \"externalId\": \"msp1-partner-1-1\",\n    \"website\": \"partner1-1.com\",\n    \"workloadAccess\": false,\n    \"contact\": {\n        \"email\": \"admin1@partner1-1.com\",\n        \"firstName\": \"Admin\",\n        \"lastName\": \"User\",\n        \"address\": {\n            \"addressLine1\": \"1 Road\",\n            \"city\": \"Sunnyvale\",\n            \"state\": \"California\",\n            \"country\": \"United States\",\n            \"postalCode\": \"94051\"\n        }\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/partners"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-22T17:49:29\",\n        \"name\": \"Partner 1-1\",\n        \"externalId\": \"msp1-partner-1-1\",\n        \"website\": \"partner1-1.com\",\n        \"status\": \"upadting\",\n        \"contacts\": [\n            {\n                \"email\": \"admin1@partner1-1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"22 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94054\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Partner",
+							"id": "726827db-8e59-4a3a-9441-a32d59a7969e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}",
+								"description": "#### Description\n\nThis is used by MSP to delete their reseller partners. Partner deletion is asynchronous. Upon successful deletion, partner will be removed completely from Metallic.\n\n#### Response\n\nReturn partner details with status \"deleting\"."
+							},
+							"response": [
+								{
+									"id": "f5138b88-7072-46dd-813c-4fd5ca61df8a",
+									"name": "Delete Partner",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-22T17:49:29\",\n        \"name\": \"Partner 1-1\",\n        \"externalId\": \"msp1-partner-1-1\",\n        \"website\": \"partner1-1.com\",\n        \"status\": \"deleting\",\n        \"contacts\": [\n            {\n                \"email\": \"admin1@partner1-1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"22 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94054\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "List Partners",
+							"id": "48fa966b-bca7-4a14-91e0-2ad3fe07af84",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ServerURL}}/api/v1/partner/partners?filter=status:provisioning_failure&sort=asc:updateTs&pageNumber=0&pageSize=25",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"partner",
+										"partners"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "status:provisioning_failure",
+											"description": "Optional - Filter. </br>searchTerm - matches partner `name` and  contact `email` containing searchTerm value.</br>Apart from `searchTerm` filter can also be applied on fields like name and workloadAccess."
+										},
+										{
+											"key": "sort",
+											"value": "asc:updateTs",
+											"description": "Optional - Sort order. default desc:updateTs"
+										},
+										{
+											"key": "pageNumber",
+											"value": "0",
+											"description": "Optional - Page number >= 0. default 0"
+										},
+										{
+											"key": "pageSize",
+											"value": "25",
+											"description": "Optional - Size of each page. default 25"
+										}
+									]
+								},
+								"description": "#### Description\n\nThis is used by MSP to list all partners.\n\n#### Params\n\nSearch by name or primary contact email: GET /partners?filter=searchTerm:{value}\n\nFilter by workloadAccess: GET /partners?filter=workloadAccess:true\n\n#### Response\n\n##### Schema\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID |  |\n| name | Partner name | String |  |\n| website | Partner website | String |  |\n| primaryEmail | Partner contact email | String |  |\n| workloadAccess | Ability to manage accounts workload | Boolean |  |"
+							},
+							"response": [
+								{
+									"id": "145909a0-0154-4476-8d9c-7b3982379229",
+									"name": "List Partners",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/partners?filter=searchTerm:tree",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"partners"
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "searchTerm:tree"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"id\": \"0DF97076-78B4-4A44-88A2-42F4BF0E3A31\",\n            \"insertTs\": \"2022-06-21T17:19:00\",\n            \"updateTs\": \"2022-06-25T00:06:28\",\n            \"status\": \"active\",\n            \"name\": \"Partner Tree1\",\n            \"primaryEmail\": \"admin@partnertree1.com\",\n            \"website\": \"partnertree1.com\",\n            \"externalId\": \"partner-tree1\",\n            \"workloadAccess\": false\n        },\n        {\n            \"id\": \"126DFC5D-AFA2-42A8-BDAB-B27CC0CCA04E\",\n            \"insertTs\": \"2022-06-21T17:19:00\",\n            \"updateTs\": \"2022-06-25T00:06:28\",\n            \"status\": \"active\",\n            \"name\": \"Sequoia\",\n            \"primaryEmail\": \"admin@tree.com\",\n            \"website\": \"tree.com\",\n            \"externalId\": \"Sequoia-tree1\",\n            \"workloadAccess\": true\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"searchTerm:tree\",\n        \"sort\": \"desc:updateTs\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 25,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Partner by Id",
+							"id": "dc3ac376-586f-4713-b46b-b7aedeb40799",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}",
+								"description": "This is use by MSP to view their partners' details.\n\n#### Response\n\n##### Schema\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| id | Partner Metallic ID | UUID |  |\n| status | Partner status | See Partner status enums |  |\n| insertTs | Partner created time | Timestamp |  |\n| updateTs | Partner last updated time | Timestamp |  |\n| externalId | Partner ID in MSP system | String / UUID |  |\n| name | Partner name | String |  |\n| website | Partner website | String |  |\n| contacts | Partner contacts | Contact Objects |  |\n| workloadAccess | Ability to manage accounts workload | Boolean |  |\n\n##### Objects\n\n###### Contact Object\n\n| Field | Description | Value |\n| --- | --- | --- |\n| type | Contact type | \"primary\" |\n| email | Contact email | String |\n| firstName | Contact first name | String |\n| lastName | Contact last name | String |\n| address | Contact address | Address Object |\n| phone | Contact phone number | String |\n\n###### Address Object\n\n| Field | Description | Value |\n| --- | --- | --- |\n| addressLine1 | Street address | String |\n| addressLine2 | Street address continued | String |\n| city | City | String |\n| state | State | String |\n| country | Country | String |\n| postalCode | Postal Code | String |"
+							},
+							"response": [
+								{
+									"id": "83193179-14fc-4ec3-b347-847df4b8b26a",
+									"name": "Get Partner by Id",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/partner/partners/2dde73c6-10c7-4299-924b-c81c60e33e14"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"active\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								}
+							]
+						}
+					],
+					"id": "35452ed1-b252-4de2-976e-acc318bc0874",
+					"description": "Partner management is used by MSP to introduce and manage their reseller partners.\n\nPartner status returned by APIs have one of the following values:\n\n#### Partner Status Enumeration\n\n| **Enumeration Value** | **Description** |\n| --- | --- |\n| provisioning | New partner provisioning in progress |\n| updating | Partner updation in progress |\n| active | Partner is in active state |\n| provisioning_failure | New partner provisioning failed |\n| error_pending_investigation | Partner update or deletion failed |"
 				},
 				{
 					"name": "Users",
@@ -8020,7 +8178,7 @@
 	],
 	"variable": [
 		{
-			"id": "83a6f271-3464-405c-aa76-b2f113b19c12",
+			"id": "a5085d3d-0a1f-4c49-80b2-7a7cc1ac01cb",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
