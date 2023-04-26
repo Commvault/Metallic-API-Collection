@@ -2834,6 +2834,211 @@
 											]
 										},
 										{
+											"name": "Select Cloud Storage Credentials (Azure BYOS only)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"var jsonData = JSON.parse(responseBody);\r",
+															"pm.environment.set(\"AzurecredentialId\", jsonData.credentialRecordInfo[0].credentialRecord.credentialId);\r",
+															"pm.environment.set(\"AzurecredentialName\", jsonData.credentialRecordInfo[0].credentialRecord.credentialName);"
+														],
+														"type": "text/javascript",
+														"id": "dd1ff197-13a3-42f2-9fb2-ff3830c822fa"
+													}
+												}
+											],
+											"id": "52f7647d-bc64-47a3-8bf6-0b61aff5d7e2",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials",
+												"description": "This API returns credentials for microsoft azure.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | azure credential id | integer |  |\n| name | azure credential name | string |  |\n| accountType | credential account type | string |  |\n| vendorType | vendor name | string |  |\n| authType | auth type | string |  |"
+											},
+											"response": [
+												{
+													"id": "f88b44d7-7a11-40da-b0bc-fbe14bcbf833",
+													"name": "Select Cloud Storage Credentials (Azure BYOS only)",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json",
+																"type": "text"
+															}
+														],
+														"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials"
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Date",
+															"value": "Thu, 30 Jun 2022 13:20:27 GMT"
+														},
+														{
+															"key": "Content-Type",
+															"value": "application/json;charset=utf-8"
+														},
+														{
+															"key": "Content-Length",
+															"value": "274"
+														},
+														{
+															"key": "Connection",
+															"value": "keep-alive"
+														},
+														{
+															"key": "Strict-Transport-Security",
+															"value": "max-age=31536000;includeSubDomains"
+														},
+														{
+															"key": "X-Content-Type-Options",
+															"value": "nosniff"
+														},
+														{
+															"key": "X-XSS-Protection",
+															"value": "1; mode=block"
+														},
+														{
+															"key": "Cache-Control",
+															"value": "no-store, no-cache"
+														},
+														{
+															"key": "WEBSERVERCORE-FLAG",
+															"value": "true"
+														},
+														{
+															"key": "HasEntityInfo",
+															"value": "true"
+														}
+													],
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\n  \"credentialManager\": [\n    {\n      \"id\": 332,\n      \"name\": \"TestM\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 344,\n      \"name\": \"azure-storage-ash\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 350,\n      \"name\": \"testCred\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 376,\n      \"name\": \"testcredential\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    }\n  ]\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Cloud Storage Credentials",
+											"id": "b2a2a20b-23b0-4a93-b16d-eb9e57c06319",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"storageAccountName\": \"{{storageAccountName}}\",\r\n    \"accessKey\": \"{{accesskey}}\",\r\n    \"description\": \"{{description}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials",
+												"description": "This API creates the storage credentials for Azure Storage.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| storageAccountName | storage account name | string | True |  |\n| accessKey | access key | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
+											},
+											"response": [
+												{
+													"id": "53ab88a2-1ffd-424d-9d12-6966a636256b",
+													"name": "Add Azure (IAM App) Credentials",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json",
+																"type": "text"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"name\": \"testcredentials\",\r\n    \"storageAccountName\": \"sa\",\r\n    \"accessKey\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test\"\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials"
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [],
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\n    \"credential\": {\n        \"id\": 442\n    },\n    \"errorMessage\": \"Successful!\",\n    \"errorCode\": 0\n}"
+												},
+												{
+													"id": "28ecaada-94a3-457d-8971-12119d88740b",
+													"name": "Add Azure (IAM App) Credentials (credential already exists)",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json",
+																"type": "text"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"storageAccountName\": \"{{storageAccountName}}\",\r\n    \"accessKey\": \"{{accesskey}}\",\r\n    \"description\": \"{{description}}\"\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials"
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [],
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\n    \"errorMessage\": \"Credential account [testcrednt] already exists. Use other credentials.\",\n    \"errorCode\": 587206339\n}"
+												}
+											]
+										},
+										{
 											"name": "Configure New Storage",
 											"id": "0b2acd98-7980-446a-8ec2-4396bd84cf68",
 											"protocolProfileBehavior": {
@@ -3484,104 +3689,6 @@
 											]
 										},
 										{
-											"name": "Select Cloud Storage Credentials (Azure BYOS only)",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"exec": [
-															"var jsonData = JSON.parse(responseBody);\r",
-															"pm.environment.set(\"AzurecredentialId\", jsonData.credentialRecordInfo[0].credentialRecord.credentialId);\r",
-															"pm.environment.set(\"AzurecredentialName\", jsonData.credentialRecordInfo[0].credentialRecord.credentialName);"
-														],
-														"type": "text/javascript",
-														"id": "dd1ff197-13a3-42f2-9fb2-ff3830c822fa"
-													}
-												}
-											],
-											"id": "52f7647d-bc64-47a3-8bf6-0b61aff5d7e2",
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json",
-														"type": "text"
-													}
-												],
-												"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials",
-												"description": "This API returns credentials for microsoft azure.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | azure credential id | integer |  |\n| name | azure credential name | string |  |\n| accountType | credential account type | string |  |\n| vendorType | vendor name | string |  |\n| authType | auth type | string |  |"
-											},
-											"response": [
-												{
-													"id": "f88b44d7-7a11-40da-b0bc-fbe14bcbf833",
-													"name": "Select Cloud Storage Credentials (Azure BYOS only)",
-													"originalRequest": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "Accept",
-																"value": "application/json",
-																"type": "text"
-															}
-														],
-														"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials"
-													},
-													"status": "OK",
-													"code": 200,
-													"_postman_previewlanguage": "json",
-													"header": [
-														{
-															"key": "Date",
-															"value": "Thu, 30 Jun 2022 13:20:27 GMT"
-														},
-														{
-															"key": "Content-Type",
-															"value": "application/json;charset=utf-8"
-														},
-														{
-															"key": "Content-Length",
-															"value": "274"
-														},
-														{
-															"key": "Connection",
-															"value": "keep-alive"
-														},
-														{
-															"key": "Strict-Transport-Security",
-															"value": "max-age=31536000;includeSubDomains"
-														},
-														{
-															"key": "X-Content-Type-Options",
-															"value": "nosniff"
-														},
-														{
-															"key": "X-XSS-Protection",
-															"value": "1; mode=block"
-														},
-														{
-															"key": "Cache-Control",
-															"value": "no-store, no-cache"
-														},
-														{
-															"key": "WEBSERVERCORE-FLAG",
-															"value": "true"
-														},
-														{
-															"key": "HasEntityInfo",
-															"value": "true"
-														}
-													],
-													"cookie": [],
-													"responseTime": null,
-													"body": "{\n  \"credentialManager\": [\n    {\n      \"id\": 332,\n      \"name\": \"TestM\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 344,\n      \"name\": \"azure-storage-ash\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 350,\n      \"name\": \"testCred\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 376,\n      \"name\": \"testcredential\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    }\n  ]\n}"
-												}
-											]
-										},
-										{
 											"name": "Configure Azure Storage Credentials (BYOS Only)",
 											"id": "fa9386f2-b975-46ba-8cff-a08f26cce872",
 											"protocolProfileBehavior": {
@@ -3858,113 +3965,6 @@
 													"cookie": [],
 													"responseTime": null,
 													"body": "{\n    \"failedStage\": \"PostClient\",\n    \"errorCode\": -1,\n    \"errorMessage\": {\n        \"errorMessage\": \"Duplicate entry.Client [new_cloudaccount_cosmos] already exists. Try with different Client name.\",\n        \"errorCode\": \"3\"\n    }\n}"
-												}
-											]
-										},
-										{
-											"name": "Add Azure (IAM App) Credentials Copy",
-											"id": "b2a2a20b-23b0-4a93-b16d-eb9e57c06319",
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"storageAccountName\": \"{{storageAccountName}}\",\r\n    \"accessKey\": \"{{accesskey}}\",\r\n    \"description\": \"{{description}}\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials",
-												"description": "This API creates the storage credentials for Azure Storage.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| storageAccountName | storage account name | string | True |  |\n| accessKey | access key | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
-											},
-											"response": [
-												{
-													"id": "53ab88a2-1ffd-424d-9d12-6966a636256b",
-													"name": "Add Azure (IAM App) Credentials",
-													"originalRequest": {
-														"method": "POST",
-														"header": [
-															{
-																"key": "Accept",
-																"value": "application/json",
-																"type": "text"
-															},
-															{
-																"key": "Content-Type",
-																"value": "application/json",
-																"type": "text"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"testcredentials\",\r\n    \"storageAccountName\": \"sa\",\r\n    \"accessKey\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test\"\r\n}",
-															"options": {
-																"raw": {
-																	"language": "json"
-																}
-															}
-														},
-														"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials"
-													},
-													"status": "OK",
-													"code": 200,
-													"_postman_previewlanguage": "json",
-													"header": [],
-													"cookie": [],
-													"responseTime": null,
-													"body": "{\n    \"credential\": {\n        \"id\": 442\n    },\n    \"errorMessage\": \"Successful!\",\n    \"errorCode\": 0\n}"
-												},
-												{
-													"id": "28ecaada-94a3-457d-8971-12119d88740b",
-													"name": "Add Azure (IAM App) Credentials (credential already exists)",
-													"originalRequest": {
-														"method": "POST",
-														"header": [
-															{
-																"key": "Accept",
-																"value": "application/json",
-																"type": "text"
-															},
-															{
-																"key": "Content-Type",
-																"value": "application/json",
-																"type": "text"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"storageAccountName\": \"{{storageAccountName}}\",\r\n    \"accessKey\": \"{{accesskey}}\",\r\n    \"description\": \"{{description}}\"\r\n}",
-															"options": {
-																"raw": {
-																	"language": "json"
-																}
-															}
-														},
-														"url": "{{ServerURL}}/api/v1/core/azuredb/storage/azure/credentials"
-													},
-													"status": "Internal Server Error",
-													"code": 500,
-													"_postman_previewlanguage": "json",
-													"header": [],
-													"cookie": [],
-													"responseTime": null,
-													"body": "{\n    \"errorMessage\": \"Credential account [testcrednt] already exists. Use other credentials.\",\n    \"errorCode\": 587206339\n}"
 												}
 											]
 										},
@@ -8178,7 +8178,7 @@
 	],
 	"variable": [
 		{
-			"id": "a5085d3d-0a1f-4c49-80b2-7a7cc1ac01cb",
+			"id": "1fedb751-2bf7-4038-a7bc-36a34662b7cb",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
