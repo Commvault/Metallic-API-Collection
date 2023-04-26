@@ -2932,7 +2932,7 @@
 											]
 										},
 										{
-											"name": "Configure Cloud Storage Credentials",
+											"name": "Configure Cloud Storage Credentials (Azure BYOS only)",
 											"id": "b2a2a20b-23b0-4a93-b16d-eb9e57c06319",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
@@ -8178,7 +8178,7 @@
 	],
 	"variable": [
 		{
-			"id": "1fedb751-2bf7-4038-a7bc-36a34662b7cb",
+			"id": "ab77a047-6951-44a9-8674-d9c50d6e3f2d",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
