@@ -3689,7 +3689,124 @@
 											]
 										},
 										{
-											"name": "Configure Azure Storage Credentials (BYOS Only)",
+											"name": "Select Azure Credentials",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "25d57024-1e84-4b39-a845-36428c8144a9",
+														"exec": [
+															"//azure-cred\r",
+															"//2c21f3cf-d49e-43c1-a19b-16b9886f4b25"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "8d6bcd99-c023-414b-bb07-a147bbfde56b",
+														"exec": [
+															"var jsonData = JSON.parse(responseBody);\r",
+															"pm.environment.set(\"cloudcredentialId\", jsonData.credentialRecordInfo[0].credentialRecord.credentialId);\r",
+															"pm.environment.set(\"cloudcredentialName\", jsonData.credentialRecordInfo[0].credentialRecord.credentialName);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"id": "b25be0f7-055f-4232-a38b-775316ef65f8",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials",
+												"description": "This API returns saved credentials for cloud account.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | credential id | integer |  |\n| name | credential name | string |  |\n| accountType | credential account type | string |  |\n| vendorType | vendor name | string |  |\n| authType | auth type | string |  |"
+											},
+											"response": [
+												{
+													"id": "038a94ab-aeef-491a-a0fe-56ab606f4878",
+													"name": "Select Azure Credentials",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json",
+																"type": "text"
+															}
+														],
+														"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Date",
+															"value": "Wed, 29 Jun 2022 12:07:49 GMT"
+														},
+														{
+															"key": "Content-Type",
+															"value": "application/json;charset=utf-8"
+														},
+														{
+															"key": "Transfer-Encoding",
+															"value": "chunked"
+														},
+														{
+															"key": "Connection",
+															"value": "keep-alive"
+														},
+														{
+															"key": "Strict-Transport-Security",
+															"value": "max-age=31536000;includeSubDomains"
+														},
+														{
+															"key": "X-Content-Type-Options",
+															"value": "nosniff"
+														},
+														{
+															"key": "X-XSS-Protection",
+															"value": "1; mode=block"
+														},
+														{
+															"key": "Cache-Control",
+															"value": "no-store, no-cache"
+														},
+														{
+															"key": "WEBSERVERCORE-FLAG",
+															"value": "true"
+														},
+														{
+															"key": "HasEntityInfo",
+															"value": "true"
+														},
+														{
+															"key": "vary",
+															"value": "accept-encoding"
+														},
+														{
+															"key": "Content-Encoding",
+															"value": "gzip"
+														}
+													],
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\n  \"credentialManager\": [\n    {\n      \"id\": 324,\n      \"name\": \"azure-cred\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 326,\n      \"name\": \"AzureSQLCreds\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 327,\n      \"name\": \"CosmosCredreg\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 332,\n      \"name\": \"TestM\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 333,\n      \"name\": \"AzureSQLTeam-SQLRMApp1\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 334,\n      \"name\": \"dummy-donot-use\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 335,\n      \"name\": \"AZMangInstRegul\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 336,\n      \"name\": \"AzureSQLServer-Chris\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 337,\n      \"name\": \"MangedinstanceRegular\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 338,\n      \"name\": \"AzureSQLServer-cvadmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 339,\n      \"name\": \"SQLServer-peter\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 341,\n      \"name\": \"azure-CA-Page\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 344,\n      \"name\": \"azure-storage-ash\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 345,\n      \"name\": \"AzureSQLServer-AD-NonMFA\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 346,\n      \"name\": \"AzureSQLServer-cvadmin2\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 347,\n      \"name\": \"Mainstadmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 350,\n      \"name\": \"testCred\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 352,\n      \"name\": \"dummy\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 353,\n      \"name\": \"SQLMIEastUSadmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 354,\n      \"name\": \"SQLMIEaUSadm2\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 357,\n      \"name\": \"AzureSQLServer-sqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 359,\n      \"name\": \"ManInstApp\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 360,\n      \"name\": \"ManEaUSsqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 361,\n      \"name\": \"ManInstsqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 362,\n      \"name\": \"sqladminwestus\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 363,\n      \"name\": \"vsardscreds\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"AMAZON\",\n      \"authType\": \"AMAZON_S3\"\n    },\n    {\n      \"id\": 364,\n      \"name\": \"awscreds-aash\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"AMAZON\",\n      \"authType\": \"AMAZON_S3\"\n    },\n    {\n      \"id\": 365,\n      \"name\": \"0708MaIdsqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 372,\n      \"name\": \"sheza-testVSA-azure\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 376,\n      \"name\": \"testcredential\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    }\n  ]\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Azure Credentials",
 											"id": "fa9386f2-b975-46ba-8cff-a08f26cce872",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
@@ -3965,123 +4082,6 @@
 													"cookie": [],
 													"responseTime": null,
 													"body": "{\n    \"failedStage\": \"PostClient\",\n    \"errorCode\": -1,\n    \"errorMessage\": {\n        \"errorMessage\": \"Duplicate entry.Client [new_cloudaccount_cosmos] already exists. Try with different Client name.\",\n        \"errorCode\": \"3\"\n    }\n}"
-												}
-											]
-										},
-										{
-											"name": "Select Azure Credentials",
-											"event": [
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "25d57024-1e84-4b39-a845-36428c8144a9",
-														"exec": [
-															"//azure-cred\r",
-															"//2c21f3cf-d49e-43c1-a19b-16b9886f4b25"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "test",
-													"script": {
-														"id": "8d6bcd99-c023-414b-bb07-a147bbfde56b",
-														"exec": [
-															"var jsonData = JSON.parse(responseBody);\r",
-															"pm.environment.set(\"cloudcredentialId\", jsonData.credentialRecordInfo[0].credentialRecord.credentialId);\r",
-															"pm.environment.set(\"cloudcredentialName\", jsonData.credentialRecordInfo[0].credentialRecord.credentialName);"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"id": "b25be0f7-055f-4232-a38b-775316ef65f8",
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json",
-														"type": "text"
-													}
-												],
-												"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials",
-												"description": "This API returns saved credentials for cloud account.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | credential id | integer |  |\n| name | credential name | string |  |\n| accountType | credential account type | string |  |\n| vendorType | vendor name | string |  |\n| authType | auth type | string |  |"
-											},
-											"response": [
-												{
-													"id": "038a94ab-aeef-491a-a0fe-56ab606f4878",
-													"name": "Select Azure Credentials",
-													"originalRequest": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "Accept",
-																"value": "application/json",
-																"type": "text"
-															}
-														],
-														"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
-													},
-													"status": "OK",
-													"code": 200,
-													"_postman_previewlanguage": "json",
-													"header": [
-														{
-															"key": "Date",
-															"value": "Wed, 29 Jun 2022 12:07:49 GMT"
-														},
-														{
-															"key": "Content-Type",
-															"value": "application/json;charset=utf-8"
-														},
-														{
-															"key": "Transfer-Encoding",
-															"value": "chunked"
-														},
-														{
-															"key": "Connection",
-															"value": "keep-alive"
-														},
-														{
-															"key": "Strict-Transport-Security",
-															"value": "max-age=31536000;includeSubDomains"
-														},
-														{
-															"key": "X-Content-Type-Options",
-															"value": "nosniff"
-														},
-														{
-															"key": "X-XSS-Protection",
-															"value": "1; mode=block"
-														},
-														{
-															"key": "Cache-Control",
-															"value": "no-store, no-cache"
-														},
-														{
-															"key": "WEBSERVERCORE-FLAG",
-															"value": "true"
-														},
-														{
-															"key": "HasEntityInfo",
-															"value": "true"
-														},
-														{
-															"key": "vary",
-															"value": "accept-encoding"
-														},
-														{
-															"key": "Content-Encoding",
-															"value": "gzip"
-														}
-													],
-													"cookie": [],
-													"responseTime": null,
-													"body": "{\n  \"credentialManager\": [\n    {\n      \"id\": 324,\n      \"name\": \"azure-cred\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 326,\n      \"name\": \"AzureSQLCreds\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 327,\n      \"name\": \"CosmosCredreg\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 332,\n      \"name\": \"TestM\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 333,\n      \"name\": \"AzureSQLTeam-SQLRMApp1\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 334,\n      \"name\": \"dummy-donot-use\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 335,\n      \"name\": \"AZMangInstRegul\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 336,\n      \"name\": \"AzureSQLServer-Chris\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 337,\n      \"name\": \"MangedinstanceRegular\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 338,\n      \"name\": \"AzureSQLServer-cvadmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 339,\n      \"name\": \"SQLServer-peter\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 341,\n      \"name\": \"azure-CA-Page\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 344,\n      \"name\": \"azure-storage-ash\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 345,\n      \"name\": \"AzureSQLServer-AD-NonMFA\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 346,\n      \"name\": \"AzureSQLServer-cvadmin2\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 347,\n      \"name\": \"Mainstadmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 350,\n      \"name\": \"testCred\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    },\n    {\n      \"id\": 352,\n      \"name\": \"dummy\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 353,\n      \"name\": \"SQLMIEastUSadmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 354,\n      \"name\": \"SQLMIEaUSadm2\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 357,\n      \"name\": \"AzureSQLServer-sqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 359,\n      \"name\": \"ManInstApp\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 360,\n      \"name\": \"ManEaUSsqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 361,\n      \"name\": \"ManInstsqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 362,\n      \"name\": \"sqladminwestus\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 363,\n      \"name\": \"vsardscreds\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"AMAZON\",\n      \"authType\": \"AMAZON_S3\"\n    },\n    {\n      \"id\": 364,\n      \"name\": \"awscreds-aash\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"AMAZON\",\n      \"authType\": \"AMAZON_S3\"\n    },\n    {\n      \"id\": 365,\n      \"name\": \"0708MaIdsqladmin\",\n      \"accountType\": \"SQL_SERVER_ACCOUNT\"\n    },\n    {\n      \"id\": 372,\n      \"name\": \"sheza-testVSA-azure\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"AZUREACCOUNT\"\n    },\n    {\n      \"id\": 376,\n      \"name\": \"testcredential\",\n      \"accountType\": \"CLOUD_ACCOUNT\",\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\n      \"authType\": \"MICROSOFT_AZURE\"\n    }\n  ]\n}"
 												}
 											]
 										}
@@ -8178,7 +8178,7 @@
 	],
 	"variable": [
 		{
-			"id": "ab77a047-6951-44a9-8674-d9c50d6e3f2d",
+			"id": "74b4825c-04d6-48b6-bc2e-0e90ba2a0672",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
