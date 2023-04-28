@@ -15,13 +15,12 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "cd8936cd-b5c5-4592-bcc4-d1299cf45366",
 								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"Token\", jsonData.token);",
-									""
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"authToken\", jsonData.data.authToken);"
 								],
-								"type": "text/javascript",
-								"id": "cd8936cd-b5c5-4592-bcc4-d1299cf45366"
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -908,6 +907,313 @@
 					"description": "Account management includes getting account details, activate and deactivate accounts and updating account details (except services). Account creation and service updates are handled via fulfillment requests.\n\nFollowing are the allowed values for account status:\n\n##### Account Status Enumeration\n\n| **Enumeration Value** | **Description** |\n| --- | --- |\n| provisioning | New account provisioning in progress |\n| updating | Account updation in progress |\n| activating | Account activation in progress |\n| deactivating | Account deactivation in progress |\n| active | Account is in active state |\n| provisioning_failure | New account provisioning failed |\n| pending | Account activation or deactivation failed |\n| update_failure | Account update failed |\n| error | Account activation or deactivation failed |\n| deactivated | Account is in deactivated state |"
 				},
 				{
+					"name": "Partners",
+					"item": [
+						{
+							"name": "Create Partner",
+							"id": "6f290a7a-6db1-4303-9b8b-173f1ab4ab5e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{partner_name}}\",\n    \"externalId\": \"{{partner_external_id}}\",\n    \"website\": \"{{partner_website}}\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"{{partner_contact_email}}\",\n            \"firstName\": \"{{partner_contact_first_name}}\",\n            \"lastName\": \"{{partner_contact_last_name}}\",\n            \"address\": {\n                \"addressLine1\": \"{{address_line1}}\",\n                \"addressLine2\": \"{{address_line2}}\",\n                \"city\": \"{{city}}\",\n                \"state\": \"{{state}}\",\n                \"country\": \"{{country}}\",\n                \"postalCode\": \"{{post_code}}\"\n            }\n        }\n    ],\n    \"workloadAccess\": {{true || false}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/partner/partners",
+								"description": "#### Description\n\nThis is used by MSP to introduce their reseller partners. MSP will provide basic info of their reseller partners. MSP can enable reseller partner's access to command center to manage account workload if needed. Partner provisioning is asynchronous.\n\n#### Request body\n\n##### Schema\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID | True | It needs to be unique within same MSP. |\n| name | Partner name | String | True | It needs to be unique within same MSP. |\n| website | Partner website | String | False |  |\n| contacts | Partner contacts | Contact Objects | True | See Objects - Contact Object. |\n| workloadAccess | Access to manage accounts | Boolean | True |  |\n\n##### Objects\n\n###### Contact Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| type | Contact type | \"primary\" | True | We currently support \"primary\" type only. |\n| email | Contact email | String | True | It needs to be a valid email and unique in Metallic. |\n| firstName | Contact first name | String | True |  |\n| lastName | Contact last name | String | True |  |\n| address | Contact address | Address Object | True | See Address Object. |\n| phone | Contact phone number | String | False |  |\n\n###### Address Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Street address | String | True |  |\n| addressLine2 | Street address continued | String | False |  |\n| city | City | String | True |  |\n| state | State | String | Depends | This field is required when country is United States, otherwise is optional. If provided, it must be ISO standard code or name. |\n| country | Country | String | True | It must be ISO standard code or name. |\n| postalCode | Postal Code | String | True |  |\n\n#### Response\n\n##### Schema\n\n201 Created\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| id | Partner Metallic ID | UUID |  |\n| status | Partner status | \"provisioning\" |  |\n| insertTs | Partner created time | Timestamp |  |\n| updateTs | Partner last updated time | Timestamp |  |\n| externalId | Partner ID in MSP system | String / UUID | It's the same as request input. |\n| name | Partner name | String | It's the same as request input. |\n| website | Partner website | String | It's the same as request input. |\n| contacts | Partner contacts | Contact Objects | It's the same as request input. |\n| workloadAccess | Ability to manage accounts workload | Boolean | It's the same as request input. |\n\n400 Validation failed\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| code | Validation error code | Integer |  |\n| message | Validation error message | String |  |\n| errors | Validation details | Validation Details Objects | See Objects - Validation Details Object |\n\n##### Objects\n\n###### Validation Details Object\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| field | Field name | String | It gives which field failed validation. |\n| message | Error details | String | It gives the exact error message. |"
+							},
+							"response": [
+								{
+									"id": "2e53b6c8-4618-45b8-8222-c2fbf6468d1d",
+									"name": "Create partner without workload access",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Partner 1\",\n    \"externalId\": \"msp1-partner-1\",\n    \"website\": \"partner1.com\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"admin@partner1.com\",\n            \"firstName\": \"Admin\",\n            \"lastName\": \"User\",\n            \"address\": {\n                \"addressLine1\": \"1 Rd\",\n                \"city\": \"Santa Clara\",\n                \"state\": \"California\",\n                \"country\": \"United States\",\n                \"postalCode\": \"94051\"\n            }\n        }\n    ],\n    \"workloadAccess\": false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/partners"
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"provisioning\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								},
+								{
+									"id": "daca6373-908d-4d8d-b712-b06069d6345d",
+									"name": "Create partner with workload access",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Partner 1\",\n    \"externalId\": \"msp1-partner-1\",\n    \"website\": \"partner1.com\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"admin@partner1.com\",\n            \"firstName\": \"Admin\",\n            \"lastName\": \"User\",\n            \"address\": {\n                \"addressLine1\": \"1 Rd\",\n                \"city\": \"Santa Clara\",\n                \"state\": \"California\",\n                \"country\": \"United States\",\n                \"postalCode\": \"94051\"\n            }\n        }\n    ],\n    \"workloadAccess\": true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/partners"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"provisioning\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": true\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Edit Partner",
+							"id": "ce2828b8-e2c9-42f3-b84a-caba166e275b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{partner_name}}\",\n    \"externalId\": \"{{partner_external_id}}\",\n    \"website\": \"{{partner_website}}\",\n    \"contacts\": {\n        \"email\": \"{{partner_contact_email}}\",\n        \"firstName\": \"{{partner_contact_first_name}}\",\n        \"lastName\": \"{{partner_contact_last_name}}\",\n        \"address\": {\n            \"addressLine1\": \"{{address_line1}}\",\n            \"addressLine2\": \"{{address_line2}}\",\n            \"city\": \"{{city}}\",\n            \"state\": \"{{state}}\",\n            \"country\": \"{{country}}\",\n            \"postalCode\": \"{{post_code}}\"\n        }\n    },\n    \"workloadAccess\": {{true || false}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/partner/partners",
+								"description": "#### Description\n\nThis is used by MSP to update their reseller partners. Partner update is asynchronous.\n\n#### Request\n\n##### Schema\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID | False |  |\n| name | Partner name | String | False |  |\n| website | Partner website | String | False | If removing this field, please explicitly provide it as null. |\n| contact | Partner contact | Contact Object | False |  |\n| workloadAccess | Ability to manage accounts workload | Boolean | False |  |\n\n##### Contact Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| firstName | Contact first name | String | False |  |\n| lastName | Contact last name | String | False |  |\n| email | Contact email | String | False |  |\n| address | Contact address | Address Object | False | If removing this field, please explicitly provide it as null. |\n\n##### Address Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Street address | String | False | If removing this field, please explicitly provide it as null. |\n| city | City | String | False | If removing this field, please explicitly provide it as null. |\n| state | State | String | False | If removing this field, please explicitly provide it as null. |\n| country | Country | String | False | If removing this field, please explicitly provide it as null. |\n| postalCode | Postal Code | String | False | If removing this field, please explicitly provide it as null. |\n\n#### Response\n\n##### Schema\n\n###### 200 Success\n\nReturn Partner details with updated values and status \"updating\".\n\n###### 400 Validation failed\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| code | Validation error code | Integer |  |\n| message | Validation error message | String |  |\n| errors | Validation details | Validation Details Objects | See Objects - Validation Details Object |\n\n##### Objects\n\n###### Validation Details Object\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| field | Field name | String | It gives which field failed validation. |\n| message | Error details | String | It gives the exact error message. |"
+							},
+							"response": [
+								{
+									"id": "9f580774-d985-4666-bb26-c629dbac98b0",
+									"name": "Update partner name/externalId/website/workloadAccess/contact",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Partner 1-1\",\n    \"externalId\": \"msp1-partner-1-1\",\n    \"website\": \"partner1-1.com\",\n    \"workloadAccess\": false,\n    \"contact\": {\n        \"email\": \"admin1@partner1-1.com\",\n        \"firstName\": \"Admin\",\n        \"lastName\": \"User\",\n        \"address\": {\n            \"addressLine1\": \"1 Road\",\n            \"city\": \"Sunnyvale\",\n            \"state\": \"California\",\n            \"country\": \"United States\",\n            \"postalCode\": \"94051\"\n        }\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/partner/partners"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-22T17:49:29\",\n        \"name\": \"Partner 1-1\",\n        \"externalId\": \"msp1-partner-1-1\",\n        \"website\": \"partner1-1.com\",\n        \"status\": \"upadting\",\n        \"contacts\": [\n            {\n                \"email\": \"admin1@partner1-1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"22 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94054\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Partner",
+							"id": "726827db-8e59-4a3a-9441-a32d59a7969e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}",
+								"description": "#### Description\n\nThis is used by MSP to delete their reseller partners. Partner deletion is asynchronous. Upon successful deletion, partner will be removed completely from Metallic.\n\n#### Response\n\nReturn partner details with status \"deleting\"."
+							},
+							"response": [
+								{
+									"id": "f5138b88-7072-46dd-813c-4fd5ca61df8a",
+									"name": "Delete Partner",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-22T17:49:29\",\n        \"name\": \"Partner 1-1\",\n        \"externalId\": \"msp1-partner-1-1\",\n        \"website\": \"partner1-1.com\",\n        \"status\": \"deleting\",\n        \"contacts\": [\n            {\n                \"email\": \"admin1@partner1-1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"22 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94054\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "List Partners",
+							"id": "48fa966b-bca7-4a14-91e0-2ad3fe07af84",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ServerURL}}/api/v1/partner/partners?filter=status:provisioning_failure&sort=asc:updateTs&pageNumber=0&pageSize=25",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"partner",
+										"partners"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "status:provisioning_failure",
+											"description": "Optional - Filter. </br>searchTerm - matches partner `name` and  contact `email` containing searchTerm value.</br>Apart from `searchTerm` filter can also be applied on fields like name and workloadAccess."
+										},
+										{
+											"key": "sort",
+											"value": "asc:updateTs",
+											"description": "Optional - Sort order. default desc:updateTs"
+										},
+										{
+											"key": "pageNumber",
+											"value": "0",
+											"description": "Optional - Page number >= 0. default 0"
+										},
+										{
+											"key": "pageSize",
+											"value": "25",
+											"description": "Optional - Size of each page. default 25"
+										}
+									]
+								},
+								"description": "#### Description\n\nThis is used by MSP to list all partners.\n\n#### Params\n\nSearch by name or primary contact email: GET /partners?filter=searchTerm:{value}\n\nFilter by workloadAccess: GET /partners?filter=workloadAccess:true\n\n#### Response\n\n##### Schema\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID |  |\n| name | Partner name | String |  |\n| website | Partner website | String |  |\n| primaryEmail | Partner contact email | String |  |\n| workloadAccess | Ability to manage accounts workload | Boolean |  |"
+							},
+							"response": [
+								{
+									"id": "145909a0-0154-4476-8d9c-7b3982379229",
+									"name": "List Partners",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/partners?filter=searchTerm:tree",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"partners"
+											],
+											"query": [
+												{
+													"key": "filter",
+													"value": "searchTerm:tree"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"id\": \"0DF97076-78B4-4A44-88A2-42F4BF0E3A31\",\n            \"insertTs\": \"2022-06-21T17:19:00\",\n            \"updateTs\": \"2022-06-25T00:06:28\",\n            \"status\": \"active\",\n            \"name\": \"Partner Tree1\",\n            \"primaryEmail\": \"admin@partnertree1.com\",\n            \"website\": \"partnertree1.com\",\n            \"externalId\": \"partner-tree1\",\n            \"workloadAccess\": false\n        },\n        {\n            \"id\": \"126DFC5D-AFA2-42A8-BDAB-B27CC0CCA04E\",\n            \"insertTs\": \"2022-06-21T17:19:00\",\n            \"updateTs\": \"2022-06-25T00:06:28\",\n            \"status\": \"active\",\n            \"name\": \"Sequoia\",\n            \"primaryEmail\": \"admin@tree.com\",\n            \"website\": \"tree.com\",\n            \"externalId\": \"Sequoia-tree1\",\n            \"workloadAccess\": true\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"searchTerm:tree\",\n        \"sort\": \"desc:updateTs\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 25,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Partner by Id",
+							"id": "dc3ac376-586f-4713-b46b-b7aedeb40799",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}",
+								"description": "This is use by MSP to view their partners' details.\n\n#### Response\n\n##### Schema\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| id | Partner Metallic ID | UUID |  |\n| status | Partner status | See Partner status enums |  |\n| insertTs | Partner created time | Timestamp |  |\n| updateTs | Partner last updated time | Timestamp |  |\n| externalId | Partner ID in MSP system | String / UUID |  |\n| name | Partner name | String |  |\n| website | Partner website | String |  |\n| contacts | Partner contacts | Contact Objects |  |\n| workloadAccess | Ability to manage accounts workload | Boolean |  |\n\n##### Objects\n\n###### Contact Object\n\n| Field | Description | Value |\n| --- | --- | --- |\n| type | Contact type | \"primary\" |\n| email | Contact email | String |\n| firstName | Contact first name | String |\n| lastName | Contact last name | String |\n| address | Contact address | Address Object |\n| phone | Contact phone number | String |\n\n###### Address Object\n\n| Field | Description | Value |\n| --- | --- | --- |\n| addressLine1 | Street address | String |\n| addressLine2 | Street address continued | String |\n| city | City | String |\n| state | State | String |\n| country | Country | String |\n| postalCode | Postal Code | String |"
+							},
+							"response": [
+								{
+									"id": "83193179-14fc-4ec3-b347-847df4b8b26a",
+									"name": "Get Partner by Id",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/partner/partners/2dde73c6-10c7-4299-924b-c81c60e33e14"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"active\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
+								}
+							]
+						}
+					],
+					"id": "35452ed1-b252-4de2-976e-acc318bc0874",
+					"description": "Partner management is used by MSP to introduce and manage their reseller partners.\n\nPartner status returned by APIs have one of the following values:\n\n#### Partner Status Enumeration\n\n| **Enumeration Value** | **Description** |\n| --- | --- |\n| provisioning | New partner provisioning in progress |\n| updating | Partner updation in progress |\n| active | Partner is in active state |\n| provisioning_failure | New partner provisioning failed |\n| error_pending_investigation | Partner update or deletion failed |"
+				},
+				{
 					"name": "Usage",
 					"item": [
 						{
@@ -1491,313 +1797,6 @@
 							}
 						}
 					]
-				},
-				{
-					"name": "Partners",
-					"item": [
-						{
-							"name": "Create Partner",
-							"id": "6f290a7a-6db1-4303-9b8b-173f1ab4ab5e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{partner_name}}\",\n    \"externalId\": \"{{partner_external_id}}\",\n    \"website\": \"{{partner_website}}\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"{{partner_contact_email}}\",\n            \"firstName\": \"{{partner_contact_first_name}}\",\n            \"lastName\": \"{{partner_contact_last_name}}\",\n            \"address\": {\n                \"addressLine1\": \"{{address_line1}}\",\n                \"addressLine2\": \"{{address_line2}}\",\n                \"city\": \"{{city}}\",\n                \"state\": \"{{state}}\",\n                \"country\": \"{{country}}\",\n                \"postalCode\": \"{{post_code}}\"\n            }\n        }\n    ],\n    \"workloadAccess\": {{true || false}}\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{ServerURL}}/api/v1/partner/partners",
-								"description": "#### Description\n\nThis is used by MSP to introduce their reseller partners. MSP will provide basic info of their reseller partners. MSP can enable reseller partner's access to command center to manage account workload if needed. Partner provisioning is asynchronous.\n\n#### Request body\n\n##### Schema\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID | True | It needs to be unique within same MSP. |\n| name | Partner name | String | True | It needs to be unique within same MSP. |\n| website | Partner website | String | False |  |\n| contacts | Partner contacts | Contact Objects | True | See Objects - Contact Object. |\n| workloadAccess | Access to manage accounts | Boolean | True |  |\n\n##### Objects\n\n###### Contact Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| type | Contact type | \"primary\" | True | We currently support \"primary\" type only. |\n| email | Contact email | String | True | It needs to be a valid email and unique in Metallic. |\n| firstName | Contact first name | String | True |  |\n| lastName | Contact last name | String | True |  |\n| address | Contact address | Address Object | True | See Address Object. |\n| phone | Contact phone number | String | False |  |\n\n###### Address Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Street address | String | True |  |\n| addressLine2 | Street address continued | String | False |  |\n| city | City | String | True |  |\n| state | State | String | Depends | This field is required when country is United States, otherwise is optional. If provided, it must be ISO standard code or name. |\n| country | Country | String | True | It must be ISO standard code or name. |\n| postalCode | Postal Code | String | True |  |\n\n#### Response\n\n##### Schema\n\n201 Created\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| id | Partner Metallic ID | UUID |  |\n| status | Partner status | \"provisioning\" |  |\n| insertTs | Partner created time | Timestamp |  |\n| updateTs | Partner last updated time | Timestamp |  |\n| externalId | Partner ID in MSP system | String / UUID | It's the same as request input. |\n| name | Partner name | String | It's the same as request input. |\n| website | Partner website | String | It's the same as request input. |\n| contacts | Partner contacts | Contact Objects | It's the same as request input. |\n| workloadAccess | Ability to manage accounts workload | Boolean | It's the same as request input. |\n\n400 Validation failed\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| code | Validation error code | Integer |  |\n| message | Validation error message | String |  |\n| errors | Validation details | Validation Details Objects | See Objects - Validation Details Object |\n\n##### Objects\n\n###### Validation Details Object\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| field | Field name | String | It gives which field failed validation. |\n| message | Error details | String | It gives the exact error message. |"
-							},
-							"response": [
-								{
-									"id": "2e53b6c8-4618-45b8-8222-c2fbf6468d1d",
-									"name": "Create partner without workload access",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"name\": \"Partner 1\",\n    \"externalId\": \"msp1-partner-1\",\n    \"website\": \"partner1.com\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"admin@partner1.com\",\n            \"firstName\": \"Admin\",\n            \"lastName\": \"User\",\n            \"address\": {\n                \"addressLine1\": \"1 Rd\",\n                \"city\": \"Santa Clara\",\n                \"state\": \"California\",\n                \"country\": \"United States\",\n                \"postalCode\": \"94051\"\n            }\n        }\n    ],\n    \"workloadAccess\": false\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{ServerURL}}/api/v1/partner/partners"
-									},
-									"status": "Created",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": ""
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"provisioning\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
-								},
-								{
-									"id": "daca6373-908d-4d8d-b712-b06069d6345d",
-									"name": "Create partner with workload access",
-									"originalRequest": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"name\": \"Partner 1\",\n    \"externalId\": \"msp1-partner-1\",\n    \"website\": \"partner1.com\",\n    \"contacts\": [\n        {\n            \"type\": \"primary\",\n            \"email\": \"admin@partner1.com\",\n            \"firstName\": \"Admin\",\n            \"lastName\": \"User\",\n            \"address\": {\n                \"addressLine1\": \"1 Rd\",\n                \"city\": \"Santa Clara\",\n                \"state\": \"California\",\n                \"country\": \"United States\",\n                \"postalCode\": \"94051\"\n            }\n        }\n    ],\n    \"workloadAccess\": true\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{ServerURL}}/api/v1/partner/partners"
-									},
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": ""
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"provisioning\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": true\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "Edit Partner",
-							"id": "ce2828b8-e2c9-42f3-b84a-caba166e275b",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"{{partner_name}}\",\n    \"externalId\": \"{{partner_external_id}}\",\n    \"website\": \"{{partner_website}}\",\n    \"contacts\": {\n        \"email\": \"{{partner_contact_email}}\",\n        \"firstName\": \"{{partner_contact_first_name}}\",\n        \"lastName\": \"{{partner_contact_last_name}}\",\n        \"address\": {\n            \"addressLine1\": \"{{address_line1}}\",\n            \"addressLine2\": \"{{address_line2}}\",\n            \"city\": \"{{city}}\",\n            \"state\": \"{{state}}\",\n            \"country\": \"{{country}}\",\n            \"postalCode\": \"{{post_code}}\"\n        }\n    },\n    \"workloadAccess\": {{true || false}}\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{ServerURL}}/api/v1/partner/partners",
-								"description": "#### Description\n\nThis is used by MSP to update their reseller partners. Partner update is asynchronous.\n\n#### Request\n\n##### Schema\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID | False |  |\n| name | Partner name | String | False |  |\n| website | Partner website | String | False | If removing this field, please explicitly provide it as null. |\n| contact | Partner contact | Contact Object | False |  |\n| workloadAccess | Ability to manage accounts workload | Boolean | False |  |\n\n##### Contact Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| firstName | Contact first name | String | False |  |\n| lastName | Contact last name | String | False |  |\n| email | Contact email | String | False |  |\n| address | Contact address | Address Object | False | If removing this field, please explicitly provide it as null. |\n\n##### Address Object\n\n| Field | Description | Value | Required | Notes |\n| --- | --- | --- | --- | --- |\n| addressLine1 | Street address | String | False | If removing this field, please explicitly provide it as null. |\n| city | City | String | False | If removing this field, please explicitly provide it as null. |\n| state | State | String | False | If removing this field, please explicitly provide it as null. |\n| country | Country | String | False | If removing this field, please explicitly provide it as null. |\n| postalCode | Postal Code | String | False | If removing this field, please explicitly provide it as null. |\n\n#### Response\n\n##### Schema\n\n###### 200 Success\n\nReturn Partner details with updated values and status \"updating\".\n\n###### 400 Validation failed\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| code | Validation error code | Integer |  |\n| message | Validation error message | String |  |\n| errors | Validation details | Validation Details Objects | See Objects - Validation Details Object |\n\n##### Objects\n\n###### Validation Details Object\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| field | Field name | String | It gives which field failed validation. |\n| message | Error details | String | It gives the exact error message. |"
-							},
-							"response": [
-								{
-									"id": "9f580774-d985-4666-bb26-c629dbac98b0",
-									"name": "Update partner name/externalId/website/workloadAccess/contact",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"name\": \"Partner 1-1\",\n    \"externalId\": \"msp1-partner-1-1\",\n    \"website\": \"partner1-1.com\",\n    \"workloadAccess\": false,\n    \"contact\": {\n        \"email\": \"admin1@partner1-1.com\",\n        \"firstName\": \"Admin\",\n        \"lastName\": \"User\",\n        \"address\": {\n            \"addressLine1\": \"1 Road\",\n            \"city\": \"Sunnyvale\",\n            \"state\": \"California\",\n            \"country\": \"United States\",\n            \"postalCode\": \"94051\"\n        }\n    }\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{ServerURL}}/api/v1/partner/partners"
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": ""
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-22T17:49:29\",\n        \"name\": \"Partner 1-1\",\n        \"externalId\": \"msp1-partner-1-1\",\n        \"website\": \"partner1-1.com\",\n        \"status\": \"upadting\",\n        \"contacts\": [\n            {\n                \"email\": \"admin1@partner1-1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"22 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94054\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "Delete Partner",
-							"id": "726827db-8e59-4a3a-9441-a32d59a7969e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}",
-								"description": "#### Description\n\nThis is used by MSP to delete their reseller partners. Partner deletion is asynchronous. Upon successful deletion, partner will be removed completely from Metallic.\n\n#### Response\n\nReturn partner details with status \"deleting\"."
-							},
-							"response": [
-								{
-									"id": "f5138b88-7072-46dd-813c-4fd5ca61df8a",
-									"name": "Delete Partner",
-									"originalRequest": {
-										"method": "DELETE",
-										"header": [],
-										"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}"
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": ""
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-22T17:49:29\",\n        \"name\": \"Partner 1-1\",\n        \"externalId\": \"msp1-partner-1-1\",\n        \"website\": \"partner1-1.com\",\n        \"status\": \"deleting\",\n        \"contacts\": [\n            {\n                \"email\": \"admin1@partner1-1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"22 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94054\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "List Partners",
-							"id": "48fa966b-bca7-4a14-91e0-2ad3fe07af84",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{ServerURL}}/api/v1/partner/partners?filter=status:provisioning_failure&sort=asc:updateTs&pageNumber=0&pageSize=25",
-									"host": [
-										"{{ServerURL}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"partner",
-										"partners"
-									],
-									"query": [
-										{
-											"key": "filter",
-											"value": "status:provisioning_failure",
-											"description": "Optional - Filter. </br>searchTerm - matches partner `name` and  contact `email` containing searchTerm value.</br>Apart from `searchTerm` filter can also be applied on fields like name and workloadAccess."
-										},
-										{
-											"key": "sort",
-											"value": "asc:updateTs",
-											"description": "Optional - Sort order. default desc:updateTs"
-										},
-										{
-											"key": "pageNumber",
-											"value": "0",
-											"description": "Optional - Page number >= 0. default 0"
-										},
-										{
-											"key": "pageSize",
-											"value": "25",
-											"description": "Optional - Size of each page. default 25"
-										}
-									]
-								},
-								"description": "#### Description\n\nThis is used by MSP to list all partners.\n\n#### Params\n\nSearch by name or primary contact email: GET /partners?filter=searchTerm:{value}\n\nFilter by workloadAccess: GET /partners?filter=workloadAccess:true\n\n#### Response\n\n##### Schema\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| externalId | Partner ID in MSP system | String / UUID |  |\n| name | Partner name | String |  |\n| website | Partner website | String |  |\n| primaryEmail | Partner contact email | String |  |\n| workloadAccess | Ability to manage accounts workload | Boolean |  |"
-							},
-							"response": [
-								{
-									"id": "145909a0-0154-4476-8d9c-7b3982379229",
-									"name": "List Partners",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{ServerURL}}/api/v1/partner/partners?filter=searchTerm:tree",
-											"host": [
-												"{{ServerURL}}"
-											],
-											"path": [
-												"api",
-												"v1",
-												"partner",
-												"partners"
-											],
-											"query": [
-												{
-													"key": "filter",
-													"value": "searchTerm:tree"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": ""
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"data\": [\n        {\n            \"id\": \"0DF97076-78B4-4A44-88A2-42F4BF0E3A31\",\n            \"insertTs\": \"2022-06-21T17:19:00\",\n            \"updateTs\": \"2022-06-25T00:06:28\",\n            \"status\": \"active\",\n            \"name\": \"Partner Tree1\",\n            \"primaryEmail\": \"admin@partnertree1.com\",\n            \"website\": \"partnertree1.com\",\n            \"externalId\": \"partner-tree1\",\n            \"workloadAccess\": false\n        },\n        {\n            \"id\": \"126DFC5D-AFA2-42A8-BDAB-B27CC0CCA04E\",\n            \"insertTs\": \"2022-06-21T17:19:00\",\n            \"updateTs\": \"2022-06-25T00:06:28\",\n            \"status\": \"active\",\n            \"name\": \"Sequoia\",\n            \"primaryEmail\": \"admin@tree.com\",\n            \"website\": \"tree.com\",\n            \"externalId\": \"Sequoia-tree1\",\n            \"workloadAccess\": true\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"searchTerm:tree\",\n        \"sort\": \"desc:updateTs\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 25,\n            \"totalRecords\": 2\n        }\n    }\n}"
-								}
-							]
-						},
-						{
-							"name": "Get Partner by Id",
-							"id": "dc3ac376-586f-4713-b46b-b7aedeb40799",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{ServerURL}}/api/v1/partner/partners/{partnerId}",
-								"description": "This is use by MSP to view their partners' details.\n\n#### Response\n\n##### Schema\n\n| Field | Description | Value | Notes |\n| --- | --- | --- | --- |\n| id | Partner Metallic ID | UUID |  |\n| status | Partner status | See Partner status enums |  |\n| insertTs | Partner created time | Timestamp |  |\n| updateTs | Partner last updated time | Timestamp |  |\n| externalId | Partner ID in MSP system | String / UUID |  |\n| name | Partner name | String |  |\n| website | Partner website | String |  |\n| contacts | Partner contacts | Contact Objects |  |\n| workloadAccess | Ability to manage accounts workload | Boolean |  |\n\n##### Objects\n\n###### Contact Object\n\n| Field | Description | Value |\n| --- | --- | --- |\n| type | Contact type | \"primary\" |\n| email | Contact email | String |\n| firstName | Contact first name | String |\n| lastName | Contact last name | String |\n| address | Contact address | Address Object |\n| phone | Contact phone number | String |\n\n###### Address Object\n\n| Field | Description | Value |\n| --- | --- | --- |\n| addressLine1 | Street address | String |\n| addressLine2 | Street address continued | String |\n| city | City | String |\n| state | State | String |\n| country | Country | String |\n| postalCode | Postal Code | String |"
-							},
-							"response": [
-								{
-									"id": "83193179-14fc-4ec3-b347-847df4b8b26a",
-									"name": "Get Partner by Id",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": "{{ServerURL}}/api/v1/partner/partners/2dde73c6-10c7-4299-924b-c81c60e33e14"
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json",
-											"description": ""
-										}
-									],
-									"cookie": [],
-									"responseTime": null,
-									"body": "{\n    \"data\": {\n        \"id\": \"2dde73c6-10c7-4299-924b-c81c60e33e14\",\n        \"insertTs\": \"2022-06-21T17:49:29\",\n        \"updateTs\": \"2022-06-21T17:49:29\",\n        \"name\": \"Partner 1\",\n        \"externalId\": \"msp1-partner-1\",\n        \"website\": \"partner1.com\",\n        \"status\": \"active\",\n        \"contacts\": [\n            {\n                \"email\": \"admin@partner1.com\",\n                \"firstName\": \"Admin\",\n                \"lastName\": \"User\",\n                \"address\": {\n                    \"addressLine1\": \"1 Rd\",\n                    \"city\": \"Santa Clara\",\n                    \"state\": \"California\",\n                \t\t\"country\": \"United States\",\n                \t\t\"postalCode\": \"94051\"\n                },\n                \"type\": \"primary\"\n            }\n        ],\n        \"workloadAccess\": false\n    }\n}"
-								}
-							]
-						}
-					],
-					"id": "35452ed1-b252-4de2-976e-acc318bc0874",
-					"description": "Partner management is used by MSP to introduce and manage their reseller partners.\n\nPartner status returned by APIs have one of the following values:\n\n#### Partner Status Enumeration\n\n| **Enumeration Value** | **Description** |\n| --- | --- |\n| provisioning | New partner provisioning in progress |\n| updating | Partner updation in progress |\n| active | Partner is in active state |\n| provisioning_failure | New partner provisioning failed |\n| error_pending_investigation | Partner update or deletion failed |"
 				},
 				{
 					"name": "Users",
@@ -8469,6 +8468,1043 @@
 						}
 					],
 					"id": "80f19214-08e2-4c93-9ede-43e6d51b3b02"
+				},
+				{
+					"name": "Office 365",
+					"item": [
+						{
+							"name": "Prerequisite Operations",
+							"item": [
+								{
+									"name": "Configure Server Plan",
+									"id": "09465288-f4fd-4b1e-a666-0e4e7c883846",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/core/office365/serverplan",
+										"description": "This API can be used to create a server plan for Office 365.  \n\nServer Plan is configured to set storage location and by default customer's provisioned country is used. If user wants to setup a multi-region based storage configuration, use Metallic's onboarding wizard.\n\n#### Response\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| planId | Id of the server plan created | integer |  |\n| planName | Name of the server plan created | string |  |"
+									},
+									"response": [
+										{
+											"id": "5837e7c8-0090-41a7-bd63-ec282e524e99",
+											"name": "201 Created",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/office365/serverplan"
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"data\": {\r\n            \"planName\": \"companyname-metallic-o365-storage-eastus2\",\r\n            \"planId\": 2401\r\n        }\r\n    \r\n}"
+										},
+										{
+											"id": "3a60a93d-99f8-40fc-ba1e-5ca163f85ac0",
+											"name": "409 Conflict",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/office365/serverplan",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"office365",
+														"serverplan"
+													],
+													"query": [
+														{
+															"key": "",
+															"value": null,
+															"disabled": true
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"error\": {\n        \"code\": 409,\n        \"message\": \"Plan companyname-metallic-o365-storage-eastus2 already exists in region eastus2\"\n    }\n}"
+										},
+										{
+											"id": "f08bb6c2-f575-4238-af4b-d9c5a7b816a6",
+											"name": "400 Bad Request",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/office365/serverplan",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"office365",
+														"serverplan"
+													],
+													"query": [
+														{
+															"key": "",
+															"value": null,
+															"disabled": true
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"error\": {\n        \"code\": 400,\n        \"message\": \"Region ap-northeast-1 is not supported\"\n    }\n}"
+										},
+										{
+											"id": "3d04fdc2-12dc-4f1b-8d0e-8b861d619195",
+											"name": "403 Forbidden",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/office365/serverplan",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"office365",
+														"serverplan"
+													],
+													"query": [
+														{
+															"key": "",
+															"value": null,
+															"disabled": true
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"error\": {\n        \"code\": 403,\n        \"message\": \"Valid subscription not found\"\n    }\n}"
+										}
+									]
+								},
+								{
+									"name": "Select Server Plan",
+									"id": "1186fcab-ad6c-4ac5-997b-5e076f823e6f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/core/office365/serverplan",
+										"description": "StartFragment\n\nThis API will return list of storage plan.\n\n#### Response\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| planId | Id of server plan | integer |  |\n| planName | Name of server plan | string |  |"
+									},
+									"response": [
+										{
+											"id": "522d7ca4-dd85-42e6-b1ee-b2f9c20d61a8",
+											"name": "Success Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/office365/serverplan"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"data\": [\r\n        {\r\n            \"planName\": \"companyname-metallic-o365-storage-eastus2\",\r\n            \"planId\": 2401\r\n        }\r\n    ]\r\n}"
+										}
+									]
+								},
+								{
+									"name": "Configure Office365 Plan",
+									"id": "ad20ae09-0787-4882-a87e-6711281685ab",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"planName\": \"{{planName}}\",\r\n    \"planTier\": {{planTier}},\r\n    \"retention\": {{retntion}}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/core/office365plan",
+										"description": "This API can be used to create a Office 365 plan.\n\n#### Request\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| planName | Office 365 plan name | string | True |  |\n| planTier | pricing tier of the plan | integer | True | 1 = STANDARD (365 days), 2 = ENTERPRISE (1095 days)  <br> |\n| retention | retention in number of days | integer | False | If provided, input retention will be used instead of the default as per pricing tier |\n\n#### Response\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| planId | Id of the office 365 plan created | integer |  |\n| planName | Name of the office 365 plan created | string |  |"
+									},
+									"response": [
+										{
+											"id": "d2638b92-9fcc-46f8-9c1b-8696affc29d3",
+											"name": "201 Created",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"planName\": \"TestPlan\",\r\n    \"planTier\": 1\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}/api/v1/core/office365plan"
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"data\": {\r\n        \"planName\": \"TestPlan\",\r\n        \"planId\": 2403\r\n    }\r\n}"
+										},
+										{
+											"id": "2c114112-6a8e-46f9-b3ef-177424a93311",
+											"name": "400 Bad Request Exists",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"planName\": \"TestPlan\",\r\n    \"planTier\": 1\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/office365plan",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"office365plan"
+													],
+													"query": [
+														{
+															"key": "",
+															"value": null,
+															"disabled": true
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"error\": {\n        \"code\": 400,\n        \"message\": \"Plan TestPlan already exists.\"\n    }\n}"
+										},
+										{
+											"id": "70eecc53-4735-4f45-9d81-df88e61737c7",
+											"name": "400 Bad Request",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"planName\": \"TestPlan\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/office365plan",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"office365plan"
+													],
+													"query": [
+														{
+															"key": "",
+															"value": null,
+															"disabled": true
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"error\": {\n        \"code\": 400,\n        \"message\": \"Bad Request\"\n    }\n}"
+										}
+									]
+								},
+								{
+									"name": "Select Office365 Plan",
+									"id": "69965537-fa90-4431-a514-a956a8ff6263",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": "{{ServerURL}}/api/v1/core/office365plan",
+										"description": "StartFragment\n\nThis API will return list of office 365 plan.\n\n#### Response\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| planId | Id of office 365 plan | integer |  |\n| planName | Name of office 365 plan | string |  |"
+									},
+									"response": [
+										{
+											"id": "657ae328-d64e-4dda-8d60-fb3edfed906a",
+											"name": "Success Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "lhAccountId",
+														"value": "{{accountId}"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/office365plan"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"data\": [\r\n        {\r\n            \"planName\": \"TestPlan\",\r\n            \"planId\": 2402\r\n        }\r\n    ]\r\n}"
+										}
+									]
+								}
+							],
+							"id": "317e3d20-f0d4-42dc-a105-c1746a9087b6",
+							"description": "Prerequisite APIs are used to create and list storage plan and retention plan.\n\n##### Common Error Object\n\nIn case of error, the error object will be returned having following properties\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| code | Error code | integer |  |\n| message | Error message | string |  |"
+						},
+						{
+							"name": "Exchange Online",
+							"item": [
+								{
+									"name": "Configure Backup App for Exchange Online",
+									"id": "861a1f11-885b-427e-99dc-aa58176ff0d7",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"serverPlan\": {\r\n        \"id\": {{serverPlanId}},\r\n        \"name\": \"{{serverPlanName}}\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"{{applicationId}}\",\r\n        \"applicationSecret\": \"{{applicationSecret}}\",\r\n        \"azureDirectoryId\": \"{{azureDirectoryId}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​/api/v1/core/office365​/exchange",
+										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new exchange app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register the Azure app for Exchange Online with Azure AD](https://docs.metallic.io/metallic/134722_register_azure_app_for_exchange_online_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\n  \n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
+									},
+									"response": [
+										{
+											"id": "c22f4489-4fc2-47cf-903b-7b799a544a1c",
+											"name": "Successful configuration response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_Exchange\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​/api/v1/core/office365​/exchange"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"id\": 101,\n    \"name\": \"mycompanytenant_Exchange\"\n}"
+										},
+										{
+											"id": "768774c7-8140-431b-9dca-a3394710eb00",
+											"name": "Client already exist response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_Exchange\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}/api/v1/core/office365​/exchange"
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n  \"errorMessage\": \"An instance by this name already exists.\",\r\n  \"errorCode\": 3\r\n}"
+										}
+									]
+								},
+								{
+									"name": "Add Backup Content to Exchange Online App",
+									"id": "6cbbd359-4e5a-4c4d-a3d5-3bffded995aa",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"type\": \"{{type}}\",\r\n    \"office365plan\": {\r\n        \"id\": {{office365planId}},\r\n        \"name\": \"{{office365planName}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​/api/v1​/core/office365​/exchange​/{appId}/content",
+										"description": "**WARNING** : All content will be backed up to the country you selected when creating your tenant in Metallic.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | Exchange app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Exchange content type | string | True | \\[ ALL_MAILBOXES, ALL_PUBLIC_FOLDERS, ALL_GROUP_MAILBOXES \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
+									},
+									"response": [
+										{
+											"id": "9c5d15e0-91ac-4843-bd65-d85c8b31cccf",
+											"name": "Successful execution response",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"type\": \"ALL_MAILBOXES\",\r\n    \"office365plan\": {\r\n        \"id\": 10,\r\n        \"name\": \"myO365Plan\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​/api/v1​/core/office365​/exchange​/101/content"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"errorMessage\": \"\",\n    \"errorCode\": 0\n}"
+										}
+									]
+								}
+							],
+							"id": "7b117ee5-e9f3-4981-bf8b-6bd26d8b6dfa"
+						},
+						{
+							"name": "SharePoint Online",
+							"item": [
+								{
+									"name": "Configure Backup App for SharePoint Online",
+									"id": "7cc07646-0b64-4ecf-9a0d-81fb7844cd8f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"serverPlan\": {\r\n        \"id\": {{serverPlanId}},\r\n        \"name\": \"{{serverPlanName}}\"\r\n    },\r\n    \"tenantAdminSiteURL\": \"{{tenantAdminSiteURL}}\",\r\n    \"azureApp\": {\r\n        \"applicationId\": \"{{applicationId}}\",\r\n        \"applicationSecret\": \"{{applicationSecret}}\",\r\n        \"azureDirectoryId\": \"{{azureDirectoryId}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​​/api/v1/core​/office365​/sharepoint",
+										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new SharePoint app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| tenantAdminSiteURL | SharePoint tenant admin URL | string | True | Example : [https://myTenant-admin.sharepoint.com](https://myTenant-admin.sharepoint.com) |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register the Azure App for SharePoint Online with Azure AD](https://docs.metallic.io/metallic/143193_register_azure_app_for_sharepoint_online_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\nStartFragmenFragment\n\nResponse Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
+									},
+									"response": [
+										{
+											"id": "c3f6cdac-0419-4061-aa55-4935e6a47ed8",
+											"name": "Successful configuration response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_SharePoint\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"tenantAdminSiteURL\": \"https://myTenant-admin.sharepoint.com\",\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​​/api/v1/core​/office365​/sharepoint"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"id\": 102,\n    \"name\": \"mycompanytenant_SharePoint\"\n}"
+										}
+									]
+								},
+								{
+									"name": "Add Backup Content to SharePoint Online App",
+									"id": "56a04836-efa3-4e0a-ba9c-7f804f8bc134",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"type\": \"{{type}}\",\r\n    \"office365plan\": {\r\n        \"id\": {{office365planId}},\r\n        \"name\": \"{{office365planName}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​/api/v1​/core/office365​/sharepoint​/{appId}/content",
+										"description": "**NOTE** : All content will be backed up to the country you selected when creating your tenant in Metallic.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | SharePoint app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | SharePoint content type | string | True | \\[ ALL_WEB_SITES, ALL_TEAMS_SITES \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
+									},
+									"response": [
+										{
+											"id": "9a8e86ac-9828-4d39-a843-847bd70236b9",
+											"name": "Successful execution response",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"type\": \"ALL_WEB_SITES\",\r\n    \"office365plan\": {\r\n        \"id\": 10,\r\n        \"name\": \"myO365Plan\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​/api/v1​/core/office365​/sharepoint​/102/content"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"errorMessage\": \"\",\n    \"errorCode\": 0\n}"
+										}
+									]
+								}
+							],
+							"id": "8b5c268e-a5a8-40d7-8c30-e1e66248d089"
+						},
+						{
+							"name": "OneDrive for Business",
+							"item": [
+								{
+									"name": "Configure Backup App for OneDrive for Business",
+									"id": "e035fd00-f38f-43e0-9b30-a7184936d0de",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"serverPlan\": {\r\n        \"id\": {{serverPlanId}},\r\n        \"name\": \"{{serverPlanName}}\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"{{applicationId}}\",\r\n        \"applicationSecret\": \"{{applicationSecret}}\",\r\n        \"azureDirectoryId\": \"{{azureDirectoryId}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​​/api/v1​/core/office365​/onedrive",
+										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new OneDrive app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register  <br>the Azure App for OneDrive for Business with Azure AD](https://docs.metallic.io/metallic/130886_register_azure_app_for_onedrive_for_business_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\n  \n\nResponse Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
+									},
+									"response": [
+										{
+											"id": "9a938476-7194-4ac0-81df-4093866f8b34",
+											"name": "Successful configuration response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_OneDrive\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​​/api/v1​/core/office365​/onedrive"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"id\": 103,\n    \"name\": \"mycompanytenant_OneDrive\"\n}"
+										}
+									]
+								},
+								{
+									"name": "Add Backup Content to OneDrive for Business App",
+									"id": "c0969a0a-d3de-44be-9943-868aff2356b6",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"type\": \"{{type}}\",\r\n    \"office365plan\": {\r\n        \"id\": {{office365planId}},\r\n        \"name\": \"{{office365planName}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​/api/v1​/core/office365​/onedrive​/{appId}/content",
+										"description": "**NOTE** : All content will be backed up to the country you selected when creating your tenant in Metallic.  \n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | OneDrive app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | OneDrive content type | string | True | \\[ ALL_USERS \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
+									},
+									"response": [
+										{
+											"id": "72dc6792-c5c0-4765-9a53-b43fa49421e7",
+											"name": "Successful execution response",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"type\": \"ALL_USERS\",\r\n    \"office365plan\": {\r\n        \"id\": 10,\r\n        \"name\": \"myO365Plan\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​/api/v1​/core/office365​/onedrive​/103/content"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"errorMessage\": \"\",\n    \"errorCode\": 0\n}"
+										}
+									]
+								}
+							],
+							"id": "55d3f43c-c442-427b-b881-fa8bdbe49f52"
+						},
+						{
+							"name": "Teams",
+							"item": [
+								{
+									"name": "Configure Backup App for Teams",
+									"id": "da2fd124-ae83-4d75-ae1b-9c9a69a082df",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"serverPlan\": {\r\n        \"id\": {{serverPlanId}},\r\n        \"name\": \"{{serverPlanName}}\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"{{applicationId}}\",\r\n        \"applicationSecret\": \"{{applicationSecret}}\",\r\n        \"refreshToken\": \"{{refreshToken}}\",\r\n        \"azureDirectoryId\": \"{{azureDirectoryId}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​​/api/v1/core​/office365​/teams",
+										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register  <br>the Azure App for Teams with Azure AD](https://docs.metallic.io/metallic/135740_register_azure_app_for_teams_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| refreshToken | Refresh token with access on-behalf of a user | string | False | Base64 encoded. Refer [MS doc](https://learn.microsoft.com/en-us/graph/auth-v2-user#3-get-a-token) for steps to generate it. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
+									},
+									"response": [
+										{
+											"id": "f339a083-f52c-4a9a-a27f-4e9248b551e6",
+											"name": "Successful configuration response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_Teams\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"refreshToken\": \"VGhpcyBpcyBqdXN0IGEgZHVtbXkgdmFsdWUgYW5kIG5vdCBhY3R1YWwgcmVmcmVzaCB0b2tlbiwgYnV0IHRoaXMgaXMgd2hlcmUgeW91ciByZWZyZXNoIHRva2VuIHNob3VsZCBnby4=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​​/api/v1/core​/office365​/teams"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"id\": 104,\n    \"name\": \"mycompanytenant_Teams\"\n}"
+										}
+									]
+								},
+								{
+									"name": "Add Backup Content to Teams App",
+									"id": "21805a4c-7ca8-4847-838c-3a82a1945ec0",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"type\": \"{{type}}\",\r\n    \"office365plan\": {\r\n        \"id\": {{office365planId}},\r\n        \"name\": \"{{office365planName}}\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}​/api/v1​/core/office365​/teams​/{appId}/content",
+										"description": "**NOTE** : All content will be backed up to the country you selected when creating your tenant in Metallic.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | Teams app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Teams content type | string | True | \\[ ALL_TEAMS \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
+									},
+									"response": [
+										{
+											"id": "6dca3829-534f-4218-80c9-fee4a8d0c1ce",
+											"name": "Successful execution response",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"type\": \"ALL_TEAMS\",\r\n    \"office365plan\": {\r\n        \"id\": 10,\r\n        \"name\": \"myO365Plan\"\r\n    }\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": "{{ServerURL}}​/api/v1​/core/office365​/teams​/104/content"
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n    \"errorMessage\": \"\",\n    \"errorCode\": 0\n}"
+										}
+									]
+								}
+							],
+							"id": "704b4224-9044-4baf-aa0f-4136f0cbb3c6"
+						}
+					],
+					"id": "46970ff8-a358-4cd5-a09f-c7704a6219b6",
+					"description": "To configure backup for O365 apps perform the API operations in the following sequence\n\n1. **Configure Server Plan:** Create the backup storage plan using the Configure Server Plan API. Use Select server plan API to get the plan Id if plan is already created.\n2. **Configure Office365 Plan:** Create office365 plan using the Configure Office365 Plan API.\n3. **Configure Backup Application:** Using the Configure Backup App API for each Office 365 app (Exchange, Sharepoint, OneDrive, Teams) create the Metallic backup app by providing respective Azure AD application credentials and Server plan in request.\n4. **Add Content to Backup Application:** Add content to Metallic backup app using Add backup content API for each Office 365 application (Exchange, Sharepoint, OneDrive, Teams) ."
 				}
 			],
 			"id": "31beb225-985a-4312-bc25-598d09effbdb",
@@ -8527,7 +9563,7 @@
 	],
 	"variable": [
 		{
-			"id": "7189cfc9-4ccd-4073-8615-02451742af81",
+			"id": "71d78c6b-0691-454b-a43a-8ab4d9bdd44b",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
