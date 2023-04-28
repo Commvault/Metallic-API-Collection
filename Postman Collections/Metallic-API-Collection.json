@@ -6036,6 +6036,355 @@
 					]
 				},
 				{
+					"name": "User Security",
+					"item": [
+						{
+							"name": "Get User List",
+							"id": "66b0e6a5-a8e8-4c7d-b268-5cdb6333b543",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ServerURL}}/api/v1/core/user",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"core",
+										"user"
+									],
+									"query": [
+										{
+											"key": "userGroupId",
+											"value": "{{userGroupId}}",
+											"disabled": true
+										}
+									]
+								},
+								"description": "This API gets users\n\n#### Params\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| userGroupId | id of usergroup to filter user list | integer |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| numberOfUsers | total users | integer |  |\n| users.id | id of the user | integer |  |\n| users.name | user name | string |  |\n| users.GUID | user GUID | string |  |\n| users.fullName | full name of the user | string |  |\n| users.email | user email | string |  |\n| users.enabled | enabled/disabled status | bool |  |\n| users.company | user company | integer (id) , string (name) |  |\n| users.userPrincipalName | UPN of the user | string |  |\n| users.lockInfo.isLocked | Returns if the user is locked or unlocked. | bool |  |\n| users.lockInfo.startTime | If the user is locked, it returns user lock start time in unix time format. | integer |  |\n| users.lockInfo.endTime | If the user is locked, it returns user lock end time in unix time format. | integer |  |"
+							},
+							"response": [
+								{
+									"id": "8881c5f3-9832-469c-b967-0506b3e36338",
+									"name": "Get User List",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/core/user",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"core",
+												"user"
+											],
+											"query": [
+												{
+													"key": "userGroupId",
+													"value": "{{userGroupId}}",
+													"disabled": true
+												},
+												{
+													"key": "start",
+													"value": "0",
+													"disabled": true
+												},
+												{
+													"key": "limit",
+													"value": "25",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"numberOfUsers\": 2,\r\n    \"users\": [\r\n        {\r\n            \"id\": 52256,\r\n            \"name\": \"Altostratus\\\\admin\",\r\n            \"GUID\": \"1E328AC5-9BD1-4266-A330-A7F3B7E20FCC\",\r\n            \"email\": \"admin@altostratus.com\",\r\n            \"fullName\": \"Admin User\",\r\n            \"userPrincipalName\": \"admin@altostratus.com\",\r\n            \"enabled\": true,\r\n            \"lockInfo\": {\r\n                \"isLocked\": false\r\n            },\r\n            \"numberOfLaptops\": 0,\r\n            \"company\": {\r\n                \"id\": 14866,\r\n                \"name\": \"Altostratus\"\r\n            }\r\n        },\r\n        {\r\n            \"id\": 52534,\r\n            \"name\": \"Altostratus\\\\testinguser\",\r\n            \"GUID\": \"4DAD21F2-ADFC-43EC-ACF8-92B8C4925565\",\r\n            \"email\": \"testin@test.ccm\",\r\n            \"fullName\": \"testing3\",\r\n            \"userPrincipalName\": \"testin@test.ccm\",\r\n            \"enabled\": false,\r\n            \"lockInfo\": {\r\n                \"isLocked\": false\r\n            },\r\n            \"numberOfLaptops\": 0,\r\n            \"company\": {\r\n                \"id\": 14866,\r\n                \"name\": \"Altostratus\"\r\n            }\r\n        }\r\n    ]\r\n}"
+								}
+							]
+						},
+						{
+							"name": "Add User",
+							"id": "eb2a277d-922a-415f-9a6b-e4090d532fb7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"fullName\": \"{{fullName}}\",\r\n      \"name\": \"{{name}}\",\r\n      \"email\": \"{{email}}\",\r\n      \"userGroups\": [\r\n        {\r\n          \"id\": {{userGroupId}},\r\n          \"name\": \"{{userGroupName}}\"\r\n        }\r\n      ],\r\n      \"useSystemGeneratePassword\": {{SystemGeneratePassword}},\r\n      \"password\": \"{{password}}\",\r\n      \"inviteUser\": {{inviteUser}}\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/core/user",
+								"description": "This API adds a user\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| fullName | Full Name of the User | string | False |  |\n| name | user name | string | False |  |\n| email | email Address | string | True |  |\n| userGroups | usergroup to associate user to name or id | integer (id) , string (name) | False |  |\n| useSystemGeneratePassword | system generated password will be sent to email Address | bool | False |  |\n| password | user password | string | False | Base64 encoded |\n| inviteUser | User will receive an email to install backup software package on their device if this is set to true. | bool | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| users.id | newly created user id | integer |  |\n| users.name | newly created user name | string |  |\n| users.GUID | mewly created user GUID | string |  |"
+							},
+							"response": [
+								{
+									"id": "300e5382-7166-4c1f-8fd8-70e5191cb3e1",
+									"name": "Add User",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"fullName\": \"testinguser\",\r\n      \"name\": \"testinguser\",\r\n      \"email\": \"testin@test.ccm\",\r\n      \"password\": \"dGVzdDI=\"\r\n    }\r\n  ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/core/user"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"users\": [\n        {\n            \"id\": 52260,\n            \"name\": \"testcompany\\\\testinguser\",\n            \"GUID\": \"E1500204-0D9F-47B7-AA7A-52F53D2689DE\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Update User",
+							"id": "9171de88-8db7-4508-9e97-b80699314332",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullName\": \"{{fullName}}\",\r\n    \"newName\": \"{{name}}\",\r\n    \"userGroupOperation\": \"{{OpType}}\",\r\n    \"userGroups\": [\r\n    {\r\n        \"id\": {{userGroupId}},\r\n        \"name\": \"{{userGroupName}}\"\r\n    }\r\n    ],\r\n    \"newPassword\": {{newPassword}},\r\n    \"validationPassword\": \"{{validationpassword}}\",\r\n    \"enabled\": {{enabled}}\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/core/user/{{userid}}",
+								"description": "This API updates a user\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| fullName | Full Name of the User | string | False |  |\n| newName | new user name | string | False |  |\n| userGroupOperation | usergroup OperationType | string |  | Allowed Values \\[\"ADD\", \"DELETE\", \"OVERWRITE\"\\] |\n| userGroups | usergroup to associate user to - name or id | integer (id) , string (name) | False |  |\n| newPassword | new password for the user | string | False | Password should be base64 encoded |\n| validationPassword | logged in user password for validation | string | False | Password should be base64 encoded |\n| enabled | Flag to enable/disable user | bool | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | errorCode | integer |  |\n| errorMessage | errorMessage | string |  |"
+							},
+							"response": [
+								{
+									"id": "b41d3f1b-1e5d-449a-bac2-b9d3814cf5c0",
+									"name": "Update User - Full Name and Password",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"users\": [\r\n    {\r\n      \"fullName\": \"sample\",\r\n      \"newPassword\": \"dGVzdA==\",\r\n      \"validationPassword\": \"dGVzdDI=\"\r\n    }\r\n  ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/core/user/52534"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"errorString\": \"\",\r\n    \"errorCode\": 0\r\n}"
+								},
+								{
+									"id": "3d630e3b-185b-43b3-863f-0b3eafbb47bb",
+									"name": "Update User - Group Association and Disable",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"enabled\": false,\r\n    \"userGroups\": [\r\n    {\r\n        \"name\": \"testcompany\\\\Tenant Admin\"\r\n    }\r\n    ]\r\n\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/core/user/52534"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\r\n    \"errorString\": \"Successful\",\r\n    \"errorCode\": 0\r\n}"
+								}
+							]
+						},
+						{
+							"name": "Get User Details",
+							"id": "461677b3-13c0-43b0-a2f9-8cbd023daedc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/core/user/{{userid}}",
+								"description": "This API gets user details\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | id of the user | integer |  |\n| name | user name | string |  |\n| GUID | user GUID | string |  |\n| fullName | full name of the user | string |  |\n| email | user email | string |  |\n| enabled | enabled/disabled status | bool |  |\n| description | user description | string |  |\n| serviceType | user account type | string | For Company User - ORGANIZATIONS  <br>For Local User - COMSERVE  <br>For AD User - ACTIVE_DIRECTORY |\n| lastLoggedIn | Returns the most recent time the user was logged in. It is provided in unix format. | integer |  |\n| company | user company | integer (id) , string (name) |  |\n| authenticationMethod | Authentication Mechanism of User | string | \\[Commcell, AD, SAML\\] |\n| associatedUserGroups | associated usergroup - name and id | integer (id) , string (name) |  |\n| userPrincipalName | UPN of the user | string |  |\n| lockInfo.isLocked | Returns if the user is locked or unlocked. | bool |  |\n| lockInfo.startTime | If the user is locked, it returns user lock start time in unix time format. | integer |  |\n| lockInfo.endTime | If the user is locked, it returns user lock end time in unix time format. | integer |  |"
+							},
+							"response": [
+								{
+									"id": "91bb5264-6b82-4908-8d0a-fa859b942cab",
+									"name": "Get User Details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{ServerURL}}/api/v1/core/user/52534"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"id\": 52534,\n    \"name\": \"Altostratus\\\\testinguser\",\n    \"GUID\": \"4DAD21F2-ADFC-43EC-ACF8-92B8C4925565\",\n    \"fullName\": \"testing3\",\n    \"email\": \"testin@test.ccm\",\n    \"userPrincipalName\": \"testin@test.ccm\",\n    \"enabled\": false,\n    \"lockInfo\": {\n        \"isLocked\": false\n    },\n    \"description\": \"\",\n    \"serviceType\": \"ORGANIZATIONS\",\n    \"lastLoggedIn\": 0,\n    \"company\": {\n        \"id\": 14866,\n        \"name\": \"Altostratus\"\n    },\n    \"authenticationMethod\": \"Commcell\",\n    \"associatedUserGroups\": [\n        {\n            \"id\": 49833,\n            \"name\": \"Tenant Admin\",\n            \"provider\": {\n                \"id\": 14866,\n                \"name\": \"Altostratus\"\n            }\n        },\n        {\n            \"id\": 49834,\n            \"name\": \"Tenant Users\",\n            \"provider\": {\n                \"id\": 14866,\n                \"name\": \"Altostratus\"\n            }\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete User",
+							"id": "f9aeba78-69c3-4ce5-9844-47813beeb877",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{ServerURL}}/api/v1/core/user/{{userid}}",
+								"description": "This API deletes a user\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | errorCode | integer |  |\n| errorMessage | errorMessage | string |  |"
+							},
+							"response": [
+								{
+									"id": "5f98ae40-abff-4608-8135-17d8816a1484",
+									"name": "Delete User",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/core/user/52534",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"core",
+												"user",
+												"52534"
+											],
+											"query": [
+												{
+													"key": "transferToUser",
+													"value": "{{transferToUser}}",
+													"disabled": true
+												},
+												{
+													"key": "transfertoUserGroup",
+													"value": "{{transfertoUserGroup}}",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"errorString\": \"\",\n    \"errorCode\": 0\n}"
+								}
+							]
+						}
+					],
+					"id": "92f3e5bc-9216-4cec-9c16-b12090ac8773",
+					"description": "User Operations"
+				},
+				{
 					"name": "Virtualization",
 					"item": [
 						{
@@ -8178,7 +8527,7 @@
 	],
 	"variable": [
 		{
-			"id": "74b4825c-04d6-48b6-bc2e-0e90ba2a0672",
+			"id": "7189cfc9-4ccd-4073-8615-02451742af81",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
