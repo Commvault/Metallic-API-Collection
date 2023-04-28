@@ -8996,7 +8996,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"mycompanytenant_Exchange\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_Exchange\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-...\",\r\n        \"applicationSecret\": \"YjQ1YWY5O...\",\r\n        \"azureDirectoryId\": \"2472f53a-...\"\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -9159,7 +9159,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"mycompanytenant_SharePoint\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"tenantAdminSiteURL\": \"https://myTenant-admin.sharepoint.com\",\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_SharePoint\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"tenantAdminSiteURL\": \"https://myTenant-admin.sharepoint.com\",\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-...\",\r\n        \"applicationSecret\": \"YjQ1YWY5OD...\",\r\n        \"azureDirectoryId\": \"2472f53a-a...\"\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -9286,7 +9286,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"mycompanytenant_OneDrive\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_OneDrive\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-...\",\r\n        \"applicationSecret\": \"YjQ1YWY5...\",\r\n        \"azureDirectoryId\": \"2472f53a-...\"\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -9413,7 +9413,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"mycompanytenant_Teams\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-9d1c-4963-9cc1-8e75f7c36133\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODgtZmMwYy00NjBmLTg3ZmMtODMyODRhZGM2NTAz=\",\r\n        \"refreshToken\": \"VGhpcyBpcyBqdXN0IGEgZHVtbXkgdmFsdWUgYW5kIG5vdCBhY3R1YWwgcmVmcmVzaCB0b2tlbiwgYnV0IHRoaXMgaXMgd2hlcmUgeW91ciByZWZyZXNoIHRva2VuIHNob3VsZCBnby4=\",\r\n        \"azureDirectoryId\": \"2472f53a-a62c-42b6-8af6-32e73f052e02\"\r\n    }\r\n}",
+													"raw": "{\r\n    \"name\": \"mycompanytenant_Teams\",\r\n    \"serverPlan\": {\r\n        \"id\": 11,\r\n        \"name\": \"myServerPlan\"\r\n    },\r\n    \"azureApp\": {\r\n        \"applicationId\": \"c3c1f3de-...\",\r\n        \"applicationSecret\": \"YjQ1YWY5ODg...\",\r\n        \"refreshToken\": \"VGhpcyBpcyBqdX...\",\r\n        \"azureDirectoryId\": \"2472f53a-...\"\r\n    }\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -9563,7 +9563,7 @@
 	],
 	"variable": [
 		{
-			"id": "71d78c6b-0691-454b-a43a-8ab4d9bdd44b",
+			"id": "de633cb3-1c90-479b-8770-77bb6d64e2a5",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
