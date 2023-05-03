@@ -15,10 +15,10 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cd8936cd-b5c5-4592-bcc4-d1299cf45366",
+								"id": "7c85e082-017d-40e4-b85e-9b192407b30a",
 								"exec": [
 									"var jsonData = pm.response.json();",
-									"postman.setEnvironmentVariable(\"authToken\", jsonData.data.authToken);"
+									"pm.collectionVariables.set(\"authToken\", jsonData.data.authToken);"
 								],
 								"type": "text/javascript"
 							}
@@ -8979,7 +8979,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​/api/v1/core/office365​/exchange",
+										"url": "{{ServerURL}}/api/v1/core/office365/exchange",
 										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new exchange app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register the Azure app for Exchange Online with Azure AD](https://docs.metallic.io/metallic/134722_register_azure_app_for_exchange_online_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\n  \n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
 									},
 									"response": [
@@ -9003,7 +9003,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​/api/v1/core/office365​/exchange"
+												"url": "{{ServerURL}}/api/v1/core/office365/exchange"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9039,7 +9039,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}/api/v1/core/office365​/exchange"
+												"url": "{{ServerURL}}/api/v1/core/office365/exchange"
 											},
 											"status": "Conflict",
 											"code": 409,
@@ -9076,7 +9076,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​/api/v1​/core/office365​/exchange​/{appId}/content",
+										"url": "{{ServerURL}}/api/v1/core/office365/exchange/{appId}/content",
 										"description": "**WARNING** : All content will be backed up to the country you selected when creating your tenant in Metallic.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | Exchange app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Exchange content type | string | True | \\[ ALL_MAILBOXES, ALL_PUBLIC_FOLDERS, ALL_GROUP_MAILBOXES \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
 									},
 									"response": [
@@ -9100,7 +9100,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​/api/v1​/core/office365​/exchange​/101/content"
+												"url": "{{ServerURL}}/api/v1/core/office365/exchange/101/content"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9142,7 +9142,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​​/api/v1/core​/office365​/sharepoint",
+										"url": "{{ServerURL}}/api/v1/core/office365/sharepoint",
 										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new SharePoint app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| tenantAdminSiteURL | SharePoint tenant admin URL | string | True | Example : [https://myTenant-admin.sharepoint.com](https://myTenant-admin.sharepoint.com) |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register the Azure App for SharePoint Online with Azure AD](https://docs.metallic.io/metallic/143193_register_azure_app_for_sharepoint_online_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\nStartFragmenFragment\n\nResponse Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
 									},
 									"response": [
@@ -9166,7 +9166,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​​/api/v1/core​/office365​/sharepoint"
+												"url": "{{ServerURL}}/api/v1/core/office365/sharepoint"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9203,7 +9203,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​/api/v1​/core/office365​/sharepoint​/{appId}/content",
+										"url": "{{ServerURL}}/api/v1/core/office365/sharepoint/{appId}/content",
 										"description": "**NOTE** : All content will be backed up to the country you selected when creating your tenant in Metallic.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | SharePoint app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | SharePoint content type | string | True | \\[ ALL_WEB_SITES, ALL_TEAMS_SITES \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
 									},
 									"response": [
@@ -9227,7 +9227,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​/api/v1​/core/office365​/sharepoint​/102/content"
+												"url": "{{ServerURL}}/api/v1/core/office365/sharepoint/102/content"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9269,7 +9269,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​​/api/v1​/core/office365​/onedrive",
+										"url": "{{ServerURL}}/api/v1/core/office365/onedrive",
 										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new OneDrive app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register  <br>the Azure App for OneDrive for Business with Azure AD](https://docs.metallic.io/metallic/130886_register_azure_app_for_onedrive_for_business_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\n  \n\nResponse Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
 									},
 									"response": [
@@ -9293,7 +9293,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​​/api/v1​/core/office365​/onedrive"
+												"url": "{{ServerURL}}/api/v1/core/office365/onedrive"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9330,7 +9330,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​/api/v1​/core/office365​/onedrive​/{appId}/content",
+										"url": "{{ServerURL}}/api/v1/core/office365/onedrive/{appId}/content",
 										"description": "**NOTE** : All content will be backed up to the country you selected when creating your tenant in Metallic.  \n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | OneDrive app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | OneDrive content type | string | True | \\[ ALL_USERS \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
 									},
 									"response": [
@@ -9354,7 +9354,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​/api/v1​/core/office365​/onedrive​/103/content"
+												"url": "{{ServerURL}}/api/v1/core/office365/onedrive/103/content"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9396,7 +9396,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​​/api/v1/core​/office365​/teams",
+										"url": "{{ServerURL}}/api/v1/core/office365/teams",
 										"description": "#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name for new app | string | True |  |\n| serverPlan | Server plan id or name | integer (id) , string (name) | True |  |\n| applicationId | Azure application ID | string | True | Refer Metallic documentation on how to [Register  <br>the Azure App for Teams with Azure AD](https://docs.metallic.io/metallic/135740_register_azure_app_for_teams_with_azure_ad.html). |\n| applicationSecret | Azure application secret key | string | True | Base64 encoded. |\n| refreshToken | Refresh token with access on-behalf of a user | string | False | Base64 encoded. Refer [MS doc](https://learn.microsoft.com/en-us/graph/auth-v2-user#3-get-a-token) for steps to generate it. |\n| azureDirectoryId | Azure tenant/diretory ID | string | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | New app's ID | integer |  |\n| name | New app's Name | string |  |\n| errorMessage | Error message | string | Set incase of failure |\n| errorCode | Error code | integer | Set incase of failure |"
 									},
 									"response": [
@@ -9420,7 +9420,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​​/api/v1/core​/office365​/teams"
+												"url": "{{ServerURL}}/api/v1/core/office365/teams"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9457,7 +9457,7 @@
 												}
 											}
 										},
-										"url": "{{ServerURL}}​/api/v1​/core/office365​/teams​/{appId}/content",
+										"url": "{{ServerURL}}/api/v1/core/office365/teams/{appId}/content",
 										"description": "**NOTE** : All content will be backed up to the country you selected when creating your tenant in Metallic.\n\n#### Path Variables\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| appId | Teams app ID | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | Teams content type | string | True | \\[ ALL_TEAMS \\] |\n| office365plan | Office 365 plan ID or name | integer (id) , string (name) | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorMessage | Error message | string | Only set in case of failure |\n| errorCode | Error code | integer | 0 is for successfull execution |"
 									},
 									"response": [
@@ -9481,7 +9481,7 @@
 														}
 													}
 												},
-												"url": "{{ServerURL}}​/api/v1​/core/office365​/teams​/104/content"
+												"url": "{{ServerURL}}/api/v1/core/office365/teams/104/content"
 											},
 											"status": "OK",
 											"code": 200,
@@ -9563,7 +9563,7 @@
 	],
 	"variable": [
 		{
-			"id": "de633cb3-1c90-479b-8770-77bb6d64e2a5",
+			"id": "df47f0b5-2f99-4166-918c-d8c85baa359d",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
