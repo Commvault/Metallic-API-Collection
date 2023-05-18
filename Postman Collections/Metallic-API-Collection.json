@@ -6035,6 +6035,1284 @@
 					]
 				},
 				{
+					"name": "Object storage",
+					"item": [
+						{
+							"name": "Instance Operations",
+							"item": [
+								{
+									"name": "List Object Storage Instances",
+									"id": "26ef0e9d-1be2-4a76-b2d2-a7e6f1b0d608",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/core/objectstorage/instance",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"core",
+												"objectstorage",
+												"instance"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "{{offset}}",
+													"description": "start value for pagination, type : integer",
+													"disabled": true
+												},
+												{
+													"key": "limit",
+													"value": "{{limit}}",
+													"description": "total number of records in the response, type : integer",
+													"disabled": true
+												}
+											]
+										},
+										"description": "This API returns the list of all Object Storage instances.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | id of the instance | integer |  |\n| name | name of the instance | string |  |\n| client.id | client id | integer |  |\n| client.name | client name | string |  |\n| lastBackup.time | Shows the time when the last back up job was carried out. The time is provided in unix time format. | integer |  |\n| applicationSize | Gives the application size of the instance. It is returned in bytes. | integer |  |\n| plan.id | associated plan id | integer |  |\n| plan.name | associated plan name | string |  |\n| SLAStatus | Provides the SLA status. | string | \\[ MET_SLA, MISSED_SLA, EXCLUDED_SLA, YET_TO_BE_PROTECTED, MIGHT_MISS_SLA, UNKNOWN \\] |\n| company.id | company id to which instance belongs to | integer |  |\n| company.name | company name to which instance belongs to | string |  |"
+									},
+									"response": [
+										{
+											"id": "4c0d5ade-e0c2-41e8-b393-1b3f43b5ebe7",
+											"name": "List Object Storage Instances",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/objectstorage/instance",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"objectstorage",
+														"instance"
+													],
+													"query": [
+														{
+															"key": "offset",
+															"value": "{{offset}}",
+															"description": "start value for pagination, type : integer",
+															"disabled": true
+														},
+														{
+															"key": "limit",
+															"value": "{{limit}}",
+															"description": "total number of records in the response, type : integer",
+															"disabled": true
+														}
+													]
+												}
+											},
+											"_postman_previewlanguage": null,
+											"header": null,
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\r\n    \"instances\": [\r\n        {\r\n            \"id\": 11902,\r\n            \"name\": \"1saiblobuitest\",\r\n            \"client\": {\r\n                \"id\": 23487,\r\n                \"name\": \"1saiblobuitest\"\r\n            },\r\n            \"vendor\": \"MICROSOFT_AZURE\",\r\n            \"instanceType\": \"Azure Blob\",\r\n            \"lastBackup\": {\r\n                \"time\": 1680037544\r\n            },\r\n            \"applicationSize\": 0,\r\n            \"plan\": {\r\n                \"id\": 11942,\r\n                \"name\": \"1saiuiplan\"\r\n            },\r\n            \"SLAStatus\": \"1\",\r\n            \"company\": {\r\n                \"id\": 10852,\r\n                \"name\": \"SP3001\"\r\n            }\r\n        },\r\n        {\r\n            \"id\": 10626,\r\n            \"name\": \"asdfasd\",\r\n            \"client\": {\r\n                \"id\": 21405,\r\n                \"name\": \"asdfasd\"\r\n            },\r\n            \"vendor\": \"MICROSOFT_AZURE\",\r\n            \"instanceType\": \"Azure Blob\",\r\n            \"lastBackup\": {\r\n                \"time\": 1675806258\r\n            },\r\n            \"applicationSize\": 1537413742592,\r\n            \"plan\": {\r\n                \"id\": 7657,\r\n                \"name\": \"customplan480\"\r\n            },\r\n            \"SLAStatus\": \"2\",\r\n            \"company\": {\r\n                \"id\": 10852,\r\n                \"name\": \"SP3001\"\r\n            }\r\n        }\r\n    ]\r\n}"
+										}
+									]
+								}
+							],
+							"id": "f2193728-4dba-4b3a-bdb6-c92480240984"
+						},
+						{
+							"name": "Microsoft Azure",
+							"item": [
+								{
+									"name": "Prerequisite Operations",
+									"item": [
+										{
+											"name": "Select Region",
+											"id": "c9a02acc-01c7-433a-8d67-a7136b84a626",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azureobj/regions",
+												"description": "This API will return list of region names along with their Ids. Use the required region name or id for next set of operations.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | region id | integer |  |\n| name | region name | string |  |"
+											},
+											"response": [
+												{
+													"id": "f50e34c8-8e6f-4abf-b971-1194bde0403c",
+													"name": "Select Region",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": "https://api.metallic.io/api/v1/core/azureobj/regions"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"regions\": [\r\n    {\r\n      \"id\": 7,\r\n      \"name\": \"centralus\"\r\n    },\r\n    {\r\n      \"id\": 8,\r\n      \"name\": \"eastus2\"\r\n    },\r\n    {\r\n      \"id\": 9,\r\n      \"name\": \"eastus\"\r\n    },\r\n    {\r\n      \"id\": 10,\r\n      \"name\": \"northcentralus\"\r\n    },\r\n    {\r\n      \"id\": 11,\r\n      \"name\": \"southcentralus\"\r\n    },\r\n    {\r\n      \"id\": 12,\r\n      \"name\": \"westus2\"\r\n    },\r\n    {\r\n      \"id\": 13,\r\n      \"name\": \"westcentralus\"\r\n    },\r\n    {\r\n      \"id\": 14,\r\n      \"name\": \"westus\"\r\n    },\r\n    {\r\n      \"id\": 21,\r\n      \"name\": \"canadacentral\"\r\n    },\r\n    {\r\n      \"id\": 22,\r\n      \"name\": \"canadaeast\"\r\n    },\r\n    {\r\n      \"id\": 23,\r\n      \"name\": \"brazilsouth\"\r\n    },\r\n    {\r\n      \"id\": 24,\r\n      \"name\": \"northeurope\"\r\n    },\r\n    {\r\n      \"id\": 25,\r\n      \"name\": \"westeurope\"\r\n    },\r\n    {\r\n      \"id\": 26,\r\n      \"name\": \"francecentral\"\r\n    },\r\n    {\r\n      \"id\": 27,\r\n      \"name\": \"francesouth\"\r\n    },\r\n    {\r\n      \"id\": 28,\r\n      \"name\": \"uksouth\"\r\n    },\r\n    {\r\n      \"id\": 29,\r\n      \"name\": \"ukwest\"\r\n    },\r\n    {\r\n      \"id\": 30,\r\n      \"name\": \"Germany Central\"\r\n    },\r\n    {\r\n      \"id\": 31,\r\n      \"name\": \"Germany Northeast\"\r\n    },\r\n    {\r\n      \"id\": 32,\r\n      \"name\": \"eastasia\"\r\n    },\r\n    {\r\n      \"id\": 33,\r\n      \"name\": \"southeastasia\"\r\n    },\r\n    {\r\n      \"id\": 34,\r\n      \"name\": \"australiacentral\"\r\n    },\r\n    {\r\n      \"id\": 35,\r\n      \"name\": \"australiacentral2\"\r\n    },\r\n    {\r\n      \"id\": 36,\r\n      \"name\": \"australiaeast\"\r\n    },\r\n    {\r\n      \"id\": 37,\r\n      \"name\": \"australiasoutheast\"\r\n    },\r\n    {\r\n      \"id\": 42,\r\n      \"name\": \"centralindia\"\r\n    },\r\n    {\r\n      \"id\": 43,\r\n      \"name\": \"southindia\"\r\n    },\r\n    {\r\n      \"id\": 44,\r\n      \"name\": \"westindia\"\r\n    },\r\n    {\r\n      \"id\": 45,\r\n      \"name\": \"japaneast\"\r\n    },\r\n    {\r\n      \"id\": 46,\r\n      \"name\": \"japanwest\"\r\n    },\r\n    {\r\n      \"id\": 47,\r\n      \"name\": \"koreacentral\"\r\n    },\r\n    {\r\n      \"id\": 48,\r\n      \"name\": \"koreasouth\"\r\n    },\r\n    {\r\n      \"id\": 67,\r\n      \"name\": \"Germany West Central(Public)\"\r\n    },\r\n    {\r\n      \"id\": 68,\r\n      \"name\": \"Germany West Central (Public)\"\r\n    },\r\n    {\r\n      \"id\": 69,\r\n      \"name\": \"germanywestcentral\"\r\n    },\r\n    {\r\n      \"id\": 70,\r\n      \"name\": \"southafricanorth\"\r\n    },\r\n    {\r\n      \"id\": 71,\r\n      \"name\": \"switzerlandnorth\"\r\n    },\r\n    {\r\n      \"id\": 74,\r\n      \"name\": \"uaenorth\"\r\n    },\r\n    {\r\n      \"id\": 84,\r\n      \"name\": \"westus3\"\r\n    },\r\n    {\r\n      \"id\": 85,\r\n      \"name\": \"centralusstage\"\r\n    },\r\n    {\r\n      \"id\": 86,\r\n      \"name\": \"westusstage\"\r\n    },\r\n    {\r\n      \"id\": 87,\r\n      \"name\": \"westus2stage\"\r\n    },\r\n    {\r\n      \"id\": 88,\r\n      \"name\": \"eastusstage\"\r\n    },\r\n    {\r\n      \"id\": 89,\r\n      \"name\": \"eastus2stage\"\r\n    },\r\n    {\r\n      \"id\": 90,\r\n      \"name\": \"northcentralusstage\"\r\n    },\r\n    {\r\n      \"id\": 91,\r\n      \"name\": \"southcentralusstage\"\r\n    },\r\n    {\r\n      \"id\": 92,\r\n      \"name\": \"centraluseuap\"\r\n    },\r\n    {\r\n      \"id\": 93,\r\n      \"name\": \"eastus2euap\"\r\n    },\r\n    {\r\n      \"id\": 94,\r\n      \"name\": \"unitedstateseuap\"\r\n    },\r\n    {\r\n      \"id\": 95,\r\n      \"name\": \"brazilsoutheast\"\r\n    },\r\n    {\r\n      \"id\": 96,\r\n      \"name\": \"swedencentral\"\r\n    },\r\n    {\r\n      \"id\": 98,\r\n      \"name\": \"norwayeast\"\r\n    },\r\n    {\r\n      \"id\": 100,\r\n      \"name\": \"germanynorth\"\r\n    },\r\n    {\r\n      \"id\": 101,\r\n      \"name\": \"norwaywest\"\r\n    },\r\n    {\r\n      \"id\": 102,\r\n      \"name\": \"switzerlandwest\"\r\n    },\r\n    {\r\n      \"id\": 104,\r\n      \"name\": \"uaecentral\"\r\n    },\r\n    {\r\n      \"id\": 105,\r\n      \"name\": \"jioindiacentral\"\r\n    },\r\n    {\r\n      \"id\": 106,\r\n      \"name\": \"jioindiawest\"\r\n    },\r\n    {\r\n      \"id\": 107,\r\n      \"name\": \"eastasiastage\"\r\n    },\r\n    {\r\n      \"id\": 108,\r\n      \"name\": \"southeastasiastage\"\r\n    },\r\n    {\r\n      \"id\": 109,\r\n      \"name\": \"southafricawest\"\r\n    },\r\n    {\r\n      \"id\": 111,\r\n      \"name\": \"asia\"\r\n    },\r\n    {\r\n      \"id\": 112,\r\n      \"name\": \"asiapacific\"\r\n    },\r\n    {\r\n      \"id\": 113,\r\n      \"name\": \"australia\"\r\n    },\r\n    {\r\n      \"id\": 114,\r\n      \"name\": \"brazil\"\r\n    },\r\n    {\r\n      \"id\": 115,\r\n      \"name\": \"canada\"\r\n    },\r\n    {\r\n      \"id\": 116,\r\n      \"name\": \"europe\"\r\n    },\r\n    {\r\n      \"id\": 117,\r\n      \"name\": \"france\"\r\n    },\r\n    {\r\n      \"id\": 118,\r\n      \"name\": \"germany\"\r\n    },\r\n    {\r\n      \"id\": 119,\r\n      \"name\": \"global\"\r\n    },\r\n    {\r\n      \"id\": 120,\r\n      \"name\": \"india\"\r\n    },\r\n    {\r\n      \"id\": 121,\r\n      \"name\": \"japan\"\r\n    },\r\n    {\r\n      \"id\": 122,\r\n      \"name\": \"korea\"\r\n    },\r\n    {\r\n      \"id\": 123,\r\n      \"name\": \"norway\"\r\n    },\r\n    {\r\n      \"id\": 124,\r\n      \"name\": \"southafrica\"\r\n    },\r\n    {\r\n      \"id\": 125,\r\n      \"name\": \"switzerland\"\r\n    },\r\n    {\r\n      \"id\": 126,\r\n      \"name\": \"uae\"\r\n    },\r\n    {\r\n      \"id\": 127,\r\n      \"name\": \"uk\"\r\n    },\r\n    {\r\n      \"id\": 128,\r\n      \"name\": \"unitedstates\"\r\n    },\r\n    {\r\n      \"id\": 160,\r\n      \"name\": \"Germany West Central\"\r\n    },\r\n    {\r\n      \"id\": 161,\r\n      \"name\": \"South Africa North\"\r\n    },\r\n    {\r\n      \"id\": 162,\r\n      \"name\": \"Switzerland North\"\r\n    },\r\n    {\r\n      \"id\": 163,\r\n      \"name\": \"UAE North\"\r\n    }\r\n  ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Select Storage",
+											"id": "b9f4588f-010f-40b2-8407-4de2b7a77d1e",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/azureobj/storage",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"azureobj",
+														"storage"
+													],
+													"query": [
+														{
+															"key": "regionId",
+															"value": "{{regionId}}",
+															"description": "Id of the region, type : integer, case-sensitive : yes\n\n",
+															"disabled": true
+														}
+													]
+												},
+												"description": "## Configure Cloud Storage For Added Protection\n\nConfigure cloud storage that provides geographic redundancy for your backups. It is recommended to use storage that is replicated to ensure data resiliency and availability. Ensure the appropriate class is selected and life cycle polices implemented to avoid unnecessary charges and data loops.\n\nThis API returns list of available cloud storage.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | cloud storage id | integer |  |\n| name | cloud storage name | string |  |\n| storagePoolType | cloud storage type | string |  |\n| status | online/offline status | string |  |\n| type | Azure/Metallic | string |  |\n| storageClass | MRR_COOL/MRR_HOT | string | applicable only if type is Metallic |"
+											},
+											"response": [
+												{
+													"id": "c6774e1d-d77c-41c9-b3af-6117b24c76bb",
+													"name": "Select Storage",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "https://api.metallic.io/api/v1/core/azureobj/storage",
+															"protocol": "https",
+															"host": [
+																"api",
+																"metallic",
+																"io"
+															],
+															"path": [
+																"api",
+																"v1",
+																"core",
+																"azureobj",
+																"storage"
+															],
+															"query": [
+																{
+																	"key": "regionId",
+																	"value": "{{regionId}}",
+																	"description": "Id of the region, type : integer, case-sensitive : yes\n\n",
+																	"disabled": true
+																}
+															]
+														}
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"cloudStorage\": [\r\n    {\r\n      \"id\": 2169,\r\n      \"name\": \"Cloud storage\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2228,\r\n      \"name\": \"Cloudstorage1234\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2229,\r\n      \"name\": \"Cloudstorage23e3\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Offline (Mount path is inaccessible. Check the following.\\\\na. Is the mount path visible to the operating system on the MediaAgent machine.\\\\nb. Is the username/password correctly entered.\\\\nc. Does this user have read/write privileges to this mount path.)\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2367,\r\n      \"name\": \"cross region test\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2236,\r\n      \"name\": \"CVMetallic\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 1899,\r\n      \"name\": \"CVMetallic-AzureDB1-Cloud storage\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2114,\r\n      \"name\": \"CVMetallic-AzureDB1-Cloud storage teststorage_new\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2103,\r\n      \"name\": \"CVMetallic-AzureDB1-Cloud storage teststorage7\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2208,\r\n      \"name\": \"CVMetallic-AzureDB1-Cloud storage-venkat\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2076,\r\n      \"name\": \"CVMetallic-AzureDB1-Clouds storage\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2043,\r\n      \"name\": \"cvmetallic-azuredb1-server2-eastus\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Metallic\",\r\n      \"storageClass\": \"MRR_COOL\"\r\n    },\r\n    {\r\n      \"id\": 1901,\r\n      \"name\": \"cvmetallic-azuredb1-server-eastus\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Metallic\",\r\n      \"storageClass\": \"MRR_HOT\"\r\n    },\r\n    {\r\n      \"id\": 2164,\r\n      \"name\": \"CVMetallic-DBtest1\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Offline (Mount path is inaccessible. Check the following.\\\\na. Is the mount path visible to the operating system on the MediaAgent machine.\\\\nb. Is the username/password correctly entered.\\\\nc. Does this user have read/write privileges to this mount path.)\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2163,\r\n      \"name\": \"CVMetallic-MAS1\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Offline (Mount path is inaccessible. Check the following.\\\\na. Is the mount path visible to the operating system on the MediaAgent machine.\\\\nb. Is the username/password correctly entered.\\\\nc. Does this user have read/write privileges to this mount path.)\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2025,\r\n      \"name\": \"MAS-BYOS-2\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Offline (Mount path is inaccessible. Check the following.\\\\na. Is the mount path visible to the operating system on the MediaAgent machine.\\\\nb. Is the username/password correctly entered.\\\\nc. Does this user have read/write privileges to this mount path.)\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 1903,\r\n      \"name\": \"MAS-DB-Storage\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Offline (Mount path is inaccessible. Check the following.\\\\na. Is the mount path visible to the operating system on the MediaAgent machine.\\\\nb. Is the username/password correctly entered.\\\\nc. Does this user have read/write privileges to this mount path.)\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2350,\r\n      \"name\": \"My azure storage\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2357,\r\n      \"name\": \"My azure storage new\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2365,\r\n      \"name\": \"My azure storage new test\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    },\r\n    {\r\n      \"id\": 2351,\r\n      \"name\": \"My azure storage test\",\r\n      \"storagePoolType\": \"1\",\r\n      \"status\": \"Online\",\r\n      \"type\": \"Azure\"\r\n    }\r\n  ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure New Storage",
+											"id": "866fb476-877d-49b7-8574-1dc4453dbc98",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"type\": \"Metallic\",\r\n  \"region\": {\r\n    \"id\": 8    \r\n  },\r\n  \"storageClass\": \"MRR_HOT\"\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azureobj/storage",
+												"description": "This API adds a cloud storage of type \"Metallic Recovery Reserve\" or \"Microsoft Azure Storage\".\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| type | type of cloud storage | string | True | Available types - \\[**Metallic**, **Azure**\\] |\n| name | storage name | string | True | Field is valid for type **Azure** only |\n| region | region id or name where storage will be created | integer (id) , string (name) | True |  |\n| storageClass | azure storage class | string | True | Field is valid for type **Metallic** only. Available types - \\[**MRR_HOT**, **MRR_COOL**\\] |\n| credential | cloud credential id or name | integer (id) , string (name) | True | Field is valid for type **Azure** only |\n| container | container or library name | string | True | Field is valid for type **Azure** only |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created cloud storage id | integer |  |\n| name | newly created cloud storage name | string |  |"
+											},
+											"response": [
+												{
+													"id": "91401fb8-101a-47e6-8bac-1a43344fb29b",
+													"name": "Configure New Storage",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"type\": \"Metallic\",\r\n  \"region\": {\r\n    \"id\": 8    \r\n  },\r\n  \"storageClass\": \"MRR_HOT\"\r\n}"
+														},
+														"url": "https://api.metallic.io/api/v1/core/azureobj/storage"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"id\": 2043,\r\n  \"name\": \"cvmetallic-azuredb1-server2-eastus\"\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Select Existing Plan",
+											"id": "42ddfb90-eb81-43b5-8408-4a267cff16ef",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/azureobj/plans",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"azureobj",
+														"plans"
+													],
+													"query": [
+														{
+															"key": "cloudStorageId",
+															"value": "{{cloudStorageId}}",
+															"description": "cloud storage id, type: integer, case-sensitive : yes",
+															"disabled": true
+														}
+													]
+												},
+												"description": "This API returns list of plans.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | plan id | integer |  |\n| name | plan name | string |  |\n| summary.RPOHours | RPO hours | string |  |\n| summary.NumberOfCopies | number of copies | string |  |\n| summary.PrimaryStorageRetention | primary storage retention period | string |  |\n| summary.PrimaryStorageType | storage type | string |  |\n| summary.AssociatedEntitiesCount | number of associated entities | string |  |"
+											},
+											"response": [
+												{
+													"id": "678da0d5-227d-409c-ad17-53d1441842cc",
+													"name": "Select Existing Plan",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{ServerURL}}/api/v1/core/azureobj/plans",
+															"host": [
+																"{{ServerURL}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"core",
+																"azureobj",
+																"plans"
+															],
+															"query": [
+																{
+																	"key": "cloudStorageId",
+																	"value": "{{cloudStorageId}}",
+																	"description": "cloud storage id, type: integer, case-sensitive : yes",
+																	"disabled": true
+																}
+															]
+														}
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"plans\": [\r\n    {\r\n      \"id\": 1638,\r\n      \"name\": \"MAS-DB-custom-2d\",\r\n      \"summary\": {\r\n        \"RPOHours\": \"48\",\r\n        \"NumberOfCopies\": \"2\",\r\n        \"PrimaryStorageRetention\": \"1 Month\",\r\n        \"PrimaryStorageType\": \"Cloud\",\r\n        \"AssociatedEntitiesCount\": \"13\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": 1624,\r\n      \"name\": \"MAS-DB-Plan\",\r\n      \"summary\": {\r\n        \"RPOHours\": \"24\",\r\n        \"NumberOfCopies\": \"2\",\r\n        \"PrimaryStorageRetention\": \"1 Month\",\r\n        \"PrimaryStorageType\": \"Cloud\",\r\n        \"AssociatedEntitiesCount\": \"21\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": 1649,\r\n      \"name\": \"testm8\",\r\n      \"summary\": {\r\n        \"RPOHours\": \"24\",\r\n        \"NumberOfCopies\": \"2\",\r\n        \"PrimaryStorageRetention\": \"1 Month\",\r\n        \"PrimaryStorageType\": \"Cloud\",\r\n        \"AssociatedEntitiesCount\": \"0\"\r\n      }\r\n    }\r\n  ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Create New Plan",
+											"id": "80196a27-f224-4893-a0c0-6f2fa54ea32c",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/serverplan",
+												"description": "This API creates a plan.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| planName | Name of the new plan | string |  |  |\n| backupDestinationName | Backup destination details. Enter the name during creation. | string |  |  |\n| storagePool | storage pool name and id | string (name), id (integer) |  |  |\n| retentionPeriodDays | Retention period in days. -1 can be specified for infinite retention. If this and snapRecoveryPoints both are not specified, this takes precedence. | integer |  |  |\n| backupType | Schedule Backup level | string |  | \\[ **FULL**, **INCREMENTAL**, **DIFFERENTIAL**, **SYNTHETICFULL** \\] |\n| scheduleOperation | Operation being performed on schedule | string |  | \\[ **ADD**, **DELETE**, **MODIFY** \\] |\n| schedulePattern.scheduleFrequencyType | schedule frequency type | string |  | \\[ **MINUTES**, **DAILY**, **WEEKLY**, **MONTHLY**, **YEARLY**, **AUTOMATIC** \\] |\n| schedulePattern.frequency | Frequency of the schedule based on schedule frequency type eg. for Hours, value 2 is 2 hours, for Minutes, 30 is 30 minutes, for Daily, 2 is 2 days. for Monthly 2 is it repeats every 2 months | integer |  |  |\n| schedulePattern.startTime | start time of schedule in seconds | integer |  |  |\n| schedulePattern.weeklyDays | Days of the week for weekly frequency | array of string |  | \\[ **SUNDAY**, **MONDAY**, **TUESDAY**, **WEDNESDAY**, **THURSDAY**, **FRIDAY**, **SATURDAY** \\] |\n| forDatabasesOnly | Boolean to indicate if schedule is for database agents | boolean |  |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| name | newly created plan name | string |  |\n| id | newly created plan id | integer |  |"
+											},
+											"response": [
+												{
+													"id": "b1aef8eb-d03c-463a-aed3-d8a5105b29cd",
+													"name": "Create New Plan",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"planName\": \"{{planName}}\",\r\n    \"backupDestinations\": [\r\n        {\r\n            \"backupDestinationName\": \"{{storagePoolName}}_{{planName}}_Primary\",\r\n            \"storagePool\": {\r\n                \"id\": {{storagePoolId}},\r\n                \"name\": \"{{storagePoolName}}\"\r\n            },\r\n            \"retentionPeriodDays\": {{retentionPeriodDays}}\r\n        },\r\n        {\r\n            \"backupDestinationName\": \"{{storagePoolName}}_{{planName}}_Secondary\",\r\n            \"storagePool\": {\r\n                \"id\": {{storagePoolId}},\r\n                \"name\": \"{{storagePoolName}}\"\r\n            },\r\n            \"retentionPeriodDays\": {{retentionPeriodDays}}\r\n        }\r\n    ],\r\n    \"rpo\": {\r\n        \"backupFrequency\": {\r\n            \"schedules\": [\r\n                {\r\n                    \"backupType\": \"{{backupType}}\",\r\n                    \"scheduleOperation\": \"{{scheduleOperation}}\",\r\n                    \"schedulePattern\": {\r\n                        \"scheduleFrequencyType\": \"{{scheduleFrequencyType}}\",\r\n                        \"frequency\": {{frequency}},\r\n                        \"startTime\": {{startTime}},\r\n                        \"weeklyDays\": [\r\n                            \"{{Day1}}\",\r\n                            \"{{Day2}}\"\r\n                        ]\r\n                    },\r\n                    \"forDatabasesOnly\": false\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}"
+														},
+														"url": "https://api.metallic.io/api/v1/core/serverplan"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"plan\": {\r\n    \"name\": \"TestM5\",\r\n    \"id\": 1643\r\n  }\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Select Cloud Storage Credentials (Azure BYOS only)",
+											"id": "ae134d9d-5745-4f70-8922-eb3b4f2e2f69",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azureobj/storage/azure/credentials",
+												"description": "This API returns credentials for microsoft azure.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | azure credential id | integer |  |\n| name | azure credential name | string |  |\n| accountType | credential account type | string |  |\n| vendorType | vendor name | string |  |\n| authType | auth type | string |  |"
+											},
+											"response": [
+												{
+													"id": "9a6d516c-250e-440f-ae7e-8ab478fe2889",
+													"name": "Select Cloud Storage Credentials (Azure BYOS only)",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": "{{ServerURL}}/api/v1/core/azureobj/storage/azure/credentials"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"credentialManager\": [\r\n    {\r\n      \"id\": 332,\r\n      \"name\": \"TestM\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    },\r\n    {\r\n      \"id\": 344,\r\n      \"name\": \"azure-storage-ash\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    },\r\n    {\r\n      \"id\": 350,\r\n      \"name\": \"testCred\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    },\r\n    {\r\n      \"id\": 376,\r\n      \"name\": \"testcredential\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    }\r\n  ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Azure Storage Credentials (Azure BYOS Only)",
+											"id": "3c3fe298-8e2f-4003-88b2-27bde0541e38",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azureobj/storage/azure/credentials",
+												"description": "This API creates the storage credentials for Azure Storage.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| storageAccountName | storage account name | string | True |  |\n| accessKey | access key | string | True | This input must be Base64 encoded |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
+											},
+											"response": [
+												{
+													"id": "741a8216-a401-47db-81fe-ee90bf38b9e1",
+													"name": "Configure Azure Storage Credentials (Azure BYOS Only)",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"name\": \"testcredentials\",\r\n    \"storageAccountName\": \"sa\",\r\n    \"accessKey\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test\"\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azureobj/storage/azure/credentials"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"credential\": {\r\n    \"id\": 442\r\n  },\r\n  \"errorMessage\": \"Successful!\",\r\n  \"errorCode\": 0\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Select Object Storage Instance Credentials",
+											"id": "ea2d2921-f23a-4c8e-b510-f38286dbb6ce",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{ServerURL}}/api/v1/core/azureobj/credentials",
+													"host": [
+														"{{ServerURL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"core",
+														"azureobj",
+														"credentials"
+													],
+													"query": [
+														{
+															"key": "workloadType",
+															"value": "{{workloadType}}",
+															"description": "Defaults to \"blob\". Supported values: blob, file, datalake",
+															"disabled": true
+														}
+													]
+												},
+												"description": "This API returns saved credentials that can be used to configure Azure Object Storage instances. The \"workloadType\" query parameter can be used to specify the Object Storage workload for which credentials are to be fetched.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | credential id | integer |  |\n| name | credential name | string |  |\n| accountType | credential account type | string |  |\n| vendorType | vendor name | string |  |\n| authType | auth type | string |  |"
+											},
+											"response": [
+												{
+													"id": "93b2d0b0-6fd0-475d-b94b-1e91d583aba9",
+													"name": "Select Object Storage Instance Credentials",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "https://api.metallic.io/api/v1/core/azureobj/credentials",
+															"protocol": "https",
+															"host": [
+																"api",
+																"metallic",
+																"io"
+															],
+															"path": [
+																"api",
+																"v1",
+																"core",
+																"azureobj",
+																"credentials"
+															],
+															"query": [
+																{
+																	"key": "workloadType",
+																	"value": "{{workloadType}}",
+																	"description": "Defaults to \"blob\". Supported values: blob, file, datalake",
+																	"disabled": true
+																}
+															]
+														}
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"credentialManager\": [\r\n    {\r\n      \"id\": 332,\r\n      \"name\": \"TestM\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    },\r\n    {\r\n      \"id\": 344,\r\n      \"name\": \"azure-storage-ash\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    },\r\n    {\r\n      \"id\": 350,\r\n      \"name\": \"testCred\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    },\r\n    {\r\n      \"id\": 376,\r\n      \"name\": \"testcredential\",\r\n      \"accountType\": \"CLOUD_ACCOUNT\",\r\n      \"vendorType\": \"MICROSOFT_AZURE_TYPE\",\r\n      \"authType\": \"MICROSOFT_AZURE\"\r\n    }\r\n  ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Object Storage Instance Credentials",
+											"id": "860a347c-dfcd-476b-a623-ea44b72d8301",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"test\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azureobj/credentials",
+												"description": "This API creates credentials that can be used to configure Azure Object Storage instances.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| workloadType | Type of the workload | string | False | Defaults to \"blob\". Supported values: **\\[blob, file, datalake\\]** |\n| name | credential name | string | True |  |\n| tenantId | storage tenant id | string | True | Applicable workload: **blob** |\n| applicationId | application id | string | True | Applicable workload: **blob** |\n| applicationSecret | application secret | string | True | Applicable workload: **blob**  <br>This input must be Base64 encoded |\n| storageAccountName | storage account name | string | True | Applicable workload: **file** |\n| accessKey | access key | string | True | Applicable workload: **file**  <br>This input must be Base64 encoded |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
+											},
+											"response": [
+												{
+													"id": "d365a2ab-cde8-4970-9547-54b0246deb3c",
+													"name": "Configure Object Storage Instance Credentials",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"name\": \"test\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azureobj/credentials"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n  \"credential\": {\r\n    \"id\": 442\r\n  },\r\n  \"errorMessage\": \"Successful!\",\r\n  \"errorCode\": 0\r\n}"
+												}
+											]
+										}
+									],
+									"id": "d3d73d4c-8fc8-4977-a583-491e9ce65a38"
+								},
+								{
+									"name": "Azure Blob",
+									"item": [
+										{
+											"name": "Create Azure Blob Instance",
+											"id": "74ea06ba-3f45-44cf-a547-19460ac1bf56",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{  \r\n    \"name\": \"ex-api-content\",\r\n    \"storageAccount\": \"test\",\r\n    \"credential\": {\r\n      \"id\": 284      \r\n    },\r\n    \"plan\": {\r\n      \"id\": 11214\r\n    },\r\n    \"region\": {\r\n       \"id\": 8 \r\n    },\r\n    \"contents\": {\r\n        \"path\": [\r\n            \"/\"\r\n        ],\r\n        \"exclusions\": [\"/abc\", \"/ee\"],\r\n        \"exceptions\": [\"/pqe\", \"/a\"]\r\n    }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azureblob/instance",
+												"description": "This API creates an Azure Blob Instance on metallic azure.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name of the Azure Blob instance | string | True |  |\n| region | region id | integer | True |  |\n| plan | plan id | integer | True |  |\n| storageAccount | Name of the Azure storage account | string |  |  |\n| credential | credential id or name | integer (id), string (name) | True |  |\n| hostURL | Optional. Defaults to blob.core.windows.net | string | False |  |\n| contents.path | Optional list of files and folders to be added as content. Defaults to / | array | False |  |\n| contents.exclusions | Optional list of files and folders to exclude | array | False |  |\n| contents.exceptions | Optional list of files and folders to be added to the exceptions list | array | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created instance name | integer |  |\n| name | newly created instance id | string |  |"
+											},
+											"response": [
+												{
+													"id": "fd58a1ee-51d5-4c25-9a65-e0ff90531f2c",
+													"name": "Create Azure Blob Instance",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{  \r\n    \"name\": \"ex-api-content\",\r\n    \"storageAccount\": \"test\",\r\n    \"credential\": {\r\n      \"id\": 284      \r\n    },\r\n    \"plan\": {\r\n      \"id\": 11214\r\n    },\r\n    \"region\": {\r\n       \"id\": 8 \r\n    },\r\n    \"contents\": {\r\n        \"path\": [\r\n            \"/\"\r\n        ],\r\n        \"exclusions\": [\"/abc\", \"/ee\"],\r\n        \"exceptions\": [\"/pqe\", \"/a\"]\r\n    }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azureblob/instance"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										},
+										{
+											"name": "Select Content Groups",
+											"id": "c1d09fc9-d77d-41d9-962d-6f2e7a1102c0",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azureblob/instance/{instanceId}/contentgroups",
+												"description": "This API retrieves the list of content groups for an Azure Blob instance.  \n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| instanceId | Id of the Azure Blob instance | integer | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Content group id | integer |  |\n| name | Content group name | string |  |\n| isBackupEnabled | Backup status | boolean |  |\n| plan.id | Id of the assoicated plan | integer |  |\n| plan.name | Name of the associated plan | string |  |\n| contents | List of associated contents | array |  |"
+											},
+											"response": [
+												{
+													"id": "26ca3fb1-a26f-4da4-a71c-f5aa42a386d1",
+													"name": "Select Content Groups",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": "{{ServerURL}}/api/v1/core/azureblob/instance/{instanceId}/contentgroups"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n    \"contentGroups\": [\r\n        {\r\n            \"id\": 60928,\r\n            \"name\": \"default\",\r\n            \"isBackupEnabled\": true,\r\n            \"lastBackupSize\": 0,\r\n            \"totalBackupSize\": 0,\r\n            \"contents\": {\r\n                \"path\": [\r\n                    \"/xyz\",\r\n                    \"/abc\"\r\n                ],\r\n                \"exclusions\": [\r\n                    \"/xyz/pqr\"\r\n                ],\r\n                \"exceptions\": [\r\n                    \"/sample\"                    \r\n                ]\r\n            },\r\n            \"plan\": {\r\n                \"id\": 11214,\r\n                \"name\": \"test\"\r\n            }\r\n        }\r\n    ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Content",
+											"id": "56ac7d96-ed77-45aa-87fb-4e0568989027",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"contents\": {\r\n                \"path\": [\r\n                    \"/\"\r\n                ],\r\n                \"exclusions\": [\"/abc\", \"/ee\"],\r\n                \"exceptions\": [\"/pqe\", \"/a\"]\r\n            }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azureblob/contentgroup/{contentGroupId}/content",
+												"description": "This API adds content to a content group\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| contentGroupId | Id of the content group | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| contents.path | List of files and folders to be added as content | array |  |\n| contents.exclusions | List of files and folders to exclude | array |  |\n| contents.exceptions | List of files and folders to be added to the exceptions list | array |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | Details of error if any | integer | 0 indicates success |\n| errorMessage | Details of error | string |  |"
+											},
+											"response": [
+												{
+													"id": "badad833-c5da-4dba-83fa-dae1598db6fb",
+													"name": "Configure Content",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"contents\": {\r\n                \"path\": [\r\n                    \"/\"\r\n                ],\r\n                \"exclusions\": [\"/abc\", \"/ee\"],\r\n                \"exceptions\": [\"/pqe\", \"/a\"]\r\n            }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azureblob/contentgroup/{contentGroupId}/content"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										},
+										{
+											"name": "Associate Plan",
+											"id": "7b3ce4a1-887c-47e7-9afc-a86a07c4f46f",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"plan\": {\r\n      \"id\": 11652\r\n    }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azureblob/contentgroup/{contentGroupId}/plan",
+												"description": "This API associates plan to a content group\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| contentGroupId | Id of the content group | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| plan.id | Id of the plan to be associated | integer |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | Details of error if any | integer | 0 indicates success |\n| errorMessage | Details of error | string |  |"
+											},
+											"response": [
+												{
+													"id": "fed2682f-1974-41e4-8540-a8284e5bd9c8",
+													"name": "Associate Plan",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"plan\": {\r\n      \"id\": 11652\r\n    }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azureblob/contentgroup/{contentGroupId}/plan"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										}
+									],
+									"id": "5f96e03c-c816-4e42-bf7e-bfb791d038ad"
+								},
+								{
+									"name": "Azure File",
+									"item": [
+										{
+											"name": "Create Azure File Instance",
+											"id": "2bf55585-ef56-4a60-98f2-36c4d7971505",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{  \r\n    \"name\": \"ex-api-content\",\r\n    \"credential\": {\r\n      \"id\": 284      \r\n    },\r\n    \"plan\": {\r\n      \"id\": 11214\r\n    },\r\n    \"region\": {\r\n       \"id\": 8 \r\n    },\r\n    \"contents\": {\r\n        \"path\": [\r\n            \"/\"\r\n        ],\r\n        \"exclusions\": [\"/abc\", \"/ee\"],\r\n        \"exceptions\": [\"/pqe\", \"/a\"]\r\n    }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azurefile/instance",
+												"description": "This API creates an Azure File Share Instance on metallic azure.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name of the Azure File Share instance | string | True |  |\n| region | region id | integer | True |  |\n| plan | plan id | integer | True |  |\n| credential | credential od or name | integer (id), string (name) | True |  |\n| hostURL | Optional. Defaults to file.core.windows.net | string | False |  |\n| contents.path | Optional list of files and folders to be added as content. Defaults to / | array | False |  |\n| contents.exclusions | Optional list of files and folders to exclude | array | False |  |\n| contents.exceptions | Optional list of files and folders to be added to the exceptions list | array | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created instance name | integer |  |\n| name | newly created instance id | string |  |"
+											},
+											"response": [
+												{
+													"id": "8f73d5aa-cd5e-40ee-8746-d32e2c04bb87",
+													"name": "Create Azure File Instance",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{  \r\n    \"name\": \"ex-api-content\",\r\n    \"credential\": {\r\n      \"id\": 284      \r\n    },\r\n    \"plan\": {\r\n      \"id\": 11214\r\n    },\r\n    \"region\": {\r\n       \"id\": 8 \r\n    },\r\n    \"contents\": {\r\n        \"path\": [\r\n            \"/\"\r\n        ],\r\n        \"exclusions\": [\"/abc\", \"/ee\"],\r\n        \"exceptions\": [\"/pqe\", \"/a\"]\r\n    }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azurefile/instance"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										},
+										{
+											"name": "Select Content Groups",
+											"id": "f39b1fe1-46e9-4352-9dff-506847199455",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azurefile/instance/{instanceId}/contentgroups",
+												"description": "This API retrieves the list of content groups for an Azure Blob instance.  \n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| instanceId | Id of the Azure Blob instance | integer | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Content group id | integer |  |\n| name | Content group name | string |  |\n| isBackupEnabled | Backup status | boolean |  |\n| plan.id | Id of the assoicated plan | integer |  |\n| plan.name | Name of the associated plan | string |  |\n| contents | List of associated contents | array |  |"
+											},
+											"response": [
+												{
+													"id": "862a9a84-3888-4384-a4d4-5e4375175dbe",
+													"name": "Select Content Groups",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": "https://api.metallic.io/api/v1/core/azurefile/instance/{instanceId}/contentgroups"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n    \"contentGroups\": [\r\n        {\r\n            \"id\": 60928,\r\n            \"name\": \"default\",\r\n            \"isBackupEnabled\": true,\r\n            \"lastBackupSize\": 0,\r\n            \"totalBackupSize\": 0,\r\n            \"contents\": {\r\n                \"path\": [\r\n                    \"/xyz\",\r\n                    \"/abc\"\r\n                ],\r\n                \"exclusions\": [\r\n                    \"/xyz/pqr\"\r\n                ],\r\n                \"exceptions\": [\r\n                    \"/sample\"                    \r\n                ]\r\n            },\r\n            \"plan\": {\r\n                \"id\": 11214,\r\n                \"name\": \"test\"\r\n            }\r\n        }\r\n    ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Content",
+											"id": "1996e258-9d58-4eb3-b913-6c0478f05532",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"contents\": {\r\n                \"path\": [\r\n                    \"/\"\r\n                ],\r\n                \"exclusions\": [\"/abc\", \"/ee\"],\r\n                \"exceptions\": [\"/pqe\", \"/a\"]\r\n            }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azurefile/contentgroup/{contentGroupId}/content",
+												"description": "This API adds content to a content group\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| contentGroupId | Id of the content group | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| contents.path | List of files and folders to be added as content | array |  |\n| contents.exclusions | List of files and folders to exclude | array |  |\n| contents.exceptions | List of files and folders to be added to the exceptions list | array |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | Details of error if any | integer | 0 indicates success |\n| errorMessage | Details of error | string |  |"
+											},
+											"response": [
+												{
+													"id": "30b30b5c-9885-4e6e-b128-caf131146832",
+													"name": "Configure Content",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"contents\": {\r\n                \"path\": [\r\n                    \"/\"\r\n                ],\r\n                \"exclusions\": [\"/abc\", \"/ee\"],\r\n                \"exceptions\": [\"/pqe\", \"/a\"]\r\n            }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azurefile/contentgroup/{contentGroupId}/content"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										},
+										{
+											"name": "Associate Plan",
+											"id": "820a8917-e006-4b9b-a7e1-ac003e67724d",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"plan\": {\r\n      \"id\": 11652\r\n    }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azurefile/contentgroup/{contentGroupId}/plan",
+												"description": "This API associates plan to a content group\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| contentGroupId | Id of the content group | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| plan.id | Id of the plan to be associated | integer |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | Details of error if any | integer | 0 indicates success |\n| errorMessage | Details of error | string |  |"
+											},
+											"response": [
+												{
+													"id": "21865ed0-ac22-45a8-960e-df4e622cd401",
+													"name": "Associate Plan",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"plan\": {\r\n      \"id\": 11652\r\n    }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azurefile/contentgroup/{contentGroupId}/plan"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										}
+									],
+									"id": "435899b6-a7f2-4815-8ad8-d84411d5441a"
+								},
+								{
+									"name": "Azure Data Lake Storage Gen2",
+									"item": [
+										{
+											"name": "Create Azure Data Lake Storage Gen2 Instance",
+											"id": "db92bcda-b738-4bb3-adb1-64a27e95fdac",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{  \r\n    \"name\": \"ex-api-content\",\r\n    \"storageAccount\": \"test\",\r\n    \"credential\": {\r\n      \"id\": 284      \r\n    },\r\n    \"plan\": {\r\n      \"id\": 11214\r\n    },\r\n    \"region\": {\r\n       \"id\": 8 \r\n    },\r\n    \"contents\": {\r\n        \"path\": [\r\n            \"/\"\r\n        ],\r\n        \"exclusions\": [\"/abc\", \"/ee\"],\r\n        \"exceptions\": [\"/pqe\", \"/a\"]\r\n    }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azuredatalake/instance",
+												"description": "This API creates an Azure Data Lake Storage Gen2 Instance on metallic azure.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | Name of the Azure Data Lake Storage Gen2 instance | string | True |  |\n| region | region id | integer | True |  |\n| plan | plan id | integer | True |  |\n| storageAccount | Name of the Azure storage account | string |  |  |\n| credential | credential id or name | integer (id), string (name) | True |  |\n| hostURL | Optional. Defaults to dfs.core.windows.net | string | False |  |\n| contents.path | Optional list of files and folders to be added as content. Defaults to / | array | False |  |\n| contents.exclusions | Optional list of files and folders to exclude | array | False |  |\n| contents.exceptions | Optional list of files and folders to be added to the exceptions list | array | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| clientId | newly created client id | integer |  |\n| instanceId | newly created instance id | integer |  |"
+											},
+											"response": [
+												{
+													"id": "1b2df491-9e92-4b17-8ba9-b750c5a80c1c",
+													"name": "Create Azure Data Lake Storage Gen2 Instance",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{  \r\n    \"name\": \"ex-api-content\",\r\n    \"storageAccount\": \"test\",\r\n    \"credential\": {\r\n      \"id\": 284      \r\n    },\r\n    \"plan\": {\r\n      \"id\": 11214\r\n    },\r\n    \"region\": {\r\n       \"id\": 8 \r\n    },\r\n    \"contents\": {\r\n        \"path\": [\r\n            \"/\"\r\n        ],\r\n        \"exclusions\": [\"/abc\", \"/ee\"],\r\n        \"exceptions\": [\"/pqe\", \"/a\"]\r\n    }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredatalake/instance"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										},
+										{
+											"name": "Select Content Groups",
+											"id": "0304698a-a520-4c92-9871-174b5df96469",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": "{{ServerURL}}/api/v1/core/azuredatalake/instance/{instanceId}/contentgroups",
+												"description": "This API retrieves the list of content groups for an Azure Data Lake Storage Gen2 instance.\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| instanceId | Id of the Azure Data Lake Storage Gen2 instance | integer | True |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | Content group id | integer |  |\n| name | Content group name | string |  |\n| isBackupEnabled | Backup status | boolean |  |\n| plan.id | Id of the assoicated plan | integer |  |\n| plan.name | Name of the associated plan | string |  |\n| contents | List of associated contents | array |  |"
+											},
+											"response": [
+												{
+													"id": "24d81e43-7aa4-4555-b5ca-b3ade0430651",
+													"name": "Select Content Groups",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": "{{ServerURL}}/api/v1/core/azuredatalake/instance/{instanceId}/contentgroups"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\r\n    \"contentGroups\": [\r\n        {\r\n            \"id\": 60928,\r\n            \"name\": \"default\",\r\n            \"isBackupEnabled\": true,\r\n            \"lastBackupSize\": 0,\r\n            \"totalBackupSize\": 0,\r\n            \"contents\": {\r\n                \"path\": [\r\n                    \"/xyz\",\r\n                    \"/abc\"\r\n                ],\r\n                \"exclusions\": [\r\n                    \"/xyz/pqr\"\r\n                ],\r\n                \"exceptions\": [\r\n                    \"/sample\"                    \r\n                ]\r\n            },\r\n            \"plan\": {\r\n                \"id\": 11214,\r\n                \"name\": \"test\"\r\n            }\r\n        }\r\n    ]\r\n}"
+												}
+											]
+										},
+										{
+											"name": "Configure Content",
+											"id": "58525897-8357-49ef-932a-0a37ac66615a",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"contents\": {\r\n                \"path\": [\r\n                    \"/\"\r\n                ],\r\n                \"exclusions\": [\"/abc\", \"/ee\"],\r\n                \"exceptions\": [\"/pqe\", \"/a\"]\r\n            }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azuredatalake/contentgroup/{contentGroupId}/content",
+												"description": "This API adds content to a content group\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| contentGroupId | Id of the content group | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| contents.path | List of files and folders to be added as content | array |  |\n| contents.exclusions | List of files and folders to exclude | array |  |\n| contents.exceptions | List of files and folders to be added to the exceptions list | array |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | Details of error if any | integer | 0 indicates success |\n| errorMessage | Details of error | string |  |"
+											},
+											"response": [
+												{
+													"id": "ceb52b94-0aef-4b6a-8d4d-135b9500fcc5",
+													"name": "Configure Content",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"contents\": {\r\n                \"path\": [\r\n                    \"/\"\r\n                ],\r\n                \"exclusions\": [\"/abc\", \"/ee\"],\r\n                \"exceptions\": [\"/pqe\", \"/a\"]\r\n            }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredatalake/contentgroup/{contentGroupId}/content"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										},
+										{
+											"name": "Associate Plan",
+											"id": "b9f09e72-7806-4980-a9b4-1a43f56f4b0d",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"plan\": {\r\n      \"id\": 11652\r\n    }\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azuredatalake/contentgroup/{contentGroupId}/plan",
+												"description": "This API associates plan to a content group\n\n#### Path Parameter\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| contentGroupId | Id of the content group | integer | True |  |\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| plan.id | Id of the plan to be associated | integer |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| errorCode | Details of error if any | integer | 0 indicates success |\n| errorMessage | Details of error | string |  |"
+											},
+											"response": [
+												{
+													"id": "05a2b601-a3f0-4349-8294-bfa78578c152",
+													"name": "Associate Plan",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"plan\": {\r\n      \"id\": 11652\r\n    }\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredatalake/contentgroup/{contentGroupId}/plan"
+													},
+													"_postman_previewlanguage": null,
+													"header": null,
+													"cookie": [],
+													"responseTime": null,
+													"body": null
+												}
+											]
+										}
+									],
+									"id": "ab22078a-52af-4a21-a7d0-3125e3449b96"
+								}
+							],
+							"id": "ac7b21c5-aae7-4b8d-8a2e-2c92d0065064"
+						}
+					],
+					"id": "d0daa5d1-f376-4d8c-9919-09fab21aa425"
+				},
+				{
 					"name": "User Security",
 					"item": [
 						{
@@ -9536,7 +10814,7 @@
 	"auth": {
 		"type": "bearer",
 		"bearer": {
-			"token": "{{authToken}}"
+			"token": "{{Token}}"
 		}
 	},
 	"event": [
@@ -9563,7 +10841,7 @@
 	],
 	"variable": [
 		{
-			"id": "df47f0b5-2f99-4166-918c-d8c85baa359d",
+			"id": "c40bf6f5-9161-4e54-9022-fd6705d4bcf6",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
