@@ -1771,6 +1771,83 @@
 									"body": "{\r\n    \"data\": [\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-SF-USR\",\r\n            \"consumedQuantity\": 100.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 100.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"unitPrice\": 4.00,\r\n            \"totalCost\": 400.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-23\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 1.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 1.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"unitPrice\": 3.00,\r\n            \"totalCost\": 3.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-SF-USR\",\r\n            \"consumedQuantity\": 110.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 110.00,\r\n            \"billingUnit\": \"1 user\",\r\n            \"unitPrice\": 4.00,\r\n            \"totalCost\": 440.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n        {\r\n            \"usageDate\": \"2021-07-24\",\r\n            \"accountId\": \"cdb8a2a3-582b-449e-84fa-3c4f6a1745df\",\r\n            \"externalAccountId\": \"partnerxyz\",\r\n            \"fulfillmentId\": \"234477b5-7d7d-46a8-9eb7-ac67d8d87f58\",\r\n            \"externalFulfillmentId\": \"partnerabcdef\",\r\n            \"skuId\": \"MTSP-VMKB-S-VM\",\r\n            \"consumedQuantity\": 2.00,\r\n            \"entitledQuantity\": 0.00,\r\n            \"overageQuantity\": 0.00, \r\n            \"billableQuantity\": 2.00,\r\n            \"billingUnit\": \"10 vm\",\r\n            \"unitPrice\": 3.00,\r\n            \"totalCost\": 6.00,\r\n            \"currency\": \"USD\"\r\n        }\r\n    ]\r\n}"
 								}
 							]
+						},
+						{
+							"name": "Get Usage Summary",
+							"id": "7baa1a7b-2361-43d9-b8ba-a53d912bd959",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ServerURL}}/api/v1/usage/summary?usageMonth=2023-08-01",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"usage",
+										"summary"
+									],
+									"query": [
+										{
+											"key": "usageMonth",
+											"value": "2023-08-01",
+											"description": "Optional - Month for which usage summary is returned\nIf not provided, default to current month"
+										}
+									]
+								},
+								"description": "This API can be used by MSP to query availble pooled usage summary for all customer accounts. Currently we suppot summary for M365 Storage SKU only.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage summary | Usage summary Objects Array | See - Usage Summary Object |\n\n##### Usage Object\n\n###### Usage Summary\n\n| Field | Description | Type |\n| --- | --- | --- |\n| usageMonth | Month for which pooled usage is returned. | String |\n| skuId | Service sku ID | String |\n| consumedQuantity | Peak usage quantity up to usageDate in usage month  <br>**This quantity is using measurement of our billing unit** | Number with up to 2-digit precision |\n| entitledQuantity | Pre-commited quantity in usage month  <br>For commit skus, it's purchased quantity sent in fulfillment | Number with up to 2-digit precision |\n| overageQuantity | Quantity used more than entitled quantity in usage month  <br>For commit skus, it's consumedQuantity minus entitledQuantity (0 if consumedQuantity is smaller than entitledQuantity) | Number with up to 2-digit precision |\n| billableQuantity | Quantity that will be charged in usage month  <br>consumedQuantity minus entitledQuantity (0 if consumedQuantity is smaller than entitledQuantity) | Number with up to 2-digit precision |\n| unitPrice | Price for a single billingUnit | Number with up to 2-digit precision |\n| paymentOption | For commit skus, it's \"upfront\" | String |\n| billingUnit | Service unit | String |\n| totalCost | billableQuatity \\* unitPrice | Number with up to 2-digit precision |\n| currency | Billing currency | String |"
+							},
+							"response": [
+								{
+									"id": "e2f617b9-4aac-4ee3-ac58-ef13de9f0ade",
+									"name": "Get Usage Summary",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/usage/summary"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"name": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2023-08-01\",\n            \"skuId\": \"MTSP-STREXP-TB\",\n            \"consumedQuantity\": 300.00,\n            \"entitledQuantity\": 200.00,\n            \"overageQuantity\": 100.00, \n            \"billableQuantity\": 100.00,\n            \"unitPrice\": 4.0,\n            \"billingUnit\": \"tb\",\n            \"totalCost\": 400.00,\n            \"currency\": \"USD\"\n        }\n    ]\n}"
+								},
+								{
+									"id": "d4880fd6-0704-4496-90ed-aa920f758eff",
+									"name": "Get Usage Summary for given month",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{ServerURL}}/api/v1/usage/summary"
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"name": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2023-07-01\",\n            \"skuId\": \"MTSP-STREXP-TB\",\n            \"consumedQuantity\": 40.00,\n            \"entitledQuantity\": 50.00,\n            \"overageQuantity\": 0.00, \n            \"billableQuantity\": 0.00,\n            \"unitPrice\": 4.0,\n            \"billingUnit\": \"tb\",\n            \"totalCost\": 0.00,\n            \"currency\": \"USD\"\n        }\n    ]\n}"
+								}
+							]
 						}
 					],
 					"id": "5e76e8e1-f2cc-428d-94b6-88e8bc1b6c10",
@@ -10421,7 +10498,7 @@
 	],
 	"variable": [
 		{
-			"id": "b5230306-c006-4141-a00d-9fde13d9a182",
+			"id": "bcab81f9-4dab-488f-b83c-d69cf5ac67af",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
