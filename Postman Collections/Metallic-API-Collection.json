@@ -1782,13 +1782,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{ServerURL}}/api/v1/usage/summary?usageMonth=2023-08-01",
+									"raw": "{{ServerURL}}/api/v1/partner/usage/summary?usageMonth=2023-08-01",
 									"host": [
 										"{{ServerURL}}"
 									],
 									"path": [
 										"api",
 										"v1",
+										"partner",
 										"usage",
 										"summary"
 									],
@@ -1800,7 +1801,7 @@
 										}
 									]
 								},
-								"description": "This API can be used by MSP to query availble pooled usage summary for all customer accounts. Currently we suppot summary for M365 Storage SKU only.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage summary | Usage summary Objects Array | See - Usage Summary Object |\n\n##### Usage Object\n\n###### Usage Summary\n\n| Field | Description | Type |\n| --- | --- | --- |\n| usageMonth | Month for which pooled usage is returned. | String |\n| skuId | Service sku ID | String |\n| consumedQuantity | Peak usage quantity up to usageDate in usage month  <br>**This quantity is using measurement of our billing unit** | Number with up to 2-digit precision |\n| entitledQuantity | Pre-commited quantity in usage month  <br>For commit skus, it's purchased quantity sent in fulfillment | Number with up to 2-digit precision |\n| overageQuantity | Quantity used more than entitled quantity in usage month  <br>For commit skus, it's consumedQuantity minus entitledQuantity (0 if consumedQuantity is smaller than entitledQuantity) | Number with up to 2-digit precision |\n| billableQuantity | Quantity that will be charged in usage month  <br>consumedQuantity minus entitledQuantity (0 if consumedQuantity is smaller than entitledQuantity) | Number with up to 2-digit precision |\n| unitPrice | Price for a single billingUnit | Number with up to 2-digit precision |\n| paymentOption | For commit skus, it's \"upfront\" | String |\n| billingUnit | Service unit | String |\n| totalCost | billableQuatity \\* unitPrice | Number with up to 2-digit precision |\n| currency | Billing currency | String |"
+								"description": "This API can be used by MSP to query availble pooled usage summary for all customer accounts. Currently we suppot summary for M365 Storage SKU only. Empty list will be returned if pooled storage is not enbaled or customer account doesn't have M365 Storage SKU subscribed.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage summary | Usage summary Objects Array | See - Usage Summary Object |\n\n##### Usage Object\n\n###### Usage Summary\n\n| Field | Description | Type |\n| --- | --- | --- |\n| usageMonth | Month for which pooled usage is returned. | String |\n| skuId | Service sku ID | String |\n| consumedQuantity | Peak usage quantity up to usageDate in usage month  <br>**This quantity is using measurement of our billing unit** | Number with up to 2-digit precision |\n| entitledQuantity | Pre-commited quantity in usage month  <br>For commit skus, it's purchased quantity sent in fulfillment | Number with up to 2-digit precision |\n| overageQuantity | Quantity used more than entitled quantity in usage month  <br>For commit skus, it's consumedQuantity minus entitledQuantity (0 if consumedQuantity is smaller than entitledQuantity) | Number with up to 2-digit precision |\n| billableQuantity | Quantity that will be charged in usage month  <br>consumedQuantity minus entitledQuantity (0 if consumedQuantity is smaller than entitledQuantity) | Number with up to 2-digit precision |\n| unitPrice | Price for a single billingUnit | Number with up to 2-digit precision |\n| paymentOption | For commit skus, it's \"upfront\" | String |\n| billingUnit | Service unit | String |\n| totalCost | billableQuatity \\* unitPrice | Number with up to 2-digit precision |\n| currency | Billing currency | String |"
 							},
 							"response": [
 								{
@@ -1809,7 +1810,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": "{{ServerURL}}/api/v1/usage/summary"
+										"url": "{{ServerURL}}/api/v1/partner/usage/summary"
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
@@ -1831,7 +1832,7 @@
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
-										"url": "{{ServerURL}}/api/v1/usage/summary"
+										"url": "{{ServerURL}}/api/v1/partner/usage/summary"
 									},
 									"_postman_previewlanguage": "json",
 									"header": [
@@ -10498,7 +10499,7 @@
 	],
 	"variable": [
 		{
-			"id": "bcab81f9-4dab-488f-b83c-d69cf5ac67af",
+			"id": "1ed23cf3-c2c2-4e2c-8ec9-55526dd3c926",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
