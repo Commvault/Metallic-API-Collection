@@ -5920,7 +5920,7 @@
 													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"userAccount\": \"{{userAccount}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"description\": \"{{descripton}}\"\r\n}"
 												},
 												"url": "{{ServerURL}}/api/v1/core/azuredb/mssql/credentials",
-												"description": "This API creates Azure DB MSSQL Credentials.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| userAccount | user account | string | True |  |\n| password | user password | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
+												"description": "This API creates Azure DB MSSQL Credentials.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| userAccount | user account | string | True |  |\n| password | user password | string | True | Password should be Base64 encoded |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
 											},
 											"response": [
 												{
@@ -10770,7 +10770,7 @@
 	],
 	"variable": [
 		{
-			"id": "4ecd1664-61c8-45ac-97cd-de726574fb7d",
+			"id": "84d91d7d-33e1-403e-b877-648c84b8672f",
 			"key": "ServerURL",
 			"value": "https://api.metallic.io",
 			"type": "string"
