@@ -1849,6 +1849,346 @@
 									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2023-07-01\",\n            \"skuId\": \"MTSP-STREXP-TB\",\n            \"consumedQuantity\": 40.00,\n            \"entitledQuantity\": 50.00,\n            \"overageQuantity\": 0.00, \n            \"billableQuantity\": 0.00,\n            \"unitPrice\": 4.0,\n            \"billingUnit\": \"tb\",\n            \"totalCost\": 0.00,\n            \"currency\": \"USD\"\n        }\n    ]\n}"
 								}
 							]
+						},
+						{
+							"name": "Get Usage Details",
+							"id": "4faa1755-b2b9-4b23-8e8f-834575bb092a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2023-08-01",
+									"host": [
+										"{{ServerURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"partner",
+										"usage",
+										"details"
+									],
+									"query": [
+										{
+											"key": "usageMonth",
+											"value": "2023-08-01",
+											"description": "Month for which usage summary is returned"
+										},
+										{
+											"key": "accountId",
+											"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5",
+											"description": "Optional - Account ID in Metallic System. Supply this parameter to retrieve usage for certain account",
+											"disabled": true
+										},
+										{
+											"key": "skuId",
+											"value": "MTSP-M365E-USR",
+											"description": "Optional - Service SKU ID in Metallic System. Supply this parameter to retrieve usage details for certain account certain service.",
+											"disabled": true
+										},
+										{
+											"key": "sort",
+											"value": "asc:instanceName",
+											"description": "Optional - Sort parameter. Schema is order:fieldName. For example, asc:usageDate. Default asc:instanceName",
+											"disabled": true
+										},
+										{
+											"key": "pageNumber",
+											"value": "0",
+											"description": "Optional - Page number >= 0. default 0",
+											"disabled": true
+										},
+										{
+											"key": "pageSize",
+											"value": "25",
+											"description": "Optional - Page size, default 100",
+											"disabled": true
+										}
+									]
+								},
+								"description": "This API can be used to obtain latest usage details in certain month. All dates in usage detail API refer to UTC time zone.\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| data | List of usage details | Usage details Objects Array | See - Usage Details Object |\n\n##### Usage Object\n\n###### Usage Details\n\n| Field | Description | Type |\n| --- | --- | --- |\n| usageMonth | Usage month | String |\n| accountId | Account ID in Metallic System | UUID |\n| skuId | Service sku ID in Metallic System | String |\n| quantity | Usage quantity | Double |\n| unit | Measurement for quantity, e.g. user / instance / MB | String |\n| instanceType | Instance type | String |\n| instanceName | Instance name | String |\n| username | User name  <br>For Endpoint service only. | String |\n| userLogin | User login name  <br>For Endpoint service only. | String |\n| exchangeMailbox | Number of exchange users  <br>For Office 365 service only. | Integer |\n| sharepointOnline | Number of Sharepoint users  <br>For Office 365 service only. | Integer |\n| oneDrive | Number of oneDrive users  <br>For Office 365 service only. | Integer |\n| instanceSize | Instance size  <br>For VM service only. | Double |\n\n###### MetaData\n\n| Field | Description | Type |\n| --- | --- | --- |\n| filter | Filter string that contains search parameters | String |\n| sort | Sort string that contains sorting criteria | String |\n| pagination | Pagination Info | Pagination Object |\n\n###### Pagination\n\n| Field | Description | Type |\n| --- | --- | --- |\n| pageNumber | Page Number | Integer |\n| pageSize | Page Size | Integer |\n| totalRecords | Total Records | Integer |"
+							},
+							"response": [
+								{
+									"id": "fa591359-ee57-4fb5-af23-949259755629",
+									"name": "Get M365 usage details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-M365E-USR",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage",
+												"details"
+											],
+											"query": [
+												{
+													"key": "usageMonth",
+													"value": "2022-11-01"
+												},
+												{
+													"key": "accountId",
+													"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5"
+												},
+												{
+													"key": "skuId",
+													"value": "MTSP-M365E-USR"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-M365E-USR\",\n            \"quantity\": 1.00,\n            \"unit\": \"user\",\n            \"instanceType\": \"email\",\n            \"instanceName\": \"user1@example.com\",\n            \"exchangeMailbox\": 1,\n            \"sharepointOnline\": 0,\n            \"oneDrive\": 1\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-M365E-USR\",\n            \"quantity\": 1.00,\n            \"unit\": \"user\",\n            \"instanceType\": \"email\",\n            \"instanceName\": \"user2@example.com\",\n            \"exchangeMailbox\": 1,\n            \"sharepointOnline\": 0,\n            \"oneDrive\": 0\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-M365E-USR\",\n            \"quantity\": 1.00,\n            \"unit\": \"user\",\n            \"instanceType\": \"email\",\n            \"instanceName\": \"user3@example.com\",\n            \"exchangeMailbox\": 0,\n            \"sharepointOnline\": 1,\n            \"oneDrive\": 0\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-M365E-USR\",\n        \"sort\": \"asc:instanceName\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 100,\n            \"totalRecords\": 3\n        }\n    }\n}"
+								},
+								{
+									"id": "c83a3f63-419f-49fb-97cb-c8ce3f664a23",
+									"name": "Get Endpoint usage details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-EP-USR",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage",
+												"details"
+											],
+											"query": [
+												{
+													"key": "usageMonth",
+													"value": "2022-11-01"
+												},
+												{
+													"key": "accountId",
+													"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5"
+												},
+												{
+													"key": "skuId",
+													"value": "MTSP-EP-USR"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-EP-USR\",\n            \"quantity\": 1.00,\n            \"unit\": \"user\",\n            \"instanceType\": \"email\",\n            \"instanceName\": \"user1@example.com\",\n            \"username\": \"user1\",\n            \"userLogin\": \"example\\\\user1\"\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-EP-USR\",\n            \"quantity\": 1.00,\n            \"unit\": \"user\",\n            \"instanceType\": \"email\",\n            \"instanceName\": \"user2@example.com\",\n            \"username\": \"user2\",\n            \"userLogin\": \"example\\\\user2\"\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-EP-USR\",\n        \"sort\": \"asc:instanceName\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 100,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								},
+								{
+									"id": "d296691f-eeac-4c8f-9874-a0defed38736",
+									"name": "Get VM usage details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-VMKB-S-VM",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage",
+												"details"
+											],
+											"query": [
+												{
+													"key": "usageMonth",
+													"value": "2022-11-01"
+												},
+												{
+													"key": "accountId",
+													"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5"
+												},
+												{
+													"key": "skuId",
+													"value": "MTSP-VMKB-S-VM"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-VMKB-S-VM\",\n            \"quantity\": 1.00,\n            \"unit\": \"instance\",\n            \"instanceName\": \"example-unix1\",\n            \"instanceSize\": 0.5\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-VMKB-S-VM\",\n            \"quantity\": 1.00,\n            \"unit\": \"instance\",\n            \"instanceName\": \"example-unix2\",\n            \"instanceSize\": 1.5\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-VMKB-S-VM\",\n        \"sort\": \"asc:instanceName\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 100,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								},
+								{
+									"id": "f4f8688d-21ac-4837-b07d-0ffa6024965a",
+									"name": "Get File Object usage detaills",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-FOB-FT",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage",
+												"details"
+											],
+											"query": [
+												{
+													"key": "usageMonth",
+													"value": "2022-11-01"
+												},
+												{
+													"key": "accountId",
+													"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5"
+												},
+												{
+													"key": "skuId",
+													"value": "MTSP-FOB-FT"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-FOB-FT\",\n            \"quantity\": 1.50,\n            \"unit\": \"TB\",\n            \"instanceType\": \"Cloud Apps\",\n            \"instanceName\": \"example-file-1\"\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-FOB-FT\",\n            \"quantity\": 1.70,\n            \"unit\": \"TB\",\n            \"instanceType\": \"Windows File System\",\n            \"instanceName\": \"example-file-2\"\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-FOB-FT\",\n        \"sort\": \"asc:instanceName\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 100,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								},
+								{
+									"id": "ec762286-82d8-4ca1-aab4-1f665ae49bac",
+									"name": "Get Database usage details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-DBB-FT",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage",
+												"details"
+											],
+											"query": [
+												{
+													"key": "usageMonth",
+													"value": "2022-11-01"
+												},
+												{
+													"key": "accountId",
+													"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5"
+												},
+												{
+													"key": "skuId",
+													"value": "MTSP-DBB-FT"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-DBB-FT\",\n            \"quantity\": 1.50,\n            \"unit\": \"TB\",\n            \"instanceType\": \"Azure PostgreSQL\",\n            \"instanceName\": \"example-azure-1\"\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-DBB-FT\",\n            \"quantity\": 1.50,\n            \"unit\": \"TB\",\n            \"instanceType\": \"Azure MySQL\",\n            \"instanceName\": \"example-azure-2\"\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-DBB-FT\",\n        \"sort\": \"asc:instanceName\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 100,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								},
+								{
+									"id": "8c720f69-e599-4528-a324-0b587415bee6",
+									"name": "Get Recovery Reserve usage details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{ServerURL}}/api/v1/partner/usage/details?usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-MCS-H-TB",
+											"host": [
+												"{{ServerURL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"partner",
+												"usage",
+												"details"
+											],
+											"query": [
+												{
+													"key": "usageMonth",
+													"value": "2022-11-01"
+												},
+												{
+													"key": "accountId",
+													"value": "C97ACA56-88F8-43AF-8C24-0FB6EF0552B5"
+												},
+												{
+													"key": "skuId",
+													"value": "MTSP-MCS-H-TB"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n    \"data\": [\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-MCS-H-TB\",\n            \"quantity\": 1.50,\n            \"unit\": \"TB\",\n            \"instanceName\": \"example-server1\"\n        },\n        {\n            \"usageMonth\": \"2022-11-01\",\n            \"accountId\": \"C97ACA56-88F8-43AF-8C24-0FB6EF0552B5\",\n            \"skuId\": \"MTSP-MCS-H-TB\",\n            \"quantity\": 0.70,\n            \"unit\": \"TB\",\n            \"instanceName\": \"example-server2\"\n        }\n    ],\n    \"metadata\": {\n        \"filter\": \"usageMonth=2022-11-01&accountId=C97ACA56-88F8-43AF-8C24-0FB6EF0552B5&skuId=MTSP-MCS-H-TB\",\n        \"sort\": \"asc:instanceName\",\n        \"pagination\": {\n            \"pageNumber\": 0,\n            \"pageSize\": 100,\n            \"totalRecords\": 2\n        }\n    }\n}"
+								}
+							]
 						}
 					],
 					"id": "5e76e8e1-f2cc-428d-94b6-88e8bc1b6c10",
