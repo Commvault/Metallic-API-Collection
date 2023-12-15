@@ -11109,8 +11109,17 @@
 									"request": {
 										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n   \"disableDLP\" : true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{ServerURL}}/api/v1/core/laptopplan",
-										"description": "This API can be used to create a Laptop plan.\n\n#### Response\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| planId | Id of the plan created | integer |  |\n| planName | Name of the plan created | string |  |"
+										"description": "This API can be used to create a Laptop plan.  \n\n#### Request\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| disableDLP | disable DLP | boolean | Default: False (DLP will be enabled) |\n\n  \n\n#### Response\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| planId | Id of the plan created | integer |  |\n| planName | Name of the plan created | string |  |"
 									},
 									"response": [
 										{
@@ -11134,7 +11143,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "",
+													"raw": "{\r\n   \"disableDLP\" : true\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
