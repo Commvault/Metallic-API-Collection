@@ -8822,9 +8822,9 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
+													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{base 64 encode of applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
 												},
-												"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials",
+												"url": "{{ServerURL}}/api/v4/azurevm/cloudaccount/credentials",
 												"description": "This API creates the storage credentials for cloud account.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| tenantId | storage tenant id | string | True |  |\n| applicationId | application id | string | True |  |\n| applicationSecret | application secret | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
 											},
 											"response": [
@@ -8855,7 +8855,7 @@
 																}
 															}
 														},
-														"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
+														"url": "{{ServerURL}}/api/v4/azurevm/cloudaccount/credentials"
 													},
 													"_postman_previewlanguage": "json",
 													"header": [],
@@ -8876,15 +8876,21 @@
 															},
 															{
 																"key": "Content-Type",
+																"name": "Content-Type",
 																"value": "application/json",
 																"type": "text"
 															}
 														],
 														"body": {
 															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
+															"raw": "{\r\n    \"name\": \"testcloudaccountcred\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
 														},
-														"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
+														"url": "{{ServerURL}}/api/v4/azurevm/cloudaccount/credentials"
 													},
 													"status": "Internal Server Error",
 													"code": 500,
