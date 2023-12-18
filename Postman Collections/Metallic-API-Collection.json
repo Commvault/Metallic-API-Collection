@@ -8799,6 +8799,102 @@
 													"body": "{\n    \"failedStage\": \"string\",\n    \"errorCode\": 0,\n    \"errorMessage\": \"null\"\n}"
 												}
 											]
+										},
+										{
+											"name": "Configure Azure CloudAccount Credentials",
+											"id": "6a4403a4-5399-4b95-aa03-9209c2bc6979",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
+												},
+												"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials",
+												"description": "This API creates the storage credentials for cloud account.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| tenantId | storage tenant id | string | True |  |\n| applicationId | application id | string | True |  |\n| applicationSecret | application secret | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
+											},
+											"response": [
+												{
+													"id": "75e3d297-8823-4ad7-b189-8fb39676c727",
+													"name": "Configure Azure Storage Credentials (BYOS Only)",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json",
+																"type": "text"
+															},
+															{
+																"key": "Content-Type",
+																"name": "Content-Type",
+																"value": "application/json",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"name\": \"test\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
+													},
+													"_postman_previewlanguage": "json",
+													"header": [],
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\n    \"credential\": {\n        \"id\": 443\n    },\n    \"errorMessage\": \"Successful!\",\n    \"errorCode\": 0\n}"
+												},
+												{
+													"id": "6192d749-31c7-4785-90ea-e1ea86d186e6",
+													"name": "Configure Azure Storage Credentials (BYOS Only)",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json",
+																"type": "text"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
+														},
+														"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [],
+													"cookie": [],
+													"responseTime": null,
+													"body": "{\n    \"errorMessage\": \"Credential account [testcloudaccountcred] already exists. Use other credentials.\",\n    \"errorCode\": 587206339\n}"
+												}
+											]
 										}
 									],
 									"id": "5f2a177e-a935-4acf-b41f-62088dca88dc"
@@ -9905,102 +10001,6 @@
 										}
 									],
 									"id": "65d0c70c-120e-4e6f-aa24-fa3985d46ef7"
-								},
-								{
-									"name": "Configure Azure Credentials Copy",
-									"id": "6a4403a4-5399-4b95-aa03-9209c2bc6979",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
-										},
-										"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials",
-										"description": "This API creates the storage credentials for cloud account.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| tenantId | storage tenant id | string | True |  |\n| applicationId | application id | string | True |  |\n| applicationSecret | application secret | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
-									},
-									"response": [
-										{
-											"id": "75e3d297-8823-4ad7-b189-8fb39676c727",
-											"name": "Configure Azure Storage Credentials (BYOS Only)",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "Content-Type",
-														"name": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"test\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
-											},
-											"_postman_previewlanguage": "json",
-											"header": [],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\n    \"credential\": {\n        \"id\": 443\n    },\n    \"errorMessage\": \"Successful!\",\n    \"errorCode\": 0\n}"
-										},
-										{
-											"id": "6192d749-31c7-4785-90ea-e1ea86d186e6",
-											"name": "Configure Azure Storage Credentials (BYOS Only)",
-											"originalRequest": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json",
-														"type": "text"
-													},
-													{
-														"key": "Content-Type",
-														"value": "application/json",
-														"type": "text"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
-												},
-												"url": "{{ServerURL}}/api/v1/core/azuredb/cloudaccount/credentials"
-											},
-											"status": "Internal Server Error",
-											"code": 500,
-											"_postman_previewlanguage": "json",
-											"header": [],
-											"cookie": [],
-											"responseTime": null,
-											"body": "{\n    \"errorMessage\": \"Credential account [testcloudaccountcred] already exists. Use other credentials.\",\n    \"errorCode\": 587206339\n}"
-										}
-									]
 								}
 							],
 							"id": "421759d6-49f7-4ec6-ab54-7dcc38bd84f2"
