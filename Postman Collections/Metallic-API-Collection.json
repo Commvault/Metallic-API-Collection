@@ -8294,108 +8294,7 @@
 											]
 										},
 										{
-											"name": "Add Azure (IAM App) Credentials",
-											"id": "306302e9-d2c0-4475-84ad-f270e48faa5e",
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "POST",
-												"header": [
-													{
-														"key": "Accept",
-														"value": "application/json"
-													},
-													{
-														"key": "Content-Type",
-														"value": "application/json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"storageAccountName\": \"{{storageAccountName}}\",\r\n    \"accessKey\": \"{{accesskey}}\",\r\n    \"description\": \"{{description}}\"\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": "{{ServerURL}}/api/v1/core/azurevm/credentials",
-												"description": "This API creates the storage credentials for Azure Storage.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| storageAccountName | storage account name | string | True |  |\n| accessKey | access key | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
-											},
-											"response": [
-												{
-													"id": "7b295fee-0d81-430e-a252-b0f9457367f7",
-													"name": "Add Azure (IAM App) Credentials",
-													"originalRequest": {
-														"method": "POST",
-														"header": [
-															{
-																"key": "Accept",
-																"value": "application/json"
-															},
-															{
-																"key": "Content-Type",
-																"value": "application/json"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"testcredentials\",\r\n    \"storageAccountName\": \"sa\",\r\n    \"accessKey\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test\"\r\n}",
-															"options": {
-																"raw": {
-																	"language": "json"
-																}
-															}
-														},
-														"url": "{{ServerURL}}/api/v1/core/azurevm/credentials"
-													},
-													"status": "OK",
-													"code": 200,
-													"_postman_previewlanguage": "json",
-													"header": null,
-													"cookie": [],
-													"responseTime": null,
-													"body": "{\n    \"credential\": {\n        \"id\": 442\n    },\n    \"errorMessage\": \"Successful!\",\n    \"errorCode\": 0\n}"
-												},
-												{
-													"id": "45bd03e1-39ee-4d45-b850-a38b27bb8b82",
-													"name": "Add Azure (IAM App) Credentials (credential already exists)",
-													"originalRequest": {
-														"method": "POST",
-														"header": [
-															{
-																"key": "Accept",
-																"value": "application/json"
-															},
-															{
-																"key": "Content-Type",
-																"value": "application/json"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"storageAccountName\": \"{{storageAccountName}}\",\r\n    \"accessKey\": \"{{accesskey}}\",\r\n    \"description\": \"{{description}}\"\r\n}",
-															"options": {
-																"raw": {
-																	"language": "json"
-																}
-															}
-														},
-														"url": "{{ServerURL}}/api/v1/core/azurevm/credentials"
-													},
-													"status": "Internal Server Error",
-													"code": 500,
-													"_postman_previewlanguage": "json",
-													"header": null,
-													"cookie": [],
-													"responseTime": null,
-													"body": "{\n    \"errorMessage\": \"Credential account [testcrednt] already exists. Use other credentials.\",\n    \"errorCode\": 587206339\n}"
-												}
-											]
-										},
-										{
-											"name": "Configure Azure CloudAccount Credentials",
+											"name": "Configure Azure CloudAccount (IAM APP) Credentials",
 											"id": "6a4403a4-5399-4b95-aa03-9209c2bc6979",
 											"protocolProfileBehavior": {
 												"disableBodyPruning": true
@@ -8418,38 +8317,35 @@
 													"mode": "raw",
 													"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"tenantId\": \"{{tenantId}}\",\r\n    \"applicationId\": \"{{applicationId}}\",\r\n    \"applicationSecret\": \"{{base 64 encode of applicationSecret}}\",\r\n    \"description\": \"{{description}}\"\r\n}"
 												},
-												"url": "{{ServerURL}}/api/v4/azurevm/cloudaccount/credentials",
+												"url": "{{ServerURL}}/api/v1/core/azurevm/credentials",
 												"description": "This API creates the storage credentials for cloud account.\n\n#### Request Body\n\n| **Field** | **Description** | **Type** | **Required** | **Notes** |\n| --- | --- | --- | --- | --- |\n| name | credential name | string | True |  |\n| tenantId | storage tenant id | string | True |  |\n| applicationId | application id | string | True |  |\n| applicationSecret | base64 encoded application secret | string | True |  |\n| description | description | string | False |  |\n\n#### Response Body\n\n| **Field** | **Description** | **Type** | **Notes** |\n| --- | --- | --- | --- |\n| id | newly created credential id | integer |  |\n| errorMessage | error message | string |  |\n| errorCode | error code | integer | returned 0 for success |"
 											},
 											"response": [
 												{
 													"id": "75e3d297-8823-4ad7-b189-8fb39676c727",
-													"name": "Configure Azure Storage Credentials (BYOS Only)",
+													"name": "CloudAccount (IAM APP) Credentials",
 													"originalRequest": {
 														"method": "POST",
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/json",
-																"type": "text"
+																"value": "application/json"
 															},
 															{
 																"key": "Content-Type",
-																"name": "Content-Type",
-																"value": "application/json",
-																"type": "text"
+																"value": "application/json"
 															}
 														],
 														"body": {
 															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"test\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
+															"raw": "{\r\n    \"name\": \"test\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"***********\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
 															"options": {
 																"raw": {
 																	"language": "json"
 																}
 															}
 														},
-														"url": "{{ServerURL}}/api/v4/azurevm/cloudaccount/credentials"
+														"url": "{{ServerURL}}/api/v1/core/azurevm/credentials"
 													},
 													"_postman_previewlanguage": "json",
 													"header": [],
@@ -8459,32 +8355,29 @@
 												},
 												{
 													"id": "6192d749-31c7-4785-90ea-e1ea86d186e6",
-													"name": "Configure Azure Storage Credentials (BYOS Only)",
+													"name": "CloudAccount (IAM APP) Credentials",
 													"originalRequest": {
 														"method": "POST",
 														"header": [
 															{
 																"key": "Accept",
-																"value": "application/json",
-																"type": "text"
+																"value": "application/json"
 															},
 															{
 																"key": "Content-Type",
-																"name": "Content-Type",
-																"value": "application/json",
-																"type": "text"
+																"value": "application/json"
 															}
 														],
 														"body": {
 															"mode": "raw",
-															"raw": "{\r\n    \"name\": \"testcloudaccountcred\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"Q29tbXZhdWx0ITEy\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
+															"raw": "{\r\n    \"name\": \"testcloudaccountcred\",\r\n    \"tenantId\": \"testid\",\r\n    \"applicationId\": \"testappid\",\r\n    \"applicationSecret\": \"***********\",\r\n    \"description\": \"test creds with no meaning\"\r\n}",
 															"options": {
 																"raw": {
 																	"language": "json"
 																}
 															}
 														},
-														"url": "{{ServerURL}}/api/v4/azurevm/cloudaccount/credentials"
+														"url": "{{ServerURL}}/api/v1/core/azurevm/credentials"
 													},
 													"status": "Internal Server Error",
 													"code": 500,
